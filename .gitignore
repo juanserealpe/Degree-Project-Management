@@ -24,3 +24,4 @@ nbproject/build-impl.xml
 .DS_Store
 
 database.db
+/dist/

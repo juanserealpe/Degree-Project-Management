@@ -1,25 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package App.Views;
 
-import App.Session.Session;
-import App.controllers.AccountController;
-import javax.swing.ComboBoxEditor;
-import javax.swing.JOptionPane;
-
-/**
- *
- * @author juans
- */
 public class LoginView extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
 
-    /**
-     * Creates new form LoginView
-     */
     public LoginView() {
         initComponents();
         setSize(800, 600);
@@ -28,12 +12,13 @@ public class LoginView extends javax.swing.JFrame {
         jLabelError.hide();
 
     }
-    private AccountController _accountController;
+    
+    /*private AccountController _accountController;
 
     public void setAccountController(AccountController controller) {
         this._accountController = controller;
     }
-
+    */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -260,6 +245,7 @@ public class LoginView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        /*
         String email = txtEmail.getText();
         String password = txtPassword.getText();
         jLabelError.setVisible(false);
@@ -297,6 +283,7 @@ public class LoginView extends javax.swing.JFrame {
             jLabelError.setText("Error: " + ex.getMessage());
             jLabelError.setVisible(true);
         }
+        */
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButtonRegisterRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterRequestActionPerformed

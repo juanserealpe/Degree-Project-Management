@@ -1,22 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package App.Views;
 
-import App.DataBase.AppContext;
-import App.Session.Session;
-
-import App.DataBase.DataBase;
-import App.Entities.PreliminaryDraft;
-import App.Services.ProfessorService;
-import App.Session.Session;
-import java.util.List;
-
-/**
- *
- * @author juans
- */
 public class ProfessorMenuView extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProfessorMenuView.class.getName());
@@ -29,9 +12,10 @@ public class ProfessorMenuView extends javax.swing.JFrame {
         setSize(800, 600);
         setResizable(false);
         setLocationRelativeTo(null);
+        /*
         Session.getActual();
         jLabelEmail.setText(Session.getActual().getEmail());
-        // Este no es necesario aquí, a menos que uses los datos del usuario.
+        */
 
     }
 
@@ -176,6 +160,7 @@ public class ProfessorMenuView extends javax.swing.JFrame {
 
 
     private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        /*
         Session.closeSession();
         // Crear y mostrar la ventana de login
         LoginView loginMenu = new LoginView();
@@ -185,6 +170,7 @@ public class ProfessorMenuView extends javax.swing.JFrame {
 
         // Cerrar la ventana actual de forma segura
         this.dispose();
+        */
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     /**
