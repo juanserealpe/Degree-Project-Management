@@ -1,22 +1,43 @@
 package App.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 
+    private List<Role> roles = new ArrayList<>();
     private String email;
     private String names;
     private String lastNames;
     private int accountId;
     private int programId;
 
-    public User(String email, String names, String lastNames, int accountId, int program) {
+    public User(String email, String names, String lastNames, int accountId, int programId, List<Role> listRole) {
         this.email = email;
         this.names = names;
         this.lastNames = lastNames;
         this.accountId = accountId;
-        this.programId = program;
+        this.programId = programId;
+        this.roles = listRole;
     }
-    public User(){
-        
+
+    public User(String email, String names, String lastNames, int accountId, int programId) {
+        this.email = email;
+        this.names = names;
+        this.lastNames = lastNames;
+        this.accountId = accountId;
+        this.programId = programId;
+    }
+
+    public User() {
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public String getEmail() {

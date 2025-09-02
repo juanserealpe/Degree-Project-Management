@@ -1,12 +1,14 @@
 package App.Repositories;
 
 import App.DataBase.DbConnection;
+import App.Dtos.StudentDTO;
+import App.Interfaces.IRepository;
 import App.Models.Account;
 import App.Models.Student;
 import java.sql.*;
 import java.util.List;
 
-public class StudentRepository {
+public class StudentRepository implements IRepository<StudentDTO> {
 
     private final DbConnection dbConnection;
 
@@ -14,18 +16,19 @@ public class StudentRepository {
         this.dbConnection = new DbConnection();
     }
 
-    public void addStudent(Student prmStudent, Account prmAccount) {
+    @Override
+    public void toAdd(StudentDTO prmStudentDTO) {
         String sqlAccount = "INSERT INTO Account (password) VALUES (?)";
         String sqlUser = "INSERT INTO User (email, names, last_names, id_account, id_program) VALUES (?, ?, ?, ?, ?)";
         String sqlUserRole = "INSERT INTO User_Role (email, id_role) VALUES (?, 1)";
 
-        try (Connection conn = dbConnection.Connect()) {
+        try (Connection conn = dbConnection.toConnect()) {
             conn.setAutoCommit(false);
 
             int generatedAccountId;
 
             try (PreparedStatement pstmtAcc = conn.prepareStatement(sqlAccount, Statement.RETURN_GENERATED_KEYS)) {
-                pstmtAcc.setString(1, prmAccount.getPassword());
+                pstmtAcc.setString(1, prmStudentDTO.getAccount().getPassword());
                 pstmtAcc.executeUpdate();
 
                 try (ResultSet rs = pstmtAcc.getGeneratedKeys()) {
@@ -39,43 +42,45 @@ public class StudentRepository {
             }
 
             try (PreparedStatement pstmtUser = conn.prepareStatement(sqlUser)) {
-                pstmtUser.setString(1, prmStudent.getEmail());
-                pstmtUser.setString(2, prmStudent.getNames());
-                pstmtUser.setString(3, prmStudent.getLastNames());
+                pstmtUser.setString(1, prmStudentDTO.getStudent().getEmail());
+                pstmtUser.setString(2, prmStudentDTO.getStudent().getNames());
+                pstmtUser.setString(3, prmStudentDTO.getStudent().getLastNames());
                 pstmtUser.setInt(4, generatedAccountId);
-                pstmtUser.setInt(5, prmStudent.getProgramId());
+                pstmtUser.setInt(5, prmStudentDTO.getStudent().getProgramId());
                 pstmtUser.executeUpdate();
             }
 
             try (PreparedStatement pstmtRole = conn.prepareStatement(sqlUserRole)) {
-                pstmtRole.setString(1, prmStudent.getEmail());
+                pstmtRole.setString(1, prmStudentDTO.getStudent().getEmail());
                 pstmtRole.executeUpdate();
             }
 
             conn.commit();
-            System.out.println(">> Estudiante agregado correctamente: " + prmStudent.getEmail());
+            System.out.println(">> Estudiante agregado correctamente: " + prmStudentDTO.getStudent().getEmail());
 
         } catch (SQLException e) {
             System.out.println("Error al agregar estudiante: " + e.getMessage());
             try {
-                dbConnection.Connect().rollback();
+                dbConnection.toConnect().rollback();
             } catch (SQLException ex) {
                 System.out.println("Error al hacer rollback: " + ex.getMessage());
             }
         }
     }
 
-    public List<Student> getAllStudents() {
+    @Override
+    public List<StudentDTO> toGetAll() {
         String sql = """
-        SELECT u.email, u.names, u.last_names, u.id_account, u.id_program
+        SELECT u.email, u.names, u.last_names, u.id_account, u.id_program, a.password
         FROM User u
         JOIN User_Role ur ON u.email = ur.email
+        JOIN Account a ON u.id_account = a.id_account
         WHERE ur.id_role = 1
         """;
 
-        List<Student> students = new java.util.ArrayList<>();
+        List<StudentDTO> students = new java.util.ArrayList<>();
 
-        try (Connection conn = dbConnection.Connect(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = dbConnection.toConnect(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
                 Student s = new Student(
@@ -85,7 +90,14 @@ public class StudentRepository {
                         rs.getInt("id_account"),
                         rs.getInt("id_program")
                 );
-                students.add(s);
+
+                Account acc = new Account(
+                        rs.getInt("id_account"),
+                        rs.getString("password")
+                );
+
+                StudentDTO dto = new StudentDTO(s, acc);
+                students.add(dto);
             }
 
             System.out.println(">> Total estudiantes encontrados: " + students.size());
@@ -97,76 +109,101 @@ public class StudentRepository {
         return students;
     }
 
-    public void deleteStudent(String email) {
+    @Override
+    public void toDeleteByString(String prmString) {
         String sqlGetAccount = "SELECT id_account FROM User WHERE email = ?";
+        String sqlDeleteUserRole = "DELETE FROM User_Role WHERE email = ?";
         String sqlDeleteUser = "DELETE FROM User WHERE email = ?";
         String sqlDeleteAccount = "DELETE FROM Account WHERE id_account = ?";
 
-        try (Connection conn = dbConnection.Connect()) {
+        try (Connection conn = dbConnection.toConnect()) {
             conn.setAutoCommit(false); // ✅ iniciar transacción
 
             int idAccount = -1;
 
+            // 1. Obtener el id_account
             try (PreparedStatement pstmtGet = conn.prepareStatement(sqlGetAccount)) {
-                pstmtGet.setString(1, email);
+                pstmtGet.setString(1, prmString);
                 try (ResultSet rs = pstmtGet.executeQuery()) {
                     if (rs.next()) {
                         idAccount = rs.getInt("id_account");
                     } else {
-                        System.out.println("No se encontró estudiante con email: " + email);
+                        System.out.println("No se encontró estudiante con email: " + prmString);
                         return;
                     }
                 }
             }
 
+            // 2. Eliminar primero de User_Role
+            try (PreparedStatement pstmtDelUR = conn.prepareStatement(sqlDeleteUserRole)) {
+                pstmtDelUR.setString(1, prmString);
+                pstmtDelUR.executeUpdate();
+            }
+
+            // 3. Eliminar de User
             try (PreparedStatement pstmtDelUser = conn.prepareStatement(sqlDeleteUser)) {
-                pstmtDelUser.setString(1, email);
+                pstmtDelUser.setString(1, prmString);
                 pstmtDelUser.executeUpdate();
             }
 
+            // 4. Eliminar de Account
             try (PreparedStatement pstmtDelAcc = conn.prepareStatement(sqlDeleteAccount)) {
                 pstmtDelAcc.setInt(1, idAccount);
                 pstmtDelAcc.executeUpdate();
             }
 
+            // 5. Confirmar transacción
             conn.commit();
-            System.out.println(">> Estudiante eliminado correctamente: " + email);
+            System.out.println(">> Estudiante eliminado correctamente: " + prmString);
 
         } catch (SQLException e) {
             System.out.println("Error al eliminar estudiante: " + e.getMessage());
             try {
-                dbConnection.Connect().rollback();
+                dbConnection.toConnect().rollback();
             } catch (SQLException ex) {
                 System.out.println("Error al hacer rollback: " + ex.getMessage());
             }
         }
     }
 
-    public Student getStudentByEmail(String email) {
+    @Override
+    public StudentDTO toGetByString(String prmString) {
         String sql = """
-        SELECT u.email, u.names, u.last_names, u.id_account, u.id_program
+        SELECT u.email, u.names, u.last_names, u.id_account, u.id_program, a.password
         FROM User u
         JOIN User_Role ur ON u.email = ur.email
         JOIN Role r ON ur.id_role = r.id_role
+        JOIN Account a ON u.id_account = a.id_account
         WHERE LOWER(u.email) = LOWER(?) AND r.id_role = 1
         """;
 
-        try (Connection conn = dbConnection.Connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dbConnection.toConnect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, email);
+            pstmt.setString(1, prmString);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 System.out.println(">> Estudiante encontrado: " + rs.getString("email"));
-                return new Student(
+
+                // 1. Student
+                Student s = new Student(
                         rs.getString("email"),
                         rs.getString("names"),
                         rs.getString("last_names"),
                         rs.getInt("id_account"),
                         rs.getInt("id_program")
                 );
+
+                // 2. Account
+                Account acc = new Account(
+                        rs.getInt("id_account"),
+                        rs.getString("password")
+                );
+
+                // 3. DTO
+                return new StudentDTO(s, acc);
             } else {
-                System.out.println(">> No se encontró estudiante con email: " + email);
+                System.out.println(">> No se encontró estudiante con email: " + prmString);
             }
 
         } catch (SQLException e) {
@@ -174,5 +211,10 @@ public class StudentRepository {
         }
 
         return null;
+    }
+
+    @Override
+    public void toUpdate(StudentDTO prmItem) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
