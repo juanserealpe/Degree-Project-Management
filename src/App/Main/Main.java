@@ -46,7 +46,7 @@ public class Main {
         IRepository<DirectorDTO> _directorRepo = new DirectorRepository();
         IEncrypt _encryptService3 = new EncryptService();
         IValidatorRegisterServices _validatorService2 = new ValidatorRegisterServices();
-        DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2);
+        DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2, dataService1);
         /*
         Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "JuAn", "VaROnA", 0, 1, "3015056565");
         Account newAccount = new Account("juanse1A?");
