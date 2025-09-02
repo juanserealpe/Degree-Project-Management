@@ -12,6 +12,9 @@ public class Session {
         this.roles = roles;
     }
 
+    public Session() {
+    }
+
     public String getEmail() {
         return email;
     }

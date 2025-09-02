@@ -28,7 +28,6 @@ public class DirectorRepository implements IRepository<DirectorDTO> {
 
             int generatedAccountId;
 
-            // 1. Insertar en Account
             try (PreparedStatement pstmtAcc = conn.prepareStatement(sqlAccount, Statement.RETURN_GENERATED_KEYS)) {
                 pstmtAcc.setString(1, prmItem.getAccount().getPassword());
                 pstmtAcc.executeUpdate();
@@ -42,8 +41,6 @@ public class DirectorRepository implements IRepository<DirectorDTO> {
                     }
                 }
             }
-
-            // 2. Insertar en User
             try (PreparedStatement pstmtUser = conn.prepareStatement(sqlUser)) {
                 pstmtUser.setString(1, prmItem.getDirector().getEmail());
                 pstmtUser.setString(2, prmItem.getDirector().getNames());
@@ -52,8 +49,6 @@ public class DirectorRepository implements IRepository<DirectorDTO> {
                 pstmtUser.setInt(5, prmItem.getDirector().getProgramId());
                 pstmtUser.executeUpdate();
             }
-
-            // 3. Insertar roles en User_Role
             try (PreparedStatement pstmtRole = conn.prepareStatement(sqlUserRole)) {
                 for (Role role : prmItem.getDirector().getRoles()) {
                     pstmtRole.setString(1, prmItem.getDirector().getEmail());
@@ -64,7 +59,6 @@ public class DirectorRepository implements IRepository<DirectorDTO> {
             }
 
             conn.commit();
-            System.out.println(">> Director agregado correctamente: " + prmItem.getDirector().getEmail());
 
         } catch (SQLException e) {
             System.out.println("Error al agregar director: " + e.getMessage());
@@ -98,7 +92,7 @@ public class DirectorRepository implements IRepository<DirectorDTO> {
                     dir.setLastNames(rs.getString("last_names"));
                     dir.setProgramId(rs.getInt("id_program"));
 
-                    dto = new DirectorDTO(dir, null); // ✅ ya no pasamos Account
+                    dto = new DirectorDTO(dir, null);
                     map.put(email, dto);
                 }
 
@@ -205,7 +199,6 @@ public class DirectorRepository implements IRepository<DirectorDTO> {
             }
 
             conn.commit();
-            System.out.println(">> Director eliminado correctamente: " + prmString);
 
         } catch (SQLException e) {
             System.out.println("Error al eliminar director: " + e.getMessage());
