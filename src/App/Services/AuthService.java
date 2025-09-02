@@ -1,5 +1,6 @@
 package App.Services;
 
+import App.Exceptions.LoginFailedException;
 import App.Interfaces.IAccountRepository;
 import App.Interfaces.IAuthService;
 import App.Interfaces.IEncrypt;
@@ -29,14 +30,14 @@ public class AuthService implements IAuthService {
     public Session isLoginValid(String prmEmail, String prmPassword) throws Exception {
         User user = _userRepository.toGetByString(prmEmail);
         if (user == null) {
-            throw new Exception("Email o contraseña incorrectos");
+            throw LoginFailedException.invalidCredentials();
         }
         Account resultAccount = _accountRepository.toGetById(user.getAccountId());
         if (resultAccount == null) {
-            throw new Exception("Email o contraseña incorrectos");
+            throw LoginFailedException.invalidCredentials();
         }
         if (!_encryptService.Check(prmPassword, resultAccount.getPassword())) {
-            throw new Exception("Email o contraseña incorrectos");
+            throw LoginFailedException.invalidCredentials();
         }
 
         List<Role> roles = _roleRepository.getByEmail(prmEmail);

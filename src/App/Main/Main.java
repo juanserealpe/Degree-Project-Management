@@ -6,6 +6,7 @@ import App.Interfaces.IAccountRepository;
 import App.Interfaces.IEncrypt;
 import App.Interfaces.IRepository;
 import App.Interfaces.IRoleRepository;
+import App.Interfaces.IValidatorRegisterServices;
 import App.Models.Account;
 import App.Models.Director;
 import App.Models.Role;
@@ -20,6 +21,7 @@ import App.Services.AuthService;
 import App.Services.DirectorServices;
 import App.Services.EncryptService;
 import App.Services.StudentServices;
+import App.Services.ValidatorRegisterServices;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,19 +37,21 @@ public class Main {
 
         IRepository<StudentDTO> _studentRepo = new StudentRepository();
         IEncrypt _encryptService2 = new EncryptService();
-        StudentServices studentService = new StudentServices(_studentRepo, _encryptService2);
+        IValidatorRegisterServices _validatorService1 = new ValidatorRegisterServices();
+        StudentServices studentService = new StudentServices(_studentRepo, _encryptService2, _validatorService1);
 
         IRepository<DirectorDTO> _directorRepo = new DirectorRepository();
         IEncrypt _encryptService3 = new EncryptService();
-        DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3);
-
+        IValidatorRegisterServices _validatorService2 = new ValidatorRegisterServices();
+        DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2);
         /*
         Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "juan", "varona", 0, 1);
-        Account newAccount = new Account("juanse");
+        Account newAccount = new Account("juanse1A?");
         StudentDTO studentD = new StudentDTO(newStudent, newAccount);
         studentService.registerStudent(studentD);
-         */
- /*
+        */
+        
+        /*
         System.out.println("\n>>> TEST: Agregar director <<<");
         Account acc = new Account();
         acc.setPassword("dir123");

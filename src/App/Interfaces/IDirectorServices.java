@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface IDirectorServices {
 
-    public void registerDirector(DirectorDTO prmStudent) throws Exception;
+    public void registerDirector(DirectorDTO prmDirector) throws Exception;
 
     public void deleteDirector(String prmEmail) throws Exception;
 

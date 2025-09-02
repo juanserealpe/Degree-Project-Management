@@ -16,7 +16,7 @@ public class DbConnection implements IDbConnection {
             conn = DriverManager.getConnection(URL);
         } catch (SQLException e) {
             System.out.println("❌ Error al conectar con SQLite: " + e.getMessage());
-            e.printStackTrace(); // para más detalles del error
+            e.printStackTrace();
         }
         return conn;
     }

@@ -4,23 +4,29 @@ import App.Dtos.DirectorDTO;
 import App.Interfaces.IDirectorServices;
 import App.Interfaces.IEncrypt;
 import App.Interfaces.IRepository;
+import App.Interfaces.IValidatorRegisterServices;
 import java.util.List;
 
 public class DirectorServices implements IDirectorServices {
 
     private final IRepository<DirectorDTO> _directorRepository;
     private final IEncrypt _encryptService;
+    private final IValidatorRegisterServices _validatorService;
 
-    public DirectorServices(IRepository<DirectorDTO> _directorRepository, IEncrypt _encryptService) {
+    public DirectorServices(IRepository<DirectorDTO> _directorRepository, IEncrypt _encryptService, IValidatorRegisterServices _validatorService) {
         this._directorRepository = _directorRepository;
         this._encryptService = _encryptService;
+        this._validatorService = _validatorService;
     }
 
     @Override
-    public void registerDirector(DirectorDTO prmStudent) throws Exception {
-        String encryptedPassword = _encryptService.Encrypt(prmStudent.getAccount().getPassword());
-        prmStudent.getAccount().setPassword(encryptedPassword);
-        _directorRepository.toAdd(prmStudent);
+    public void registerDirector(DirectorDTO prmDirector) throws Exception {
+        _validatorService.isValidEmail(prmDirector.getDirector().getEmail());
+        //validar celular falta, (agregar a bd y al modelo).
+        _validatorService.isValidPassword(prmDirector.getAccount().getPassword());
+        String encryptedPassword = _encryptService.Encrypt(prmDirector.getAccount().getPassword());
+        prmDirector.getAccount().setPassword(encryptedPassword);
+        _directorRepository.toAdd(prmDirector);
     }
 
     @Override
