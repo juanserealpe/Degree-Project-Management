@@ -24,4 +24,10 @@ public class StudentDTO {
     public Account getAccount() {
         return account;
     }
+
+    @Override
+    public String toString() {
+        return "StudentDTO{" + "student=" + student + ", account=" + account + '}';
+    }
+
 }

@@ -29,4 +29,9 @@ public class DirectorDTO {
         this.account = account;
     }
 
+    @Override
+    public String toString() {
+        return "DirectorDTO{" + "director=" + director + ", account=" + account + '}';
+    }
+
 }

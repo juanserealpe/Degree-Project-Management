@@ -4,6 +4,7 @@ import App.Dtos.StudentDTO;
 import App.Interfaces.IEncrypt;
 import App.Interfaces.IRepository;
 import App.Interfaces.IStudentServices;
+import java.util.List;
 
 public class StudentServices implements IStudentServices {
 
@@ -25,6 +26,16 @@ public class StudentServices implements IStudentServices {
     @Override
     public void deleteStudent(String prmEmail) throws Exception {
         _studentRepository.toDeleteByString(prmEmail);
+    }
+
+    @Override
+    public List<StudentDTO> getAllStudents() throws Exception {
+        return _studentRepository.toGetAll();
+    }
+
+    @Override
+    public StudentDTO getStudentByEmail(String prmEmail) throws Exception {
+        return _studentRepository.toGetByString(prmEmail);
     }
 
 }

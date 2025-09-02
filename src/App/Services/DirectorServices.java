@@ -4,6 +4,7 @@ import App.Dtos.DirectorDTO;
 import App.Interfaces.IDirectorServices;
 import App.Interfaces.IEncrypt;
 import App.Interfaces.IRepository;
+import java.util.List;
 
 public class DirectorServices implements IDirectorServices {
 
@@ -25,6 +26,16 @@ public class DirectorServices implements IDirectorServices {
     @Override
     public void deleteDirector(String prmEmail) throws Exception {
         _directorRepository.toDeleteByString(prmEmail);
+    }
+
+    @Override
+    public List<DirectorDTO> getAllDirectors() throws Exception {
+        return _directorRepository.toGetAll();
+    }
+
+    @Override
+    public DirectorDTO getDirectorByEmail(String prmEmail) throws Exception {
+        return _directorRepository.toGetByString(prmEmail);
     }
 
 }
