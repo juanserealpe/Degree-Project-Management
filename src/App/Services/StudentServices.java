@@ -22,7 +22,7 @@ public class StudentServices implements IStudentServices {
     @Override
     public void registerStudent(StudentDTO prmStudent) throws Exception {
         _validatorService.isValidEmail(prmStudent.getStudent().getEmail());
-        //validar celular falta, (agregar a bd y al modelo).
+        _validatorService.isValidTelephone(prmStudent.getStudent().getNumberPhone());
         _validatorService.isValidPassword(prmStudent.getAccount().getPassword());
         String encryptedPassword = _encryptService.Encrypt(prmStudent.getAccount().getPassword());
         prmStudent.getAccount().setPassword(encryptedPassword);

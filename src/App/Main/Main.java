@@ -45,11 +45,21 @@ public class Main {
         IValidatorRegisterServices _validatorService2 = new ValidatorRegisterServices();
         DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2);
         /*
-        Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "juan", "varona", 0, 1);
+        Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "juan", "varona", 0, 1, "3015056565");
         Account newAccount = new Account("juanse1A?");
         StudentDTO studentD = new StudentDTO(newStudent, newAccount);
         studentService.registerStudent(studentD);
+        
+        
+        StudentDTO resultStudent = studentService.getStudentByEmail("juanvaronaov1@unicauca.edu.co");
+        System.out.println(resultStudent.toString());
+        
+        List<StudentDTO> listStudents = studentService.getAllStudents();
+        System.out.println(listStudents.toString());
+        
+        studentService.deleteStudent("juanvaronaov1@unicauca.edu.co");
         */
+        
         
         /*
         System.out.println("\n>>> TEST: Agregar director <<<");
@@ -61,6 +71,7 @@ public class Main {
         dir.setNames("new");
         dir.setLastNames("new");
         dir.setProgramId(2);
+        dir.setNumberPhone("30150545445");
 
         List<Role> roles = new ArrayList<>();
         Role role = new Role();
@@ -75,8 +86,8 @@ public class Main {
 
         DirectorDTO dto = new DirectorDTO(dir, acc);
         directorService.registerDirector(dto);
-        
-        authService.isLoginValid("newDirector@university.edu", "dir123");
+
+        //authService.isLoginValid("newDirector@university.edu", "dir123");
          */
     }
 }

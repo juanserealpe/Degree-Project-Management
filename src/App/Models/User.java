@@ -11,14 +11,25 @@ public class User {
     private String lastNames;
     private int accountId;
     private int programId;
+    private String numberPhone;
 
-    public User(String email, String names, String lastNames, int accountId, int programId, List<Role> listRole) {
+    public User(String email, String names, String lastNames, int accountId, int programId, List<Role> listRole, String numberPhone) {
         this.email = email;
         this.names = names;
         this.lastNames = lastNames;
         this.accountId = accountId;
         this.programId = programId;
         this.roles = listRole;
+        this.numberPhone = numberPhone;
+    }
+
+    public User(String email, String names, String lastNames, int accountId, int programId, String numberPhone) {
+        this.email = email;
+        this.names = names;
+        this.lastNames = lastNames;
+        this.accountId = accountId;
+        this.programId = programId;
+        this.numberPhone = numberPhone;
     }
 
     public User(String email, String names, String lastNames, int accountId, int programId) {
@@ -80,9 +91,17 @@ public class User {
         this.programId = programId;
     }
 
+    public String getNumberPhone() {
+        return numberPhone;
+    }
+
+    public void setNumberPhone(String numberPhone) {
+        this.numberPhone = numberPhone;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "email=" + email + ", names=" + names + ", lastNames=" + lastNames + ", accountId=" + accountId + ", programId=" + programId + '}';
+        return "User{" + "roles=" + roles + ", email=" + email + ", names=" + names + ", lastNames=" + lastNames + ", accountId=" + accountId + ", programId=" + programId + ", numberPhone=" + numberPhone + '}';
     }
 
 }

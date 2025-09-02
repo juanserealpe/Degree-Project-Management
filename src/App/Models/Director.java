@@ -6,8 +6,8 @@ public class Director extends User {
 
     private List<FormatA> listFormat;
 
-    public Director(String email, String names, String lastNames, int accountId, int programId, List<Role> listRole) {
-        super(email, names, lastNames, accountId, programId, listRole);
+    public Director(String email, String names, String lastNames, int accountId, int programId, String numberPhone) {
+        super(email, names, lastNames, accountId, programId, numberPhone);
     }
 
     public Director() {

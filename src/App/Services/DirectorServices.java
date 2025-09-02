@@ -22,7 +22,7 @@ public class DirectorServices implements IDirectorServices {
     @Override
     public void registerDirector(DirectorDTO prmDirector) throws Exception {
         _validatorService.isValidEmail(prmDirector.getDirector().getEmail());
-        //validar celular falta, (agregar a bd y al modelo).
+        _validatorService.isValidTelephone(prmDirector.getDirector().getNumberPhone());
         _validatorService.isValidPassword(prmDirector.getAccount().getPassword());
         String encryptedPassword = _encryptService.Encrypt(prmDirector.getAccount().getPassword());
         prmDirector.getAccount().setPassword(encryptedPassword);

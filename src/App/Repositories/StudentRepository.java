@@ -19,7 +19,7 @@ public class StudentRepository implements IRepository<StudentDTO> {
     @Override
     public void toAdd(StudentDTO prmStudentDTO) {
         String sqlAccount = "INSERT INTO Account (password) VALUES (?)";
-        String sqlUser = "INSERT INTO User (email, names, last_names, id_account, id_program) VALUES (?, ?, ?, ?, ?)";
+        String sqlUser = "INSERT INTO User (email, names, last_names, id_account, id_program, number_phone) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlUserRole = "INSERT INTO User_Role (email, id_role) VALUES (?, 1)";
 
         try (Connection conn = dbConnection.toConnect()) {
@@ -47,6 +47,7 @@ public class StudentRepository implements IRepository<StudentDTO> {
                 pstmtUser.setString(3, prmStudentDTO.getStudent().getLastNames());
                 pstmtUser.setInt(4, generatedAccountId);
                 pstmtUser.setInt(5, prmStudentDTO.getStudent().getProgramId());
+                pstmtUser.setString(6, prmStudentDTO.getStudent().getNumberPhone());
                 pstmtUser.executeUpdate();
             }
 
@@ -71,7 +72,7 @@ public class StudentRepository implements IRepository<StudentDTO> {
     @Override
     public List<StudentDTO> toGetAll() {
         String sql = """
-        SELECT u.email, u.names, u.last_names, u.id_account, u.id_program, a.password
+        SELECT u.email, u.names, u.last_names, u.id_account, u.id_program, u.number_phone, a.password
         FROM User u
         JOIN User_Role ur ON u.email = ur.email
         JOIN Account a ON u.id_account = a.id_account
@@ -88,7 +89,8 @@ public class StudentRepository implements IRepository<StudentDTO> {
                         rs.getString("names"),
                         rs.getString("last_names"),
                         rs.getInt("id_account"),
-                        rs.getInt("id_program")
+                        rs.getInt("id_program"),
+                        rs.getString("number_phone") // 
                 );
 
                 Account acc = new Account(
@@ -169,7 +171,7 @@ public class StudentRepository implements IRepository<StudentDTO> {
     @Override
     public StudentDTO toGetByString(String prmString) {
         String sql = """
-        SELECT u.email, u.names, u.last_names, u.id_account, u.id_program, a.password
+        SELECT u.email, u.names, u.last_names, u.id_account, u.id_program, u.number_phone, a.password
         FROM User u
         JOIN User_Role ur ON u.email = ur.email
         JOIN Role r ON ur.id_role = r.id_role
@@ -191,7 +193,8 @@ public class StudentRepository implements IRepository<StudentDTO> {
                         rs.getString("names"),
                         rs.getString("last_names"),
                         rs.getInt("id_account"),
-                        rs.getInt("id_program")
+                        rs.getInt("id_program"),
+                        rs.getString("number_phone") // 
                 );
 
                 // 2. Account
