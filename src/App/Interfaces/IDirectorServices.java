@@ -12,4 +12,6 @@ public interface IDirectorServices {
     public List<DirectorDTO> getAllDirectors() throws Exception;
 
     public DirectorDTO getDirectorByEmail(String prmEmail) throws Exception;
+
+    public DirectorDTO validateDirector(DirectorDTO prmDirector) throws Exception;
 }

@@ -101,9 +101,6 @@ public class StudentRepository implements IRepository<StudentDTO> {
                 StudentDTO dto = new StudentDTO(s, acc);
                 students.add(dto);
             }
-
-            System.out.println(">> Total estudiantes encontrados: " + students.size());
-
         } catch (SQLException e) {
             System.out.println("Error fetching students: " + e.getMessage());
         }

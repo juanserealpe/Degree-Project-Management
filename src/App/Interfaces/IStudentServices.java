@@ -12,4 +12,6 @@ public interface IStudentServices {
     public List<StudentDTO> getAllStudents() throws Exception;
 
     public StudentDTO getStudentByEmail(String prmEmail) throws Exception;
+
+    public StudentDTO validateStudent(StudentDTO prmStudent) throws Exception;
 }

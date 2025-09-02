@@ -23,4 +23,16 @@ public class RegisterUserFailerException extends AppException {
                 "El número de teléfono debe contener exactamente 10 dígitos numéricos."
         );
     }
+
+    public static RegisterUserFailerException exceedsCharactersNames() {
+        return new RegisterUserFailerException(
+                "El nombre no puede exceder más de 50 caracteres."
+        );
+    }
+
+    public static RegisterUserFailerException exceedsCharactersLastNames() {
+        return new RegisterUserFailerException(
+                "los apellidos no pueden exceder más de 30 caracteres."
+        );
+    }
 }

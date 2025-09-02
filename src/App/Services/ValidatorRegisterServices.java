@@ -44,4 +44,18 @@ public class ValidatorRegisterServices implements IValidatorRegisterServices {
         }
     }
 
+    @Override
+    public void isValidNames(String prmNames) throws RegisterUserFailerException {
+        if (prmNames.length() > 50) {
+            throw RegisterUserFailerException.exceedsCharactersNames();
+        }
+    }
+
+    @Override
+    public void isValidLastNames(String prmLastNames) throws RegisterUserFailerException {
+        if (prmLastNames.length() > 30) {
+            throw RegisterUserFailerException.exceedsCharactersLastNames();
+        }
+    }
+
 }

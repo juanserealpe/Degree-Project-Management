@@ -3,6 +3,7 @@ package App.Main;
 import App.Dtos.DirectorDTO;
 import App.Dtos.StudentDTO;
 import App.Interfaces.IAccountRepository;
+import App.Interfaces.IDataNormalizerServices;
 import App.Interfaces.IEncrypt;
 import App.Interfaces.IRepository;
 import App.Interfaces.IRoleRepository;
@@ -18,6 +19,7 @@ import App.Repositories.RoleRepository;
 import App.Repositories.StudentRepository;
 import App.Repositories.UserRepository;
 import App.Services.AuthService;
+import App.Services.DataNormalizerServices;
 import App.Services.DirectorServices;
 import App.Services.EncryptService;
 import App.Services.StudentServices;
@@ -38,18 +40,19 @@ public class Main {
         IRepository<StudentDTO> _studentRepo = new StudentRepository();
         IEncrypt _encryptService2 = new EncryptService();
         IValidatorRegisterServices _validatorService1 = new ValidatorRegisterServices();
-        StudentServices studentService = new StudentServices(_studentRepo, _encryptService2, _validatorService1);
+        IDataNormalizerServices dataService1 = new DataNormalizerServices();
+        StudentServices studentService = new StudentServices(_studentRepo, _encryptService2, _validatorService1, dataService1);
 
         IRepository<DirectorDTO> _directorRepo = new DirectorRepository();
         IEncrypt _encryptService3 = new EncryptService();
         IValidatorRegisterServices _validatorService2 = new ValidatorRegisterServices();
         DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2);
         /*
-        Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "juan", "varona", 0, 1, "3015056565");
+        Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "JuAn", "VaROnA", 0, 1, "3015056565");
         Account newAccount = new Account("juanse1A?");
         StudentDTO studentD = new StudentDTO(newStudent, newAccount);
         studentService.registerStudent(studentD);
-        
+
         
         StudentDTO resultStudent = studentService.getStudentByEmail("juanvaronaov1@unicauca.edu.co");
         System.out.println(resultStudent.toString());
@@ -58,10 +61,9 @@ public class Main {
         System.out.println(listStudents.toString());
         
         studentService.deleteStudent("juanvaronaov1@unicauca.edu.co");
-        */
-        
-        
-        /*
+         */
+
+ /*
         System.out.println("\n>>> TEST: Agregar director <<<");
         Account acc = new Account();
         acc.setPassword("dir123");
