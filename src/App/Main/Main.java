@@ -24,13 +24,25 @@ import App.Services.DirectorServices;
 import App.Services.EncryptService;
 import App.Services.StudentServices;
 import App.Services.ValidatorRegisterServices;
+import App.Views.MainView;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.SwingUtilities;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
+        
+        
+        SwingUtilities.invokeLater(() -> {
+            MainView ventana = new MainView();
+            ventana.setVisible(true);
+        });        
+        
+        
+        
+        
+/*
         IAccountRepository _authRepo = new AccountRepository();
         IRoleRepository _roleRepo = new RoleRepository();
         IEncrypt _encryptService1 = new EncryptService();
@@ -47,6 +59,11 @@ public class Main {
         IEncrypt _encryptService3 = new EncryptService();
         IValidatorRegisterServices _validatorService2 = new ValidatorRegisterServices();
         DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2, dataService1);
+        
+        */
+        
+        
+        
         /*
         Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "JuAn", "VaROnA", 0, 1, "3015056565");
         Account newAccount = new Account("juanse1A?");

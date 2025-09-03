@@ -13,6 +13,9 @@ import net.miginfocom.swing.MigLayout;
 
 public class Menu extends JComponent {
 
+    private MenuEvent event;
+    private MigLayout layout;
+    
     public MenuEvent getEvent() {
         return event;
     }
@@ -20,13 +23,11 @@ public class Menu extends JComponent {
     public void setEvent(MenuEvent event) {
         this.event = event;
     }
-
-    private MenuEvent event;
-    private MigLayout layout;
+    
     private final String[][] menuItems = new String[][]{
         {"Estudiante"},
         {"Director","opcion1","opcion2"},
-        {"Coordinador","opcion1"}
+        {"Coordinador","formatos A pendientes"}
     };
 
     public Menu() {

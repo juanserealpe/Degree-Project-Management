@@ -4,6 +4,7 @@
  */
 package App.Views;
 
+import App.Views.CordinatorView.CordinatorForm;
 import App.Views.menu.MenuEvent;
 import java.awt.Color;
 import java.awt.Component;
@@ -31,6 +32,8 @@ public class MainView extends javax.swing.JFrame {
                     showForm(new studentForm());
                 if(index==1)
                     showForm(new DirectorForm());
+                if(index==2)
+                    showForm(new CordinatorForm());
             }
         });
         
