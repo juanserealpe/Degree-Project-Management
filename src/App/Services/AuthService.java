@@ -1,6 +1,7 @@
 package App.Services;
 
 import App.Exceptions.LoginFailedException;
+import App.Exceptions.RegisterUserFailerException;
 import App.Interfaces.IAccountRepository;
 import App.Interfaces.IAuthService;
 import App.Interfaces.IEncrypt;
@@ -27,7 +28,10 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public Session isLoginValid(String prmEmail, String prmPassword) throws Exception {
+    public void isLoginValid(String prmEmail, String prmPassword) throws Exception {
+        if (!prmEmail.endsWith("@unicauca.edu.co")) {
+            throw RegisterUserFailerException.invalidEmailDomain();
+        }
         User user = _userRepository.toGetByString(prmEmail);
         if (user == null) {
             throw LoginFailedException.invalidCredentials();
@@ -41,13 +45,9 @@ public class AuthService implements IAuthService {
         }
 
         List<Role> roles = _roleRepository.getByEmail(prmEmail);
-        Session session = new Session();
-        session.setEmail(prmEmail);
-        session.setRoles(roles);
 
+        Session.init(prmEmail, roles);
         System.out.println(">> Sesión iniciada para: " + prmEmail);
         System.out.println(">> Roles: " + roles.toString());
-        return session;
     }
-
 }

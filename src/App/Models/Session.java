@@ -4,35 +4,36 @@ import java.util.List;
 
 public class Session {
 
-    private String email;
-    private List<Role> roles;
+    private static String email;
+    private static List<Role> roles;
 
-    public Session(String email, List<Role> roles) {
-        this.email = email;
-        this.roles = roles;
+    private Session() {
+
     }
 
-    public Session() {
+    public static void init(String email, List<Role> roles) {
+        Session.email = email;
+        Session.roles = roles;
     }
 
-    public String getEmail() {
+    public static String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public static void setEmail(String email) {
+        Session.email = email;
     }
 
-    public List<Role> getRoles() {
+    public static List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public static void setRoles(List<Role> roles) {
+        Session.roles = roles;
     }
 
     // Método útil: validar si la sesión tiene un rol en específico
-    public boolean hasRole(int roleId) {
+    public static boolean hasRole(int roleId) {
         if (roles == null) {
             return false;
         }

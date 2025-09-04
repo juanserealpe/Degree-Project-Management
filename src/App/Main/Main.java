@@ -1,5 +1,6 @@
 package App.Main;
 
+import App.Controllers.AuthController;
 import App.Dtos.DirectorDTO;
 import App.Dtos.StudentDTO;
 import App.Interfaces.IAccountRepository;
@@ -24,8 +25,10 @@ import App.Services.DirectorServices;
 import App.Services.EncryptService;
 import App.Services.StudentServices;
 import App.Services.ValidatorRegisterServices;
+import App.Views.AuthViews.LoginView;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.SwingUtilities;
 
 public class Main {
 
@@ -47,13 +50,20 @@ public class Main {
         IEncrypt _encryptService3 = new EncryptService();
         IValidatorRegisterServices _validatorService2 = new ValidatorRegisterServices();
         DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2, dataService1);
-        /*
-        Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "JuAn", "VaROnA", 0, 1, "3015056565");
-        Account newAccount = new Account("juanse1A?");
+
+        SwingUtilities.invokeLater(() -> {
+            LoginView loginView = new LoginView();
+            AuthController controller = new AuthController(authService, loginView);
+            controller.show();
+        });
+    }
+    /*
+        Student newStudent = new Student("juanvaronaov@unicauca.edu.co", "JuAn", "VaROnA", 0, 1, "3015056536");
+    Account newAccount = new Account("juanse1A?");
         StudentDTO studentD = new StudentDTO(newStudent, newAccount);
         studentService.registerStudent(studentD);
-
-        
+     */
+ /*
         StudentDTO resultStudent = studentService.getStudentByEmail("juanvaronaov1@unicauca.edu.co");
         System.out.println(resultStudent.toString());
         
@@ -61,7 +71,7 @@ public class Main {
         System.out.println(listStudents.toString());
         
         studentService.deleteStudent("juanvaronaov1@unicauca.edu.co");
-         */
+     */
 
  /*
         System.out.println("\n>>> TEST: Agregar director <<<");
@@ -88,8 +98,7 @@ public class Main {
 
         DirectorDTO dto = new DirectorDTO(dir, acc);
         directorService.registerDirector(dto);
-
-        //authService.isLoginValid("newDirector@university.edu", "dir123");
-         */
-    }
+         
+        authService.isLoginValid("juanvaronaov@unicauca.edu.co", "juanse1A?");
+     */
 }
