@@ -4,17 +4,17 @@ public class FormatA {
 
     private int idFormato;
     private Student student;
-    private Director director_n1;
-    private Director director_n2;
+    private Director director;
+    private Director coDirector;
     private String title;
     private String currentStatus;
     private int attempts;
 
-    public FormatA(int idFormato, Student student, Director director_n1, Director director_n2, String title, String currentStatus, int attempts) {
+    public FormatA(int idFormato, Student student, Director director, Director coDirector, String title, String currentStatus, int attempts) {
         this.idFormato = idFormato;
         this.student = student;
-        this.director_n1 = director_n1;
-        this.director_n2 = director_n2;
+        this.director = director;
+        this.coDirector = coDirector;
         this.title = title;
         this.currentStatus = currentStatus;
         this.attempts = attempts;
@@ -36,20 +36,20 @@ public class FormatA {
         this.student = student;
     }
 
-    public Director getDirector_n1() {
-        return director_n1;
+    public Director getDirector() {
+        return director;
     }
 
-    public void setDirector_n1(Director director_n1) {
-        this.director_n1 = director_n1;
+    public void setDirector(Director director_n1) {
+        this.director = director_n1;
     }
 
-    public Director getDirector_n2() {
-        return director_n2;
+    public Director getCoDirector() {
+        return coDirector;
     }
 
-    public void setDirector_n2(Director director_n2) {
-        this.director_n2 = director_n2;
+    public void setCoDirector(Director director_n2) {
+        this.coDirector = director_n2;
     }
 
     public String getTitle() {

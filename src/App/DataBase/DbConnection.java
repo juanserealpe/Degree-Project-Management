@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class DbConnection implements IDbConnection {
 
-    private final String URL = "jdbc:sqlite:C:\\Users\\juans\\Desktop\\Sw2\\Degree-Project-Management\\database2.db";
+    private final String URL = "jdbc:sqlite:C:\\Users\\Alexp\\OneDrive\\Documentos\\GitHub\\Degree-Project-Management\\database2.db";
 
     @Override
     public Connection toConnect() {

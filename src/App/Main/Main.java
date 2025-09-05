@@ -8,12 +8,9 @@ import App.Interfaces.IEncrypt;
 import App.Interfaces.IRepository;
 import App.Interfaces.IRoleRepository;
 import App.Interfaces.IValidatorRegisterServices;
-import App.Models.Account;
-import App.Models.Director;
-import App.Models.Role;
-import App.Models.Student;
 import App.Models.User;
 import App.Repositories.AccountRepository;
+import App.Repositories.CoordinatorRepository;
 import App.Repositories.DirectorRepository;
 import App.Repositories.RoleRepository;
 import App.Repositories.StudentRepository;
@@ -24,13 +21,13 @@ import App.Services.DirectorServices;
 import App.Services.EncryptService;
 import App.Services.StudentServices;
 import App.Services.ValidatorRegisterServices;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        CoordinatorRepository c1 = new CoordinatorRepository();
+        c1.GetFormatA();
         IAccountRepository _authRepo = new AccountRepository();
         IRoleRepository _roleRepo = new RoleRepository();
         IEncrypt _encryptService1 = new EncryptService();
