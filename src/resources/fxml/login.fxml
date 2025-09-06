@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <StackPane xmlns="http://javafx.com/javafx/11.0.1"
@@ -12,20 +14,37 @@
 
     <children>
         <VBox alignment="CENTER"
-              maxHeight="500.0" maxWidth="400.0"
-              minHeight="450.0" minWidth="350.0"
-              prefHeight="480.0" prefWidth="380.0"
+              maxHeight="650.0" maxWidth="500.0"
+              minHeight="550.0" minWidth="400.0"
+              prefHeight="600.0" prefWidth="450.0"
+              spacing="20"
               styleClass="login-container">
 
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+
             <children>
-                <!-- Header Section -->
+                <!-- Icono dentro del contenedor -->
+                <ImageView fx:id="iconoLogin"
+                           fitWidth="90"
+                           fitHeight="90"
+                           preserveRatio="true"
+                           pickOnBounds="true"
+                           styleClass="app-icon1">
+                    <image>
+                        <Image url="@/img/icon1.png"/>
+                    </image>
+                </ImageView>
+
+
+                <!-- Header -->
                 <VBox alignment="CENTER" spacing="10.0" styleClass="header-section">
                     <children>
-                        <Label styleClass="app-title" text="Bienvenido" />
-                        <Label styleClass="app-subtitle" text="Inicia sesión en tu cuenta" />
+                        <Label styleClass="app-title" text="Bienvenido"/>
                     </children>
                     <VBox.margin>
-                        <Insets bottom="30.0" />
+                        <Insets bottom="20.0"/>
                     </VBox.margin>
                 </VBox>
 
@@ -35,16 +54,20 @@
                         <!-- Username Field -->
                         <VBox spacing="8.0">
                             <children>
-                                <Label styleClass="field-label" text="Usuario" />
-                                <TextField fx:id="txtUser" promptText="Ingrese su usuario" styleClass="text-field" />
+                                <Label styleClass="field-label" text="Usuario"/>
+                                <TextField fx:id="txtUser"
+                                           promptText="Ingrese su usuario"
+                                           styleClass="text-field"/>
                             </children>
                         </VBox>
 
                         <!-- Password Field -->
                         <VBox spacing="8.0">
                             <children>
-                                <Label styleClass="field-label" text="Contraseña" />
-                                <PasswordField fx:id="txtPass" promptText="Ingrese su contraseña" styleClass="text-field" />
+                                <Label styleClass="field-label" text="Contraseña"/>
+                                <PasswordField fx:id="txtPass"
+                                               promptText="Ingrese su contraseña"
+                                               styleClass="text-field"/>
                             </children>
                         </VBox>
 
@@ -54,8 +77,8 @@
                                textAlignment="CENTER"
                                wrapText="true"
                                maxWidth="Infinity"
-                               prefWidth="320"
-                               alignment="CENTER" />
+                               prefWidth="340"
+                               alignment="CENTER"/>
 
                         <!-- Login Button -->
                         <Button maxWidth="1.7976931348623157E308"
@@ -64,30 +87,27 @@
                                 styleClass="login-button"
                                 text="Iniciar Sesión">
                             <VBox.margin>
-                                <Insets top="10.0" />
+                                <Insets top="10.0"/>
                             </VBox.margin>
                         </Button>
                     </children>
                     <VBox.margin>
-                        <Insets bottom="20.0" left="40.0" right="40.0" />
+                        <Insets bottom="20.0" left="40.0" right="40.0"/>
                     </VBox.margin>
                 </VBox>
 
                 <!-- Footer Section -->
                 <VBox alignment="CENTER" spacing="15.0" styleClass="footer-section">
                     <children>
-                        <Separator styleClass="separator" />
-                        <Label styleClass="register-text" text="¿No tienes cuenta?" />
+                        <Separator styleClass="separator"/>
+                        <Label styleClass="register-text" text="¿No tienes cuenta?"/>
                         <Button mnemonicParsing="false"
                                 onAction="#handleRegister"
                                 styleClass="register-button"
-                                text="Crear cuenta" />
+                                text="Crear cuenta"/>
                     </children>
                 </VBox>
             </children>
-            <padding>
-                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-            </padding>
         </VBox>
     </children>
 </StackPane>

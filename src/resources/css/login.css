@@ -94,3 +94,10 @@
 .separator {
     -fx-background-color: #ddd;
 }
+
+.app-icon1 {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 12, 0.4, 0, 3);
+    -fx-translate-y: -10; /* lo empuja un poco hacia arriba */
+}
+
+

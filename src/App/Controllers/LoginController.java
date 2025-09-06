@@ -1,6 +1,7 @@
 package Controllers;
 
 import Interfaces.IAuthService;
+import Models.Session;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
 import javafx.fxml.FXML;
@@ -41,7 +42,9 @@ public class LoginController {
         try {
             authService.isLoginValid(email, password);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            WindowManager.changeScene(stage, "/fxml/dashboard.fxml", "Dashboard");
+
+            WindowManager.changeScene(stage, "/fxml/dashboard.fxml", "");
+
 
         } catch (Exception ex) {
             showErrorMessage(ex.getMessage());
