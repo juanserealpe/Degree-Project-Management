@@ -1,6 +1,6 @@
-package App.Interfaces;
+package Interfaces;
 
-import App.Dtos.DirectorDTO;
+import Dtos.DirectorDTO;
 import java.util.List;
 
 public interface IDirectorServices {

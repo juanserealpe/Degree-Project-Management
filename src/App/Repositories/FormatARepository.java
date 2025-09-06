@@ -1,8 +1,8 @@
-package App.Repositories;
+package Repositories;
 
-import App.DataBase.DbConnection;
-import App.Interfaces.IRepository;
-import App.Models.FormatA;
+import DataBase.DbConnection;
+import Interfaces.IRepository;
+import Models.FormatA;
 import java.util.List;
 
 public class FormatARepository implements IRepository<FormatA> {

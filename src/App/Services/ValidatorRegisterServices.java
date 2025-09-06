@@ -1,9 +1,9 @@
-package App.Services;
+package Services;
 
-import App.Exceptions.RegisterUserFailerException;
+import Exceptions.RegisterUserFailerException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import App.Interfaces.IValidatorRegisterServices;
+import Interfaces.IValidatorRegisterServices;
 
 public class ValidatorRegisterServices implements IValidatorRegisterServices {
 

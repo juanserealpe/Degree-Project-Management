@@ -1,6 +1,5 @@
-package App.Interfaces;
+package Interfaces;
 
-import App.Models.Session;
 
 public interface IAuthService {
 

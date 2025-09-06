@@ -1,10 +1,10 @@
-package App.Repositories;
+package Repositories;
 
-import App.DataBase.DbConnection;
-import App.Dtos.StudentDTO;
-import App.Interfaces.IRepository;
-import App.Models.Account;
-import App.Models.Student;
+import DataBase.DbConnection;
+import Dtos.StudentDTO;
+import Interfaces.IRepository;
+import Models.Account;
+import Models.Student;
 import java.sql.*;
 import java.util.List;
 

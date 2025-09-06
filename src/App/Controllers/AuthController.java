@@ -1,6 +1,6 @@
-package App.Controllers;
+package Controllers;
 
-import App.Services.AuthService;
+import Services.AuthService;
 
 public class AuthController {
 

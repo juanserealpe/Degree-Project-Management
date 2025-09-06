@@ -1,0 +1,96 @@
+/* Contenedor raíz */
+.root-container {
+    -fx-background-color: radial-gradient(center 50% 50%, radius 80%, #172d95, #1a237e);
+    -fx-alignment: center;
+}
+
+
+/* Tarjeta de login */
+.login-container {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0.2, 0, 4);
+}
+
+/* Header */
+.app-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a237e;
+}
+
+.app-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #555;
+}
+
+/* Labels */
+.field-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #444;
+}
+
+/* Inputs */
+.text-field {
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1;
+    -fx-padding: 6px;
+}
+
+.text-field:focused {
+    -fx-border-color: #1a237e;
+    -fx-effect: dropshadow(gaussian, rgba(26,35,126,0.2), 8, 0.3, 0, 2);
+}
+
+/* Efectos para error */
+.text-field.error {
+    -fx-border-color: #dc3545;
+    -fx-border-width: 2;
+    -fx-background-color: rgba(220, 53, 69, 0.05);
+}
+
+.text-field.error:focused {
+    -fx-border-color: #dc3545;
+    -fx-effect: dropshadow(gaussian, rgba(220, 53, 69, 0.2), 8, 0.3, 0, 2);
+}
+
+/* Mensaje de error */
+.message-label {
+    -fx-text-fill: #dc3545;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+/* Botones */
+.login-button {
+    -fx-background-color: #1a237e;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px;
+}
+
+.login-button:hover {
+    -fx-background-color: #283593;
+}
+
+.register-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1a237e;
+    -fx-border-color: #1a237e;
+    -fx-border-radius: 6px;
+    -fx-padding: 6px 12px;
+}
+
+.register-button:hover {
+    -fx-background-color: rgba(26,35,126,0.05);
+}
+
+/* Separador */
+.separator {
+    -fx-background-color: #ddd;
+}

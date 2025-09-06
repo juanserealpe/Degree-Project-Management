@@ -1,10 +1,10 @@
-package App.Repositories;
+package Repositories;
 
-import App.DataBase.DbConnection;
-import App.Dtos.DirectorDTO;
-import App.Interfaces.IRepository;
-import App.Models.Director;
-import App.Models.Role;
+import DataBase.DbConnection;
+import Dtos.DirectorDTO;
+import Interfaces.IRepository;
+import Models.Director;
+import Models.Role;
 
 import java.sql.*;
 import java.util.*;

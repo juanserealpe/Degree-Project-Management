@@ -1,6 +1,6 @@
-package App.DataBase;
+package DataBase;
 
-import App.Interfaces.IDbConnection;
+import Interfaces.IDbConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

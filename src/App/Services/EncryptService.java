@@ -1,6 +1,6 @@
-package App.Services;
+package Services;
 
-import App.Interfaces.IEncrypt;
+import Interfaces.IEncrypt;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class EncryptService implements IEncrypt {

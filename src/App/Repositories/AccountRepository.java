@@ -1,9 +1,9 @@
-package App.Repositories;
+package Repositories;
 
-import App.DataBase.DbConnection;
-import App.Interfaces.IAccountRepository;
-import App.Interfaces.IRepository;
-import App.Models.Account;
+import DataBase.DbConnection;
+import Interfaces.IAccountRepository;
+import Interfaces.IRepository;
+import Models.Account;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

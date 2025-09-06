@@ -1,7 +1,8 @@
-package App.Dtos;
+package Dtos;
 
-import App.Models.Account;
-import App.Models.Director;
+
+import Models.Account;
+import Models.Director;
 
 public class DirectorDTO {
 

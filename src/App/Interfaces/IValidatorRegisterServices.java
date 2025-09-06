@@ -1,6 +1,6 @@
-package App.Interfaces;
+package Interfaces;
 
-import App.Exceptions.RegisterUserFailerException;
+import Exceptions.RegisterUserFailerException;
 
 public interface IValidatorRegisterServices {
 

@@ -1,7 +1,7 @@
-package App.Dtos;
+package Dtos;
 
-import App.Models.Account;
-import App.Models.Student;
+import Models.Account;
+import Models.Student;
 
 public class StudentDTO {
 

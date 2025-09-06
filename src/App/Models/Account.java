@@ -1,4 +1,4 @@
-package App.Models;
+package Models;
 
 public class Account {
 

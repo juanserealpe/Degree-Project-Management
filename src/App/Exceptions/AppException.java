@@ -1,4 +1,4 @@
-package App.Exceptions;
+package Exceptions;
 
 public class AppException extends Exception {
 

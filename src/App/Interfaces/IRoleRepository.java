@@ -1,6 +1,6 @@
-package App.Interfaces;
+package Interfaces;
 
-import App.Models.Role;
+import Models.Role;
 import java.util.List;
 
 public interface IRoleRepository {

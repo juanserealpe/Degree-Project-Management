@@ -1,8 +1,8 @@
-package App.Repositories;
+package Repositories;
 
-import App.DataBase.DbConnection;
-import App.Interfaces.IRoleRepository;
-import App.Models.Role;
+import DataBase.DbConnection;
+import Interfaces.IRoleRepository;
+import Models.Role;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

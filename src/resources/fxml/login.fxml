@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/11.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.LoginController"
+           stylesheets="@/css/login.css"
+           styleClass="root-container">
+
+    <children>
+        <VBox alignment="CENTER"
+              maxHeight="500.0" maxWidth="400.0"
+              minHeight="450.0" minWidth="350.0"
+              prefHeight="480.0" prefWidth="380.0"
+              styleClass="login-container">
+
+            <children>
+                <!-- Header Section -->
+                <VBox alignment="CENTER" spacing="10.0" styleClass="header-section">
+                    <children>
+                        <Label styleClass="app-title" text="Bienvenido" />
+                        <Label styleClass="app-subtitle" text="Inicia sesión en tu cuenta" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="30.0" />
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Form Section -->
+                <VBox spacing="20.0" styleClass="form-section">
+                    <children>
+                        <!-- Username Field -->
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label styleClass="field-label" text="Usuario" />
+                                <TextField fx:id="txtUser" promptText="Ingrese su usuario" styleClass="text-field" />
+                            </children>
+                        </VBox>
+
+                        <!-- Password Field -->
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label styleClass="field-label" text="Contraseña" />
+                                <PasswordField fx:id="txtPass" promptText="Ingrese su contraseña" styleClass="text-field" />
+                            </children>
+                        </VBox>
+
+                        <!-- Message Label -->
+                        <Label fx:id="lblMessage"
+                               styleClass="message-label"
+                               textAlignment="CENTER"
+                               wrapText="true"
+                               maxWidth="Infinity"
+                               prefWidth="320"
+                               alignment="CENTER" />
+
+                        <!-- Login Button -->
+                        <Button maxWidth="1.7976931348623157E308"
+                                mnemonicParsing="false"
+                                onAction="#handleLogin"
+                                styleClass="login-button"
+                                text="Iniciar Sesión">
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="40.0" right="40.0" />
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Footer Section -->
+                <VBox alignment="CENTER" spacing="15.0" styleClass="footer-section">
+                    <children>
+                        <Separator styleClass="separator" />
+                        <Label styleClass="register-text" text="¿No tienes cuenta?" />
+                        <Button mnemonicParsing="false"
+                                onAction="#handleRegister"
+                                styleClass="register-button"
+                                text="Crear cuenta" />
+                    </children>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+        </VBox>
+    </children>
+</StackPane>

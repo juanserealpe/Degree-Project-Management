@@ -1,11 +1,11 @@
-package App.Services;
+package Services;
 
-import App.Dtos.DirectorDTO;
-import App.Interfaces.IDataNormalizerServices;
-import App.Interfaces.IDirectorServices;
-import App.Interfaces.IEncrypt;
-import App.Interfaces.IRepository;
-import App.Interfaces.IValidatorRegisterServices;
+import Dtos.DirectorDTO;
+import Interfaces.IDataNormalizerServices;
+import Interfaces.IDirectorServices;
+import Interfaces.IEncrypt;
+import Interfaces.IRepository;
+import Interfaces.IValidatorRegisterServices;
 import java.util.List;
 
 public class DirectorServices implements IDirectorServices {

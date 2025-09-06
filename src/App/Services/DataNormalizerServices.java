@@ -1,6 +1,6 @@
-package App.Services;
+package Services;
 
-import App.Interfaces.IDataNormalizerServices;
+import Interfaces.IDataNormalizerServices;
 
 public class DataNormalizerServices implements IDataNormalizerServices {
 

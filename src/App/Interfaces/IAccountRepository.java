@@ -1,6 +1,6 @@
-package App.Interfaces;
+package Interfaces;
 
-import App.Models.Account;
+import Models.Account;
 
 public interface IAccountRepository {
 

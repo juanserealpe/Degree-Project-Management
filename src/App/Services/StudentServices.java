@@ -1,12 +1,12 @@
-package App.Services;
+package Services;
 
-import App.Dtos.StudentDTO;
-import App.Exceptions.StudentServiceException;
-import App.Interfaces.IDataNormalizerServices;
-import App.Interfaces.IEncrypt;
-import App.Interfaces.IRepository;
-import App.Interfaces.IStudentServices;
-import App.Interfaces.IValidatorRegisterServices;
+import Dtos.StudentDTO;
+import Exceptions.StudentServiceException;
+import Interfaces.IDataNormalizerServices;
+import Interfaces.IEncrypt;
+import Interfaces.IRepository;
+import Interfaces.IStudentServices;
+import Interfaces.IValidatorRegisterServices;
 import java.util.List;
 
 public class StudentServices implements IStudentServices {

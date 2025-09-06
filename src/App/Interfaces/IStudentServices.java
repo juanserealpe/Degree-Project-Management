@@ -1,6 +1,6 @@
-package App.Interfaces;
+package Interfaces;
 
-import App.Dtos.StudentDTO;
+import Dtos.StudentDTO;
 import java.util.List;
 
 public interface IStudentServices {
