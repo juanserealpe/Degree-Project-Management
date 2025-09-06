@@ -25,7 +25,6 @@ import App.Services.DirectorServices;
 import App.Services.EncryptService;
 import App.Services.StudentServices;
 import App.Services.ValidatorRegisterServices;
-import App.Views.AuthViews.LoginView;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.SwingUtilities;
@@ -51,27 +50,21 @@ public class Main {
         IValidatorRegisterServices _validatorService2 = new ValidatorRegisterServices();
         DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2, dataService1);
 
-        SwingUtilities.invokeLater(() -> {
-            LoginView loginView = new LoginView();
-            AuthController controller = new AuthController(authService, loginView);
-            controller.show();
-        });
-    }
     /*
-        Student newStudent = new Student("juanvaronaov@unicauca.edu.co", "JuAn", "VaROnA", 0, 1, "3015056536");
-    Account newAccount = new Account("juanse1A?");
+        Student newStudent = new Student("juanvaronaovs@unicauca.edu.co", "JuAn", "VaROnA", 0, 1, "3015056536");
+        Account newAccount = new Account("juanse1A?");
         StudentDTO studentD = new StudentDTO(newStudent, newAccount);
         studentService.registerStudent(studentD);
-     */
- /*
-        StudentDTO resultStudent = studentService.getStudentByEmail("juanvaronaov1@unicauca.edu.co");
+    */
+
+        StudentDTO resultStudent = studentService.getStudentByEmail("juanvaronaov@unicauca.edu.co");
         System.out.println(resultStudent.toString());
         
         List<StudentDTO> listStudents = studentService.getAllStudents();
         System.out.println(listStudents.toString());
         
-        studentService.deleteStudent("juanvaronaov1@unicauca.edu.co");
-     */
+        studentService.deleteStudent("juanvaronaov@unicauca.edu.co");
+
 
  /*
         System.out.println("\n>>> TEST: Agregar director <<<");
@@ -101,4 +94,5 @@ public class Main {
          
         authService.isLoginValid("juanvaronaov@unicauca.edu.co", "juanse1A?");
      */
+    }
 }
