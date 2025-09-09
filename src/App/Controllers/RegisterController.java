@@ -142,13 +142,17 @@ public class RegisterController implements Initializable {
         });
         //Teléfono
         // En tu inicialización (por ejemplo initialize() en el controller)
-        txtPhone.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.isEmpty()) {
-                // Si está vacío, limpia el error
-                setFieldSuccess(txtPhone);
-                hideFieldError(lblPhoneError);
+        txtPhone.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.isEmpty()) {
+                try {
+                    validateTelephone();
+                } catch (RegisterUserFailerException e) {
+                    throw new RuntimeException(e);
+                }
             }
+            updateRegisterButton();
         });
+
 
 
         // Términos
@@ -174,7 +178,7 @@ public class RegisterController implements Initializable {
                 UserDTO newUserDTO = new UserDTO(newUser, newAccount);
                 _userServices.registerUser(newUserDTO);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setUserData("Registro exitoso. Ahora puedes iniciar sesión."); // 👈 Guardamos el mensaje
+                stage.setUserData("Registro exitoso."); //
                 WindowManager.changeScene(stage, "/fxml/login.fxml", "");
 
 
@@ -342,7 +346,7 @@ public class RegisterController implements Initializable {
                 !txtNames.getText().isEmpty() &&
                         !txtLastNames.getText().isEmpty() &&
                         !txtEmail.getText().isEmpty() &&
-                        !txtPhone.getText().isEmpty() &&
+                        //!txtPhone.getText().isEmpty() &&
                         !txtPassword.getText().isEmpty() &&
                         !txtConfirmPassword.getText().isEmpty() &&
                         chkTerms.isSelected();

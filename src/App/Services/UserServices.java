@@ -23,6 +23,9 @@ public class UserServices implements IUserServices {
 
     @Override
     public void registerUser(UserDTO prmUser) throws Exception {
+        UserDTO validatedUserDTO = validateUser(prmUser);
+        String encryptedPassword = _encryptService.Encrypt(validatedUserDTO.getAccount().getPassword());
+        validatedUserDTO.getAccount().setPassword(encryptedPassword);
         _userRepository.toAdd(prmUser);
     }
 
@@ -43,6 +46,13 @@ public class UserServices implements IUserServices {
 
     @Override
     public UserDTO validateUser(UserDTO prmUser) throws Exception {
-        return null;
+        _validatorService.isValidEmail(prmUser.getUser().getEmail());
+        _validatorService.isValidTelephone(prmUser.getUser().getNumberPhone());
+        _validatorService.isValidPassword(prmUser.getAccount().getPassword());
+        String newNames = _dataNormalizeService.normalizeString(prmUser.getUser().getNames());
+        String newLastNames = _dataNormalizeService.normalizeString(prmUser.getUser().getLastNames());
+        prmUser.getUser().setNames(newNames);
+        prmUser.getUser().setLastNames(newLastNames);
+        return prmUser;
     }
 }

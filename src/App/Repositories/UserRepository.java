@@ -3,6 +3,7 @@ package Repositories;
 import DataBase.DbConnection;
 import Dtos.UserDTO;
 import Interfaces.IRepository;
+import Models.Account;
 import Models.Role;
 import Models.User;
 
@@ -75,8 +76,38 @@ public class UserRepository implements IRepository<UserDTO> {
 
     @Override
     public UserDTO toGetByString(String prmString) {
+        String sql = "SELECT u.email, u.names, u.last_names, u.id_account, u.id_program, u.number_phone " +
+                "FROM User u " +
+                "WHERE u.email = ?";
+
+        try (Connection conn = dbConnection.toConnect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, prmString);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(
+                            rs.getString("email"),
+                            rs.getString("names"),
+                            rs.getString("last_names"),
+                            rs.getInt("id_account"),
+                            rs.getInt("id_program"),
+                            List.of(), // Query opcional..
+                            rs.getString("number_phone")
+                    );
+
+                    // No se trae cuenta, se deja como null
+                    return new UserDTO(user, null);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener usuario por email: " + e.getMessage());
+            e.printStackTrace();
+        }
         return null;
     }
+
+
 
     @Override
     public void toDeleteByString(String prmString) {

@@ -31,7 +31,7 @@ public class AccountRepository implements IAccountRepository {
                 if (rs.next()) {
                     account = new Account(
                             rs.getInt("id_account"),
-                            rs.getString("password") // hash de la contraseña
+                            rs.getString("password")
                     );
                 }
             }

@@ -16,7 +16,8 @@ public class StudentServices implements IStudentServices {
     private final IValidatorRegisterServices _validatorService;
     private final IDataNormalizerServices _dataNormalizeService;
 
-    public StudentServices(IRepository<StudentDTO> _studentRepository, IEncrypt _encryptService, IValidatorRegisterServices _validatorService, IDataNormalizerServices _dataNormalizeService) {
+    public StudentServices(IRepository<StudentDTO> _studentRepository, IEncrypt _encryptService,
+                           IValidatorRegisterServices _validatorService, IDataNormalizerServices _dataNormalizeService) {
         this._studentRepository = _studentRepository;
         this._encryptService = _encryptService;
         this._validatorService = _validatorService;

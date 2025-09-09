@@ -33,8 +33,9 @@ public class LoginController {
         // Obtiene el servicio al cargar el FXML
         this.authService = ServiceFactory.getAuthService();
 
-        successBox.setVisible(true);
-        successBox.setManaged(true);
+        successBox.setVisible(false);
+        successBox.setManaged(false);
+
 
         Platform.runLater(() -> {
             Stage stage = (Stage) successBox.getScene().getWindow();

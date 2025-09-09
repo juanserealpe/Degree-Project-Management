@@ -1,5 +1,6 @@
 package Services;
 
+import Dtos.UserDTO;
 import Exceptions.LoginFailedException;
 import Exceptions.RegisterUserFailerException;
 import Interfaces.IAccountRepository;
@@ -18,9 +19,10 @@ public class AuthService implements IAuthService {
     private final IAccountRepository _accountRepository;
     private final IRoleRepository _roleRepository;
     private final IEncrypt _encryptService;
-    private final IRepository<User> _userRepository;
+    private final IRepository<UserDTO> _userRepository;
 
-    public AuthService(IAccountRepository _accountRepository, IRoleRepository _roleRepository, IEncrypt _encryptService, IRepository<User> _userRepository) {
+    public AuthService(IAccountRepository _accountRepository, IRoleRepository _roleRepository, IEncrypt _encryptService,
+                       IRepository<UserDTO> _userRepository) {
         this._accountRepository = _accountRepository;
         this._roleRepository = _roleRepository;
         this._encryptService = _encryptService;
@@ -41,16 +43,16 @@ public class AuthService implements IAuthService {
 
         // Buscar usuario
         System.out.println("[AuthService] Buscando usuario en repositorio...");
-        User user = _userRepository.toGetByString(prmEmail);
+        UserDTO user = _userRepository.toGetByString(prmEmail);
         if (user == null) {
             System.out.println("[AuthService] ❌ Usuario no encontrado.");
             throw LoginFailedException.invalidCredentials();
         }
-        System.out.println("[AuthService] ✅ Usuario encontrado: " + user.getEmail());
+        System.out.println("[AuthService] ✅ Usuario encontrado: " + user.getUser().getEmail());
 
         // Buscar cuenta asociada
         System.out.println("[AuthService] Buscando cuenta asociada...");
-        Account resultAccount = _accountRepository.toGetById(user.getAccountId());
+        Account resultAccount = _accountRepository.toGetById(user.getUser().getAccountId());
         if (resultAccount == null) {
             System.out.println("[AuthService] ❌ Cuenta no encontrada.");
             throw LoginFailedException.invalidCredentials();
