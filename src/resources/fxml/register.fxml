@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/11.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.RegisterController"
+           stylesheets="@/css/register.css"
+           styleClass="root-container">
+
+    <children>
+        <VBox alignment="CENTER"
+              maxHeight="750.0" maxWidth="500.0"
+              minHeight="650.0" minWidth="400.0"
+              prefHeight="700.0" prefWidth="450.0"
+              spacing="20"
+              styleClass="register-container">
+
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+
+            <children>
+                <!-- Icono dentro del contenedor -->
+                <ImageView fx:id="iconoRegister"
+                           fitWidth="80"
+                           fitHeight="80"
+                           preserveRatio="true"
+                           pickOnBounds="true"
+                           styleClass="app-icon1">
+                    <image>
+                        <Image url="@/img/icon1.png"/>
+                    </image>
+                </ImageView>
+
+                <!-- Header -->
+                <VBox alignment="CENTER" spacing="5.0" styleClass="header-section">
+                    <children>
+                        <Label styleClass="app-title" text="Crear Cuenta"/>
+                        <Label styleClass="app-subtitle" text="Completa todos los campos requeridos"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="15.0"/>
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Form Section -->
+                <ScrollPane fitToWidth="true"
+                            styleClass="form-scroll"
+                            vbarPolicy="AS_NEEDED"
+                            hbarPolicy="NEVER"
+                            prefHeight="400">
+                    <content>
+                        <VBox spacing="18.0" styleClass="form-section">
+                            <children>
+                                <!-- Nombre completo -->
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label styleClass="field-label" text="Nombre *"/>
+                                                <Label fx:id="lblNamesError"
+                                                       styleClass="field-error-inline"
+                                                       visible="false"
+                                                       managed="false"/>
+                                            </children>
+                                        </HBox>
+                                        <TextField fx:id="txtNames"
+                                                   promptText="Ingrese su nombre"
+                                                   styleClass="text-field"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label styleClass="field-label" text="Apellidos *"/>
+                                                <Label fx:id="lblLastNamesError"
+                                                       styleClass="field-error-inline"
+                                                       visible="false"
+                                                       managed="false"/>
+                                            </children>
+                                        </HBox>
+                                        <TextField fx:id="txtLastNames"
+                                                   promptText="Ingrese sus apellidos"
+                                                   styleClass="text-field"/>
+                                    </children>
+                                </VBox>
+
+                                <!-- Email -->
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label styleClass="field-label" text="Correo electrónico *"/>
+                                                <Label fx:id="lblEmailError"
+                                                       styleClass="field-error-inline"
+                                                       visible="false"
+                                                       managed="false"/>
+                                            </children>
+                                        </HBox>
+                                        <TextField fx:id="txtEmail"
+                                                   promptText="ejemplo@unicauca.edu.co"
+                                                   styleClass="text-field"/>
+                                    </children>
+                                </VBox>
+
+                                <!-- Roles -->
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label styleClass="field-label" text="Roles *"/>
+                                                <Label fx:id="lblRolesError"
+                                                       styleClass="field-error-inline"
+                                                       visible="false"
+                                                       managed="false"/>
+                                            </children>
+                                        </HBox>
+
+                                        <!-- CheckBoxes para los roles -->
+                                        <CheckBox fx:id="chkEstudiante" text="Estudiante" styleClass="terms-checkbox"/>
+                                        <CheckBox fx:id="chkDirector" text="Director" styleClass="terms-checkbox"/>
+                                        <CheckBox fx:id="chkCoordinador" text="Coordinador" styleClass="terms-checkbox"/>
+                                        <CheckBox fx:id="chkJurado" text="Jurado" styleClass="terms-checkbox"/>
+                                    </children>
+                                </VBox>
+
+
+                                <!-- Contraseña -->
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label styleClass="field-label" text="Contraseña *"/>
+                                                <Label fx:id="lblPasswordError"
+                                                       styleClass="field-error-inline"
+                                                       visible="false"
+                                                       managed="false"/>
+                                            </children>
+                                        </HBox>
+                                        <PasswordField fx:id="txtPassword"
+                                                       promptText="Mínimo 8 caracteres"
+                                                       styleClass="text-field"/>
+                                    </children>
+                                </VBox>
+
+                                <!-- Confirmar contraseña -->
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label styleClass="field-label" text="Confirmar contraseña *"/>
+                                                <Label fx:id="lblConfirmPasswordError"
+                                                       styleClass="field-error-inline"
+                                                       visible="false"
+                                                       managed="false"/>
+                                            </children>
+                                        </HBox>
+                                        <PasswordField fx:id="txtConfirmPassword"
+                                                       promptText="Repita su contraseña"
+                                                       styleClass="text-field"/>
+                                    </children>
+                                </VBox>
+
+                                <!-- Teléfono (opcional) -->
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <HBox spacing="8.0" alignment="CENTER_LEFT">
+                                            <children>
+                                                <Label styleClass="field-label" text="Teléfono (opcional)"/>
+                                                <Label fx:id="lblPhoneError"
+                                                       styleClass="field-error-inline"
+                                                       visible="false"
+                                                       managed="false"/>
+                                            </children>
+                                        </HBox>
+                                        <TextField fx:id="txtPhone"
+                                                   promptText="Número de teléfono"
+                                                   styleClass="text-field"/>
+                                    </children>
+                                </VBox>
+
+                                <!-- Checkbox términos y condiciones -->
+                                <CheckBox fx:id="chkTerms"
+                                          styleClass="terms-checkbox"
+                                          text="Acepto los términos y condiciones *"
+                                          wrapText="true"/>
+
+                                <!-- Message Label (para mensajes generales) -->
+                                <Label fx:id="lblRegisterMessage"
+                                       styleClass="message-label"
+                                       textAlignment="CENTER"
+                                       wrapText="true"
+                                       maxWidth="Infinity"
+                                       prefWidth="340"
+                                       alignment="CENTER"/>
+
+                                <!-- Register Button -->
+                                <Button fx:id="btnRegister"
+                                        maxWidth="1.7976931348623157E308"
+                                        mnemonicParsing="false"
+                                        onAction="#handleRegister"
+                                        styleClass="register-button-main"
+                                        text="Crear Cuenta"
+                                        disable="true">
+                                    <VBox.margin>
+                                        <Insets top="10.0"/>
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+                            <padding>
+                                <Insets bottom="20.0" left="20.0" right="20.0"/>
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+                <!-- Footer Section -->
+                <VBox alignment="CENTER" spacing="15.0" styleClass="footer-section">
+                    <children>
+                        <Separator styleClass="separator"/>
+                        <Label styleClass="login-text" text="¿Ya tienes cuenta?"/>
+                        <Button mnemonicParsing="false"
+                                onAction="#handleBackToLogin"
+                                styleClass="back-login-button"
+                                text="Iniciar Sesión"/>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

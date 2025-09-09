@@ -5,7 +5,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
 <StackPane xmlns="http://javafx.com/javafx/11.0.1"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="Controllers.LoginController"
@@ -13,6 +12,8 @@
            styleClass="root-container">
 
     <children>
+
+        <!-- Contenedor principal -->
         <VBox alignment="CENTER"
               maxHeight="650.0" maxWidth="500.0"
               minHeight="550.0" minWidth="400.0"
@@ -25,7 +26,7 @@
             </padding>
 
             <children>
-                <!-- Icono dentro del contenedor -->
+                <!-- Icono -->
                 <ImageView fx:id="iconoLogin"
                            fitWidth="90"
                            fitHeight="90"
@@ -36,7 +37,6 @@
                         <Image url="@/img/icon1.png"/>
                     </image>
                 </ImageView>
-
 
                 <!-- Header -->
                 <VBox alignment="CENTER" spacing="10.0" styleClass="header-section">
@@ -51,27 +51,24 @@
                 <!-- Form Section -->
                 <VBox spacing="20.0" styleClass="form-section">
                     <children>
-                        <!-- Username Field -->
                         <VBox spacing="8.0">
                             <children>
-                                <Label styleClass="field-label" text="Usuario"/>
-                                <TextField fx:id="txtUser"
-                                           promptText="Ingrese su usuario"
+                                <Label styleClass="field-label" text="Correo Electrónico"/>
+                                <TextField fx:id="txtEmail"
+                                           promptText="Ingrese su correo"
                                            styleClass="text-field"/>
                             </children>
                         </VBox>
 
-                        <!-- Password Field -->
                         <VBox spacing="8.0">
                             <children>
                                 <Label styleClass="field-label" text="Contraseña"/>
-                                <PasswordField fx:id="txtPass"
+                                <PasswordField fx:id="txtPassword"
                                                promptText="Ingrese su contraseña"
                                                styleClass="text-field"/>
                             </children>
                         </VBox>
 
-                        <!-- Message Label -->
                         <Label fx:id="lblMessage"
                                styleClass="message-label"
                                textAlignment="CENTER"
@@ -80,7 +77,6 @@
                                prefWidth="340"
                                alignment="CENTER"/>
 
-                        <!-- Login Button -->
                         <Button maxWidth="1.7976931348623157E308"
                                 mnemonicParsing="false"
                                 onAction="#handleLogin"
@@ -96,7 +92,7 @@
                     </VBox.margin>
                 </VBox>
 
-                <!-- Footer Section -->
+                <!-- Footer -->
                 <VBox alignment="CENTER" spacing="15.0" styleClass="footer-section">
                     <children>
                         <Separator styleClass="separator"/>
@@ -109,5 +105,16 @@
                 </VBox>
             </children>
         </VBox>
+
+        <!-- ✅ Mensaje flotante fuera del contenedor -->
+        <Label fx:id="successBox"
+               text="Registro exitoso"
+               visible="false"
+               managed="false"
+               styleClass="success-box"
+               StackPane.alignment="TOP_LEFT"
+               alignment="CENTER"
+               translateX="20"
+               translateY="20"/>
     </children>
 </StackPane>

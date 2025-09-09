@@ -13,4 +13,5 @@ public interface IValidatorRegisterServices {
     public void isValidNames(String prmNames) throws RegisterUserFailerException;
 
     public void isValidLastNames(String prmLastNames) throws RegisterUserFailerException;
+    public void validateConfirmPassword(String mainPassword, String repPassword) throws RegisterUserFailerException;
 }

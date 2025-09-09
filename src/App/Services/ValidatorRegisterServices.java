@@ -7,7 +7,6 @@ import Interfaces.IValidatorRegisterServices;
 
 public class ValidatorRegisterServices implements IValidatorRegisterServices {
 
-    public static final String PASSWORD_PATTERN = "^(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{6,}$";
     public static final String PHONE_NUMBER_PATTERN = "^\\d{10}$";
     public static final String EMAIL_PATTERN = "^[a-zA-Z]+@unicauca\\.edu\\.co$"; // Solo letras en identificador
 
@@ -17,7 +16,7 @@ public class ValidatorRegisterServices implements IValidatorRegisterServices {
     @Override
     public void isValidPassword(String password) throws RegisterUserFailerException {
         if (password.length() < 6) {
-            throw RegisterUserFailerException.invalidPassword();
+            throw RegisterUserFailerException.passwordTooShort();
         }
         if (!password.matches(".*[A-Z].*")) {
             throw RegisterUserFailerException.passwordWithoutUppercase();
@@ -26,7 +25,7 @@ public class ValidatorRegisterServices implements IValidatorRegisterServices {
             throw RegisterUserFailerException.passwordWithoutSpecialChar();
         }
         if (!password.matches(".*\\d.*")) {
-            throw RegisterUserFailerException.invalidPassword();
+            throw RegisterUserFailerException.passwordWithoutNumber();
         }
     }
 
@@ -87,5 +86,11 @@ public class ValidatorRegisterServices implements IValidatorRegisterServices {
         if (!prmLastNames.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$")) {
             throw RegisterUserFailerException.specialCharsInLastName();
         }
+    }
+
+    @Override
+    public void validateConfirmPassword(String mainPassword, String repPassword) throws RegisterUserFailerException {
+        if(!mainPassword.equals(repPassword))
+            throw  RegisterUserFailerException.invalidConfirmationPassword();
     }
 }

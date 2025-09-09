@@ -1,29 +1,30 @@
 package Controllers;
 
 import Interfaces.IAuthService;
-import Models.Session;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
-import javafx.event.ActionEvent; // ✔ correcto
 import java.io.IOException;
 
 public class LoginController {
 
     @FXML
-    private TextField txtUser;
+    private TextField txtEmail;
     @FXML
-    private PasswordField txtPass;
+    private PasswordField txtPassword;
     @FXML
     private Label lblMessage;
     @FXML
-    private Button loginButton;
+    private Label successBox;
+
 
     private IAuthService authService;
 
@@ -31,13 +32,36 @@ public class LoginController {
     public void initialize() {
         // Obtiene el servicio al cargar el FXML
         this.authService = ServiceFactory.getAuthService();
-    }
 
+        successBox.setVisible(true);
+        successBox.setManaged(true);
+
+        Platform.runLater(() -> {
+            Stage stage = (Stage) successBox.getScene().getWindow();
+            Object data = stage.getUserData();
+            if (data instanceof String) {
+                showSuccessBox((String) data);
+                stage.setUserData(null); // limpiar para que no se repita
+            }
+        });
+    }
+    private void showSuccessBox(String message) {
+        successBox.setText(message);
+        successBox.setVisible(true);
+        successBox.setManaged(true);
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(e -> {
+            successBox.setVisible(false);
+            successBox.setManaged(false);
+        });
+        pause.play();
+    }
 
     @FXML
     private void handleLogin(ActionEvent event) throws IOException {
-        String email = txtUser.getText();
-        String password = txtPass.getText();
+        String email = txtEmail.getText();
+        String password = txtPassword.getText();
 
         try {
             authService.isLoginValid(email, password);
@@ -55,9 +79,16 @@ public class LoginController {
 
 
     @FXML
-    private void handleRegister() {
-        showInfoMessage("Redirigiendo a registro...");
+    private void handleRegister(ActionEvent event) {
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            WindowManager.changeScene(stage, "/fxml/register.fxml", "");
+        } catch (IOException e) {
+            e.printStackTrace();
+            showInfoMessage("Error al abrir el formulario de registro");
+        }
     }
+
 
     private void showErrorMessage(String message) {
         lblMessage.setText(message);

@@ -7,22 +7,20 @@ public class RegisterUserFailerException extends AppException {
     }
 
     // -------- PASSWORD --------
-    public static RegisterUserFailerException invalidPassword() {
-        return new RegisterUserFailerException(
-                "La contraseña debe tener al menos 6 caracteres, una mayúscula, un número y un carácter especial."
-        );
-    }
-
-    public static RegisterUserFailerException passwordWithoutSpecialChar() {
-        return new RegisterUserFailerException(
-                "La contraseña debe contener al menos un carácter especial."
-        );
+    public static RegisterUserFailerException passwordTooShort() {
+        return new RegisterUserFailerException("Debe tener al menos 6 caracteres.");
     }
 
     public static RegisterUserFailerException passwordWithoutUppercase() {
-        return new RegisterUserFailerException(
-                "La contraseña debe contener al menos una letra mayúscula."
-        );
+        return new RegisterUserFailerException("Debe contener al menos una letra mayúscula.");
+    }
+
+    public static RegisterUserFailerException passwordWithoutSpecialChar() {
+        return new RegisterUserFailerException("Debe contener al menos un carácter especial.");
+    }
+
+    public static RegisterUserFailerException passwordWithoutNumber() {
+        return new RegisterUserFailerException("Debe contener al menos un número.");
     }
 
     // -------- EMAIL --------
@@ -92,6 +90,11 @@ public class RegisterUserFailerException extends AppException {
     public static RegisterUserFailerException specialCharsInLastName() {
         return new RegisterUserFailerException(
                 "No se permiten caracteres especiales en los apellidos."
+        );
+    }
+    public static RegisterUserFailerException invalidConfirmationPassword() {
+        return new RegisterUserFailerException(
+                "Las contraseñas no coinciden."
         );
     }
 }

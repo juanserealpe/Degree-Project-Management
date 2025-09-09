@@ -2,6 +2,7 @@ package Services;
 
 import Dtos.DirectorDTO;
 import Dtos.StudentDTO;
+import Dtos.UserDTO;
 import Interfaces.*;
 import Models.User;
 import Repositories.*;
@@ -12,16 +13,20 @@ public class ServiceFactory {
     private static final IValidatorRegisterServices validatorService = new ValidatorRegisterServices();
     private static final IDataNormalizerServices dataService = new DataNormalizerServices();
 
+
     // ========================
     // AuthService
     // ========================
     public static IAuthService getAuthService() {
-        IAccountRepository accountRepo = new AccountRepository();
-        IRoleRepository roleRepo = new RoleRepository();
-        IRepository<User> userRepo = new UserRepository();
-        return new AuthService(accountRepo, roleRepo, encryptService, userRepo);
+       return null;
     }
-
+    // ========================
+    // UserServices
+    // ========================
+    public static UserServices getUserService() {
+        IRepository<UserDTO> userRepo = new UserRepository();
+        return new UserServices(userRepo, encryptService, validatorService, dataService);
+    }
     // ========================
     // StudentServices
     // ========================
@@ -36,5 +41,12 @@ public class ServiceFactory {
     public static DirectorServices getDirectorService() {
         IRepository<DirectorDTO> directorRepo = new DirectorRepository();
         return new DirectorServices(directorRepo, encryptService, validatorService, dataService);
+    }
+    // ========================
+    // DirectorServices
+    // ========================
+    public static  ValidatorRegisterServices getValidatorService(){
+        IValidatorRegisterServices validatorService = new ValidatorRegisterServices();
+        return new ValidatorRegisterServices();
     }
 }

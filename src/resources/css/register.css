@@ -4,9 +4,8 @@
     -fx-alignment: center;
 }
 
-
-/* Tarjeta de login */
-.login-container {
+/* Tarjeta de registro */
+.register-container {
     -fx-background-color: #ffffff;
     -fx-background-radius: 12px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0.2, 0, 4);
@@ -56,6 +55,18 @@
     -fx-effect: dropshadow(gaussian, rgba(220, 53, 69, 0.2), 8, 0.3, 0, 2);
 }
 
+/* Efectos para éxito */
+.text-field.success {
+    -fx-border-color: #28a745;
+    -fx-border-width: 1;
+    -fx-background-color: rgba(40, 167, 69, 0.05);
+}
+
+.text-field.success:focused {
+    -fx-border-color: #28a745;
+    -fx-effect: dropshadow(gaussian, rgba(40, 167, 69, 0.2), 8, 0.3, 0, 2);
+}
+
 /* Mensaje de error */
 .message-label {
     -fx-text-fill: #dc3545;
@@ -65,20 +76,48 @@
     -fx-text-alignment: center;
 }
 
-/* Botones */
-.login-button {
-    -fx-background-color: #1a237e;
+/* Mensaje de éxito */
+.message-label.success {
+    -fx-text-fill: #28a745;
+    -fx-font-weight: bold;
+}
+
+/* Mensajes de error específicos por campo */
+.field-error-label {
+    -fx-text-fill: #dc3545;
+    -fx-font-size: 11px;
+    -fx-padding: 2 0 0 4;
+    -fx-font-style: italic;
+}
+
+/* Botón principal de registro */
+.register-button-main {
+    -fx-background-color: #28a745;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 6px;
     -fx-padding: 10px;
 }
 
-.login-button:hover {
-    -fx-background-color: #283593;
+.register-button-main:hover {
+    -fx-background-color: #218838;
 }
 
-.register-button {
+.register-button-main:disabled {
+    -fx-background-color: #6c757d;
+    -fx-opacity: 0.6;
+}
+
+/* Mensaje de error inline (al lado del label) */
+.field-error-inline {
+    -fx-text-fill: #dc3545;
+    -fx-font-size: 11px;
+    -fx-font-style: italic;
+    -fx-font-weight: normal;
+}
+
+/* Botón volver al login */
+.back-login-button {
     -fx-background-color: transparent;
     -fx-text-fill: #1a237e;
     -fx-border-color: #1a237e;
@@ -86,7 +125,7 @@
     -fx-padding: 6px 12px;
 }
 
-.register-button:hover {
+.back-login-button:hover {
     -fx-background-color: rgba(26,35,126,0.05);
 }
 
@@ -95,63 +134,16 @@
     -fx-background-color: #ddd;
 }
 
+/* Texto del footer */
+.login-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #666;
+}
+
+/* Icono de la app */
 .app-icon1 {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 12, 0.4, 0, 3);
     -fx-translate-y: -10; /* lo empuja un poco hacia arriba */
-}
-
-
-/* === ESTILOS PARA EL MODAL DE REGISTRO === */
-
-/* Overlay del modal */
-.modal-overlay {
-    -fx-background-color: transparent;
-}
-
-.modal-background {
-    -fx-background-color: rgba(0, 0, 0, 0.5);
-    -fx-cursor: hand;
-}
-
-/* Contenedor del modal de registro */
-.register-modal-container {
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 12px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 15, 0.3, 0, 5);
-    -fx-border-radius: 12px;
-}
-
-/* Títulos del modal */
-.modal-title {
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #1a237e;
-}
-
-.modal-subtitle {
-    -fx-font-size: 13px;
-    -fx-text-fill: #666;
-    -fx-font-style: italic;
-}
-
-/* Botón cerrar (X) */
-.close-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #999;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-min-width: 30px;
-    -fx-min-height: 30px;
-    -fx-max-width: 30px;
-    -fx-max-height: 30px;
-    -fx-background-radius: 15px;
-    -fx-border-radius: 15px;
-    -fx-cursor: hand;
-}
-
-.close-button:hover {
-    -fx-background-color: rgba(220, 53, 69, 0.1);
-    -fx-text-fill: #dc3545;
 }
 
 /* ScrollPane del formulario */
@@ -199,34 +191,3 @@
 .terms-checkbox .mark {
     -fx-background-color: white;
 }
-
-/* Botón cancelar */
-.cancel-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #666;
-    -fx-border-color: #ccc;
-    -fx-border-width: 1px;
-    -fx-border-radius: 6px;
-    -fx-background-radius: 6px;
-    -fx-padding: 10px;
-    -fx-font-weight: normal;
-}
-
-.cancel-button:hover {
-    -fx-background-color: rgba(108, 117, 125, 0.1);
-    -fx-border-color: #999;
-}
-
-/* Cajita de éxito */
-.success-box {
-    -fx-background-color: #28a745;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-padding: 10px 20px;
-    -fx-background-radius: 6px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0.3, 0, 2);
-    -fx-font-size: 13px;
-    -fx-alignment: center;
-    -fx-max-width: 300px;
-}
-
