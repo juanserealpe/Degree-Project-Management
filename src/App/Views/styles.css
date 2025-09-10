@@ -1,0 +1,17 @@
+.error-label-style {
+    -fx-text-fill: red; /* Changes the text color to red */
+}
+
+.confirmation-label-style {
+    -fx-text-fill: green; /* Changes the text color to green */
+}
+
+.dissable-button-style {
+    -fx-background-color: gray; /* Changes the background color to gray */
+    -fx-text-fill: black; /* Changes the text color to black */
+}
+
+.able-button-style {
+    -fx-background-color: green; /* Changes the background color to green */
+    -fx-text-fill: white; /* Changes the text color to white */
+}
