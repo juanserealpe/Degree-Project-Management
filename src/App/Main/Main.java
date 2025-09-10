@@ -26,8 +26,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        CoordinatorRepository c1 = new CoordinatorRepository();
-        c1.GetFormatA();
+        CoordinatorRepository coord1 = new CoordinatorRepository();
         IAccountRepository _authRepo = new AccountRepository();
         IRoleRepository _roleRepo = new RoleRepository();
         IEncrypt _encryptService1 = new EncryptService();
