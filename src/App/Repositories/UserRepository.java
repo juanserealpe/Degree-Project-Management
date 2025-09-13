@@ -18,7 +18,6 @@ public class UserRepository implements IRepository<UserDTO> {
         this.dbConnection = new DbConnection();
     }
 
-
     @Override
     public void toAdd(UserDTO prmItem) {
         String sqlAccount = "INSERT INTO Account (password) VALUES (?)";
@@ -106,8 +105,6 @@ public class UserRepository implements IRepository<UserDTO> {
         }
         return null;
     }
-
-
 
     @Override
     public void toDeleteByString(String prmString) {

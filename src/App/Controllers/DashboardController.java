@@ -14,8 +14,8 @@ public class DashboardController {
         // Obtener el Stage actual
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        // Cargar login.fxml de nuevo
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+        // Cargar LoginVIew.fxml de nuevo
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginVIew.fxml"));
         Scene loginScene = new Scene(loader.load());
 
         stage.setScene(loginScene);

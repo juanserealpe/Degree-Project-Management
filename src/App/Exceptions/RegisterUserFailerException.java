@@ -97,4 +97,9 @@ public class RegisterUserFailerException extends AppException {
                 "Las contraseñas no coinciden."
         );
     }
+    public static RegisterUserFailerException NoRoleSelected() {
+        return new RegisterUserFailerException(
+                "Se debe seleccionar almenos 1 rol."
+        );
+    }
 }

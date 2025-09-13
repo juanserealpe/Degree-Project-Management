@@ -1,6 +1,9 @@
 package Interfaces;
 
 import Exceptions.RegisterUserFailerException;
+import Models.Role;
+
+import java.util.List;
 
 public interface IValidatorRegisterServices {
 
@@ -13,5 +16,7 @@ public interface IValidatorRegisterServices {
     public void isValidNames(String prmNames) throws RegisterUserFailerException;
 
     public void isValidLastNames(String prmLastNames) throws RegisterUserFailerException;
+
     public void validateConfirmPassword(String mainPassword, String repPassword) throws RegisterUserFailerException;
+    public void isValidRole(List<Role> prmListRoles) throws RegisterUserFailerException;
 }

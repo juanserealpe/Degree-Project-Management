@@ -30,9 +30,7 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        // Obtiene el servicio al cargar el FXML
         this.authService = ServiceFactory.getAuthService();
-
         successBox.setVisible(false);
         successBox.setManaged(false);
 
@@ -68,8 +66,7 @@ public class LoginController {
             authService.isLoginValid(email, password);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            WindowManager.changeScene(stage, "/fxml/dashboard.fxml", "");
-
+            WindowManager.changeScene(stage, "/fxml/SelectRoleView.fxml", "");
 
         } catch (Exception ex) {
             showErrorMessage(ex.getMessage());
@@ -79,11 +76,13 @@ public class LoginController {
 
 
 
+
+
     @FXML
     private void handleRegister(ActionEvent event) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            WindowManager.changeScene(stage, "/fxml/register.fxml", "");
+            WindowManager.changeScene(stage, "/fxml/RegisterView.fxml", "");
         } catch (IOException e) {
             e.printStackTrace();
             showInfoMessage("Error al abrir el formulario de registro");

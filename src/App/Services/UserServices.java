@@ -10,6 +10,7 @@ import java.util.List;
 public class UserServices implements IUserServices {
 
     private final IRepository<UserDTO> _userRepository;
+
     private final IEncrypt _encryptService;
     private final IValidatorRegisterServices _validatorService;
     private final IDataNormalizerServices _dataNormalizeService;

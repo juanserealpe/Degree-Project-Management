@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,20 +24,24 @@ import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
 
+    // ==================== CAMPOS FXML ====================
+
+    // Campos de entrada
     @FXML private TextField txtNames;
     @FXML private TextField txtLastNames;
     @FXML private TextField txtEmail;
-    @FXML private TextField txtUsername;
     @FXML private PasswordField txtPassword;
     @FXML private PasswordField txtConfirmPassword;
     @FXML private TextField txtPhone;
+
+    // CheckBoxes
     @FXML private CheckBox chkTerms;
-    @FXML private Label lblRegisterMessage;
-    @FXML private Button btnRegister;
     @FXML private CheckBox chkEstudiante;
     @FXML private CheckBox chkDirector;
     @FXML private CheckBox chkCoordinador;
     @FXML private CheckBox chkJurado;
+
+    // Labels de error
     @FXML private Label lblNamesError;
     @FXML private Label lblLastNamesError;
     @FXML private Label lblEmailError;
@@ -45,88 +50,93 @@ public class RegisterController implements Initializable {
     @FXML private Label lblConfirmPasswordError;
     @FXML private Label lblPhoneError;
 
+    // Controles adicionales
+    @FXML private Label lblRegisterMessage;
+    @FXML private Button btnRegister;
+
+    // ==================== SERVICIOS ====================
+
     private IValidatorRegisterServices _validatorService;
     private IUserServices _userServices;
 
+    // ==================== INICIALIZACIÓN ====================
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initializeServices();
         setupValidation();
+        setupRoleCheckBoxLogic();
         clearMessage();
-        this._validatorService = ServiceFactory.getValidatorService();
-        chkEstudiante.selectedProperty().addListener((obs, oldVal, newVal) -> {
-            if (newVal) {
-                chkDirector.setSelected(false);
-                chkCoordinador.setSelected(false);
-                chkJurado.setSelected(false);
+    }
 
-                chkDirector.setDisable(true);
-                chkCoordinador.setDisable(true);
-                chkJurado.setDisable(true);
-            } else {
-                chkDirector.setDisable(false);
-                chkCoordinador.setDisable(false);
-                chkJurado.setDisable(false);
-            }
-        });
-        chkDirector.selectedProperty().addListener((obs, oldVal, newVal) -> validarEstudiante());
-        chkCoordinador.selectedProperty().addListener((obs, oldVal, newVal) -> validarEstudiante());
-        chkJurado.selectedProperty().addListener((obs, oldVal, newVal) -> validarEstudiante());
+    private void initializeServices() {
+        this._validatorService = ServiceFactory.getValidatorService();
         this._userServices = ServiceFactory.getUserService();
     }
 
-    /**
-     * Configura la validación en tiempo real de los campos
-     */
+    private void setupRoleCheckBoxLogic() {
+        // Lógica para estudiante - excluyente con otros roles
+        chkEstudiante.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                disableOtherRoles(true);
+                clearOtherRolesSelection();
+            } else {
+                disableOtherRoles(false);
+            }
+        });
+
+        // Lógica para otros roles - excluyentes con estudiante
+        chkDirector.selectedProperty().addListener((obs, oldVal, newVal) -> validateStudentRole());
+        chkCoordinador.selectedProperty().addListener((obs, oldVal, newVal) -> validateStudentRole());
+        chkJurado.selectedProperty().addListener((obs, oldVal, newVal) -> validateStudentRole());
+    }
+
+    private void disableOtherRoles(boolean disable) {
+        chkDirector.setDisable(disable);
+        chkCoordinador.setDisable(disable);
+        chkJurado.setDisable(disable);
+    }
+
+    private void clearOtherRolesSelection() {
+        chkDirector.setSelected(false);
+        chkCoordinador.setSelected(false);
+        chkJurado.setSelected(false);
+    }
+
+    private void validateStudentRole() {
+        boolean anyOtherRoleSelected = chkDirector.isSelected() ||
+                chkCoordinador.isSelected() ||
+                chkJurado.isSelected();
+
+        chkEstudiante.setSelected(false);
+        chkEstudiante.setDisable(anyOtherRoleSelected);
+    }
+
+    // ==================== CONFIGURACIÓN DE VALIDACIÓN ====================
+
     private void setupValidation() {
-        // Nombres
-        txtNames.textProperty().addListener((obs, oldVal, newVal) -> {
+        setupFieldValidation(txtNames, this::validateNames);
+        setupFieldValidation(txtLastNames, this::validateLastNames);
+        setupFieldValidation(txtEmail, this::validateEmail);
+        setupFieldValidation(txtPhone, this::validateTelephone);
+        setupPasswordValidation();
+        setupTermsValidation();
+    }
+
+    private void setupFieldValidation(TextField field, ValidationMethod validator) {
+        field.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.isEmpty()) {
                 try {
-                    validateNames();
+                    validator.validate();
                 } catch (RegisterUserFailerException e) {
                     throw new RuntimeException(e);
                 }
             }
             updateRegisterButton();
         });
+    }
 
-        // Apellidos
-        txtLastNames.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.isEmpty()) {
-                try {
-                    validateLastNames();
-                } catch (RegisterUserFailerException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            updateRegisterButton();
-        });
-
-        // Email
-        txtEmail.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.isEmpty()) {
-                try {
-                    validateEmail();
-                } catch (RegisterUserFailerException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            updateRegisterButton();
-        });
-
-        // Teléfono
-        txtPhone.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.isEmpty()) {
-                try {
-                    validateTelephone();
-                } catch (RegisterUserFailerException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            updateRegisterButton();
-        });
-
-        // Contraseña y confirmación
+    private void setupPasswordValidation() {
         txtPassword.textProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal.isEmpty()) {
                 validatePassword();
@@ -140,47 +150,29 @@ public class RegisterController implements Initializable {
             }
             updateRegisterButton();
         });
-        //Teléfono
-        // En tu inicialización (por ejemplo initialize() en el controller)
-        txtPhone.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.isEmpty()) {
-                try {
-                    validateTelephone();
-                } catch (RegisterUserFailerException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            updateRegisterButton();
-        });
+    }
 
-
-
-        // Términos
+    private void setupTermsValidation() {
         chkTerms.selectedProperty().addListener((obs, oldVal, newVal) -> updateRegisterButton());
     }
 
-    /**
-     * Maneja el evento de registro
-     */
+    @FunctionalInterface
+    private interface ValidationMethod {
+        void validate() throws RegisterUserFailerException;
+    }
+
+    // ==================== MANEJADORES DE EVENTOS ====================
+
     @FXML
     private void handleRegister(ActionEvent event) throws RegisterUserFailerException {
         if (validateForm()) {
             try {
-                List<Role> selectedRoles = new ArrayList<>();
-
-                if (chkEstudiante.isSelected()) selectedRoles.add(new Role(1, "Estudiante"));
-                if (chkDirector.isSelected()) selectedRoles.add(new Role(2, "Director"));
-                if (chkCoordinador.isSelected()) selectedRoles.add(new Role(3, "Coordinador"));
-                if (chkJurado.isSelected()) selectedRoles.add(new Role(4, "Jurado"));
-                //String email, String names, String lastNames, int accountId, int programId, List<Role> listRole, String numberPhone
-                User newUser = new User(txtEmail.getText(), txtNames.getText(), txtLastNames.getText(), 0, 1,selectedRoles, txtPhone.getText());
-                Account newAccount = new Account(0, txtPassword.getText());
-                UserDTO newUserDTO = new UserDTO(newUser, newAccount);
+                UserDTO newUserDTO = createUserDTO();
                 _userServices.registerUser(newUserDTO);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setUserData("Registro exitoso."); //
-                WindowManager.changeScene(stage, "/fxml/login.fxml", "");
 
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setUserData("Registro exitoso.");
+                WindowManager.changeScene(stage, "/fxml/LoginVIew.fxml", "");
 
             } catch (Exception e) {
                 showErrorMessage("Error al crear la cuenta: " + e.getMessage());
@@ -188,168 +180,170 @@ public class RegisterController implements Initializable {
         }
     }
 
-    /**
-     * Maneja el evento de volver al login
-     */
     @FXML
     private void handleBackToLogin(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        WindowManager.changeScene(stage, "/fxml/login.fxml", "");
+        WindowManager.changeScene(stage, "/fxml/LoginVIew.fxml", "");
     }
 
-    /**
-     * Valida todo el formulario
-     */
+    // ==================== CREACIÓN DE OBJETOS ====================
+
+    private UserDTO createUserDTO() {
+        List<Role> selectedRoles = getSelectedRoles();
+
+        User newUser = new User(
+                txtEmail.getText(),
+                txtNames.getText(),
+                txtLastNames.getText(),
+                0,
+                1,
+                selectedRoles,
+                txtPhone.getText()
+        );
+
+        Account newAccount = new Account(0, txtPassword.getText());
+
+        return new UserDTO(newUser, newAccount);
+    }
+
+    private List<Role> getSelectedRoles() {
+        List<Role> selectedRoles = new ArrayList<>();
+
+        if (chkEstudiante.isSelected()) selectedRoles.add(new Role(1, "Estudiante"));
+        if (chkDirector.isSelected()) selectedRoles.add(new Role(2, "Director"));
+        if (chkCoordinador.isSelected()) selectedRoles.add(new Role(3, "Coordinador"));
+        if (chkJurado.isSelected()) selectedRoles.add(new Role(4, "Jurado"));
+
+        return selectedRoles;
+    }
+
+    // ==================== VALIDACIONES DE FORMULARIO ====================
+
     private boolean validateForm() throws RegisterUserFailerException {
-        boolean isValid = true;
-        //clearFieldStyles();
         clearMessage();
-        // Validar nombres
-        if (!validateNames()) return false;
-        // Validar apellidos
-        if (!validateLastNames()) return false;
-        // Validar email
-        if (!validateEmail()) return false;
-        // Validar contraseña
-        if (!validatePassword()) return false;
-        // Validar telefono
-        if (!validateTelephone()) return false;
-        // Validar términos y condiciones
-        if (!chkTerms.isSelected()) {
-            showErrorMessage("Debe aceptar los términos y condiciones");
-            return false;
-        }
+
+        boolean isValid = true;
+        isValid &= validateNames();
+        isValid &= validateLastNames();
+        isValid &= validateEmail();
+        isValid &= validatePassword();
+        isValid &= validateTelephone();
+        isValid &= validateTermsAndConditions();
 
         return isValid;
     }
 
-    /**
-     * Valida los nombres
-     */
+    private boolean validateTermsAndConditions() {
+        if (!chkTerms.isSelected()) {
+            showErrorMessage("Debe aceptar los términos y condiciones");
+            return false;
+        }
+        return true;
+    }
+
+    // ==================== VALIDACIONES DE CAMPOS INDIVIDUALES ====================
+
     private boolean validateNames() throws RegisterUserFailerException {
-        try{
-            _validatorService.isValidNames(txtNames.getText());
-            setFieldSuccess(txtNames);
-            hideFieldError(lblNamesError);
-            return true;
-        }catch (RegisterUserFailerException e){
-            setFieldError(txtNames);
-            lblNamesError.setText(e.getMessage());
-            lblNamesError.setVisible(true);
-            lblNamesError.setManaged(true);
-            return false;
-        }
+        return validateField(
+                txtNames.getText(),
+                txtNames,
+                lblNamesError,
+                () -> _validatorService.isValidNames(txtNames.getText())
+        );
     }
 
-    /**
-     * Valida los apellidos
-     */
     private boolean validateLastNames() throws RegisterUserFailerException {
-        try{
-            _validatorService.isValidLastNames(txtLastNames.getText());
-            setFieldSuccess(txtLastNames);
-            hideFieldError(lblLastNamesError);
-            return true;
-        }catch (RegisterUserFailerException e){
-            setFieldError(txtLastNames);
-            lblLastNamesError.setText(e.getMessage());
-            lblLastNamesError.setVisible(true);
-            lblLastNamesError.setManaged(true);
-            return false;
-        }
+        return validateField(
+                txtLastNames.getText(),
+                txtLastNames,
+                lblLastNamesError,
+                () -> _validatorService.isValidLastNames(txtLastNames.getText())
+        );
     }
 
-    /**
-     * Valida el teléfono
-     */
+    private boolean validateEmail() throws RegisterUserFailerException {
+        String email = txtEmail.getText().trim();
+        return validateField(
+                email,
+                txtEmail,
+                lblEmailError,
+                () -> _validatorService.isValidEmail(email)
+        );
+    }
+
     private boolean validateTelephone() throws RegisterUserFailerException {
-        try{
-            _validatorService.isValidTelephone(txtPhone.getText());
+        String phone = txtPhone.getText().trim();
+
+        // El teléfono es opcional
+        if (phone.isEmpty()) {
             setFieldSuccess(txtPhone);
             hideFieldError(lblPhoneError);
             return true;
-        }catch (RegisterUserFailerException e){
-            setFieldError(txtPhone);
-            lblPhoneError.setText(e.getMessage());
-            lblPhoneError.setVisible(true);
-            lblPhoneError.setManaged(true);
-            return false;
         }
+
+        return validateField(
+                phone,
+                txtPhone,
+                lblPhoneError,
+                () -> _validatorService.isValidTelephone(phone)
+        );
     }
 
-    /**
-     * Valida el email
-     */
-    private boolean validateEmail() throws RegisterUserFailerException {
-        String email = txtEmail.getText().trim();
-        try{
-            _validatorService.isValidEmail(email);
-            setFieldSuccess(txtEmail);
-            hideFieldError(lblEmailError);
-            return true;
-        }
-        catch (RegisterUserFailerException e){
-            setFieldError(txtEmail);
-            lblEmailError.setText(e.getMessage());
-            lblEmailError.setVisible(true);
-            lblEmailError.setManaged(true);
-            return false;
-        }
-    }
-
-    /**
-     * Valida las contraseñas
-     */
     private boolean validatePassword() {
         String password = txtPassword.getText();
-        try{
-            _validatorService.isValidPassword(password);
-            setFieldSuccess(txtPassword);
-            hideFieldError(lblPasswordError);
-        }catch (RegisterUserFailerException e){
-            setFieldError(txtPassword);
-            lblPasswordError.setText(e.getMessage());
-            lblPasswordError.setVisible(true);
-            lblPasswordError.setManaged(true);
+        try {
+            return validateField(
+                    password,
+                    txtPassword,
+                    lblPasswordError,
+                    () -> _validatorService.isValidPassword(password)
+            );
+        } catch (RegisterUserFailerException e) {
             return false;
         }
-
-
-        return true;
     }
 
-    /**
-     * Valida la confimación de la contraseña
-     */
     private boolean validateConfirmPassword() {
         String password = txtPassword.getText();
         String confirmPassword = txtConfirmPassword.getText();
-        try{
-            _validatorService.validateConfirmPassword(password, confirmPassword);
-            setFieldSuccess(txtConfirmPassword);
-            hideFieldError(lblConfirmPasswordError);
-        }catch (RegisterUserFailerException e){
-            setFieldError(txtConfirmPassword);
-            lblConfirmPasswordError.setText(e.getMessage());
-            lblConfirmPasswordError.setVisible(true);
-            lblConfirmPasswordError.setManaged(true);
+
+        try {
+            return validateField(
+                    confirmPassword,
+                    txtConfirmPassword,
+                    lblConfirmPasswordError,
+                    () -> _validatorService.validateConfirmPassword(password, confirmPassword)
+            );
+        } catch (RegisterUserFailerException e) {
             return false;
         }
-        return true;
     }
 
-    /**
-     * Actualiza el estado del botón de registro
-     */
+    // ==================== MÉTODO GENÉRICO DE VALIDACIÓN ====================
+
+    private boolean validateField(String value, Control field, Label errorLabel, ValidationAction action)
+            throws RegisterUserFailerException {
+        try {
+            action.validate();
+            setFieldSuccess(field);
+            hideFieldError(errorLabel);
+            return true;
+        } catch (RegisterUserFailerException e) {
+            setFieldError(field);
+            showFieldError(errorLabel, e.getMessage());
+            return false;
+        }
+    }
+
+    @FunctionalInterface
+    private interface ValidationAction {
+        void validate() throws RegisterUserFailerException;
+    }
+
+    // ==================== GESTIÓN DE ESTILOS Y MENSAJES ====================
+
     private void updateRegisterButton() {
-        boolean allRequiredFieldsFilled =
-                !txtNames.getText().isEmpty() &&
-                        !txtLastNames.getText().isEmpty() &&
-                        !txtEmail.getText().isEmpty() &&
-                        //!txtPhone.getText().isEmpty() &&
-                        !txtPassword.getText().isEmpty() &&
-                        !txtConfirmPassword.getText().isEmpty() &&
-                        chkTerms.isSelected();
+        boolean allRequiredFieldsFilled = areRequiredFieldsFilled();
 
         btnRegister.setDisable(!allRequiredFieldsFilled);
 
@@ -360,67 +354,35 @@ public class RegisterController implements Initializable {
         }
     }
 
+    private boolean areRequiredFieldsFilled() {
+        return !txtNames.getText().isEmpty() &&
+                !txtLastNames.getText().isEmpty() &&
+                !txtEmail.getText().isEmpty() &&
+                !txtPassword.getText().isEmpty() &&
+                !txtConfirmPassword.getText().isEmpty() &&
+                hasSelectedRole() &&
+                chkTerms.isSelected();
+    }
 
-    /**
-     * Muestra error en un campo específico
-     */
-    private void showFieldError(Control field, Label errorLabel, String message) {
-        // Aplicar estilo de error al campo
-        setFieldError(field);
+    private boolean hasSelectedRole() {
+        return chkEstudiante.isSelected() ||
+                chkDirector.isSelected() ||
+                chkCoordinador.isSelected() ||
+                chkJurado.isSelected();
+    }
 
-        // Mostrar el mensaje de error
+    private void showFieldError(Label errorLabel, String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);
         errorLabel.setManaged(true);
     }
 
-    /**
-     * Oculta el error de un campo específico
-     */
     private void hideFieldError(Label errorLabel) {
         errorLabel.setVisible(false);
         errorLabel.setManaged(false);
         errorLabel.setText("");
     }
 
-    /**
-     * Limpia todos los errores de campo
-     */
-    private void clearAllFieldErrors() {
-        // Ocultar todos los mensajes de error
-        hideFieldError(lblNamesError);
-        hideFieldError(lblLastNamesError);
-        hideFieldError(lblEmailError);
-        hideFieldError(lblRolesError);
-        hideFieldError(lblPasswordError);
-        hideFieldError(lblConfirmPasswordError);
-
-        // Limpiar estilos de los campos
-        clearFieldStyles();
-    }
-
-    /**
-     * Limpia los estilos de error/éxito de todos los campos
-     */
-    private void clearFieldStyles() {
-        txtNames.getStyleClass().removeAll("error", "success");
-        txtEmail.getStyleClass().removeAll("error", "success");
-        txtUsername.getStyleClass().removeAll("error", "success");
-        txtPassword.getStyleClass().removeAll("error", "success");
-        txtConfirmPassword.getStyleClass().removeAll("error", "success");
-        txtPhone.getStyleClass().removeAll("error", "success");
-    }
-
-    /**
-     * Remueve un estilo específico de un campo
-     */
-    private void removeFieldStyle(Control field, String styleClass) {
-        field.getStyleClass().remove(styleClass);
-    }
-
-    /**
-     * Aplica estilo de error a un campo
-     */
     private void setFieldError(Control field) {
         field.getStyleClass().removeAll("success");
         if (!field.getStyleClass().contains("error")) {
@@ -428,9 +390,6 @@ public class RegisterController implements Initializable {
         }
     }
 
-    /**
-     * Aplica estilo de éxito a un campo
-     */
     private void setFieldSuccess(Control field) {
         field.getStyleClass().removeAll("error");
         if (!field.getStyleClass().contains("success")) {
@@ -438,9 +397,6 @@ public class RegisterController implements Initializable {
         }
     }
 
-    /**
-     * Muestra mensaje de error
-     */
     private void showErrorMessage(String message) {
         lblRegisterMessage.setText(message);
         lblRegisterMessage.getStyleClass().removeAll("success");
@@ -449,45 +405,53 @@ public class RegisterController implements Initializable {
         }
     }
 
-    /**
-     * Muestra mensaje de éxito
-     */
     private void showSuccessMessage(String message) {
         lblRegisterMessage.setText(message);
         lblRegisterMessage.getStyleClass().removeAll("message-label");
         lblRegisterMessage.getStyleClass().addAll("message-label", "success");
     }
 
-    /**
-     * Limpia el mensaje
-     */
     private void clearMessage() {
         lblRegisterMessage.setText("");
     }
 
-    /**
-     * Valida Roles
-     */
-    private void validarEstudiante() {
-        if (chkDirector.isSelected() || chkCoordinador.isSelected() || chkJurado.isSelected()) {
-            chkEstudiante.setSelected(false);
-            chkEstudiante.setDisable(true);
-        } else {
-            chkEstudiante.setDisable(false);
-        }
+    // ==================== MÉTODOS DE LIMPIEZA ====================
+
+    private void clearAllFieldErrors() {
+        hideFieldError(lblNamesError);
+        hideFieldError(lblLastNamesError);
+        hideFieldError(lblEmailError);
+        hideFieldError(lblRolesError);
+        hideFieldError(lblPasswordError);
+        hideFieldError(lblConfirmPasswordError);
+        hideFieldError(lblPhoneError);
+        clearFieldStyles();
     }
 
-    /**
-     * Limpia todo el formulario
-     */
+    private void clearFieldStyles() {
+        txtNames.getStyleClass().removeAll("error", "success");
+        txtLastNames.getStyleClass().removeAll("error", "success");
+        txtEmail.getStyleClass().removeAll("error", "success");
+        txtPassword.getStyleClass().removeAll("error", "success");
+        txtConfirmPassword.getStyleClass().removeAll("error", "success");
+        txtPhone.getStyleClass().removeAll("error", "success");
+    }
+
     private void clearForm() {
         txtNames.clear();
+        txtLastNames.clear();
         txtEmail.clear();
-        txtUsername.clear();
         txtPassword.clear();
         txtConfirmPassword.clear();
         txtPhone.clear();
         chkTerms.setSelected(false);
+
+        // Limpiar selección de roles
+        chkEstudiante.setSelected(false);
+        chkDirector.setSelected(false);
+        chkCoordinador.setSelected(false);
+        chkJurado.setSelected(false);
+
         clearFieldStyles();
         clearMessage();
     }

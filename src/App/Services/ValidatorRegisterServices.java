@@ -1,9 +1,12 @@
 package Services;
 
 import Exceptions.RegisterUserFailerException;
+
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import Interfaces.IValidatorRegisterServices;
+import Models.Role;
 
 public class ValidatorRegisterServices implements IValidatorRegisterServices {
 
@@ -93,4 +96,10 @@ public class ValidatorRegisterServices implements IValidatorRegisterServices {
         if(!mainPassword.equals(repPassword))
             throw  RegisterUserFailerException.invalidConfirmationPassword();
     }
+
+    @Override
+    public void isValidRole(List<Role> prmListRoles) throws RegisterUserFailerException {
+        if(prmListRoles.isEmpty())  throw RegisterUserFailerException.NoRoleSelected();
+    }
+
 }

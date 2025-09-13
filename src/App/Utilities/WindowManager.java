@@ -18,8 +18,8 @@ import java.util.prefs.Preferences;
  */
 public class WindowManager {
 
-    private static final double STANDARD_WIDTH = 1024;
-    private static final double STANDARD_HEIGHT = 768;
+    private static final double STANDARD_WIDTH = 800;
+    private static final double STANDARD_HEIGHT = 600;
     private static final double MIN_WIDTH = 800;
     private static final double MIN_HEIGHT = 600;
 
