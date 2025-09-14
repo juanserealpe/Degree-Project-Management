@@ -1,5 +1,6 @@
 package App.Services;
 
+import App.Exceptions.FileException;
 import App.Interfaces.IFileService;
 
 import javax.swing.*;
@@ -21,62 +22,53 @@ public class FileService implements IFileService {
     private static final String UPLOAD_DIRECTORY = "uploads/";
 
     @Override
-    public FileResult UploadFile() {
-        FileResult tempFile = new FileResult();
+    public String uploadFile(String path) throws FileException {
         try {
             if (fileAlreadyUploaded) {
-                tempFile.setFileStatus(FileStatus.ALREADY_UPLOADED);
-                return tempFile;
+                throw FileException.alreadyUploaded();
             }
 
-            File file = OpenFileDialog();
+            File file = new File(path);
             if (file.length() == 0) {
-                tempFile.setFileStatus(FileStatus.EMPTY_FILE);
-                return tempFile;
+                throw FileException.emptyFile();
             }
 
             if (hasDangerousChars(file.getName())) {
-                tempFile.setFileStatus(FileStatus.DANGEROUS_FILENAME);
-                return tempFile;
+                throw FileException.dangerousFilename();
             }
 
             if (!file.getName().toLowerCase().endsWith(".pdf")) {
-                tempFile.setFileStatus(FileStatus.INCORRECT_EXTENSION);
-                return tempFile;
+                throw FileException.incorrectExtension();
             }
 
             byte[] content = Files.readAllBytes(file.toPath());
             if (exceedsMaxSize(content)) {
-                tempFile.setFileStatus(FileStatus.MAX_CAPACITY);
-                return tempFile;
+                throw FileException.maxCapacity();
             }
 
             if (!isPDF(content)) {
-                tempFile.setFileStatus(FileStatus.INCORRECT_MAGIC_BYTES);
-                return tempFile;
+                throw FileException.incorrectMagicBytes();
             }
 
             createUploadDirectory();
-            String currentDir = System.getProperty("user.dir")+"\\";
-
+            String currentDir = System.getProperty("user.dir") + "\\";
             String safeFileName = generateSafeFileName(file.getName());
-            Path destinationPath = Paths.get(currentDir+ UPLOAD_DIRECTORY + safeFileName);
+            Path destinationPath = Paths.get(currentDir + UPLOAD_DIRECTORY + safeFileName);
 
             Files.copy(file.toPath(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
-
-            tempFile.setPath(destinationPath.toString());
-            tempFile.setFileStatus(FileStatus.SUCCESS);
             fileAlreadyUploaded = true;
-            System.out.println(destinationPath.toString());
-        } catch (IllegalArgumentException e) {
-            tempFile.setFileStatus(FileStatus.FILE_NO_SELECTED);
+
+            return safeFileName;
+
         } catch (IOException e) {
-            tempFile.setFileStatus(FileStatus.FILE_NOT_FOUND);
+            throw FileException.fileNotFound();
+        } catch (FileException e) {
+            throw e;
         } catch (Exception e) {
-            tempFile.setFileStatus(FileStatus.INVALID_FILE);
+            throw FileException.unknownError();
         }
-        return tempFile;
     }
+
     private void createUploadDirectory() throws IOException {
         String currentDir = System.getProperty("user.dir")+"\\";
 
@@ -125,7 +117,7 @@ public class FileService implements IFileService {
     }
 
     @Override
-    public FileResult DownloadFile() {
+    public String DownloadFile() {
         return null;
     }
 

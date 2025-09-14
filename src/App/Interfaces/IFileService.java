@@ -1,10 +1,10 @@
 package App.Interfaces;
 
-import App.Services.FileResult;
+import App.Exceptions.FileException;
 
 public interface IFileService{
-    FileResult UploadFile();
-    FileResult DownloadFile();
+    public String uploadFile(String path) throws FileException;
+    String DownloadFile();
     void DeleteFile(String Path);
 
 }
