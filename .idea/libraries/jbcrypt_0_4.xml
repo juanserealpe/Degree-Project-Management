@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="jbcrypt-0.4">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/OneDrive/Desktop/Dependencias/Dependencias/jbcrypt-0.4.jar!/" />
+      <root url="jar://$USER_HOME$/OneDrive/Desktop/Dependencias/Dependencias/miglayout-3.7.4.jar!/" />
+      <root url="jar://$USER_HOME$/OneDrive/Desktop/Dependencias/Dependencias/sqlite-jdbc-3.50.3.0.jar!/" />
+      <root url="jar://$USER_HOME$/OneDrive/Desktop/Dependencias/Dependencias/TimingFramework-0.55.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
