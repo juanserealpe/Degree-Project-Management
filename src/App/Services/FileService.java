@@ -94,12 +94,12 @@ public class FileService implements IFileService {
         return DANGEROUS_CHARS.stream().anyMatch(filename::contains);
     }
 
-    boolean isPDF(byte[] content) {
+    public boolean isPDF(byte[] content) {
         if (content.length < 5) return false;
         return content[0] == '%' && content[1] == 'P' && content[2] == 'D' && content[3] == 'F' && content[4] == '-';
     }
 
-    boolean exceedsMaxSize(byte[] content) {
+    public boolean exceedsMaxSize(byte[] content) {
         return content.length > 5 * MB;
     }
 
