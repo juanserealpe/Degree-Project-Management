@@ -9,8 +9,6 @@ bin/
 *.war
 *.ear
 
-# Ignorar base de datos local
-*.db
 
 # Ignorar archivos de NetBeans
 nbproject/private/
