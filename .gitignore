@@ -1,0 +1,27 @@
+# Ignorar directorios de compilación
+build/
+out/
+bin/
+
+# Ignorar archivos compilados
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignorar base de datos local
+*.db
+
+# Ignorar archivos de NetBeans
+nbproject/private/
+nbproject/Makefile-*
+nbproject/build-impl.xml
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+.DS_Store
+
+database.db
+/dist/

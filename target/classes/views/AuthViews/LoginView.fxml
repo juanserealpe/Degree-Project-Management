@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<StackPane xmlns="http://javafx.com/javafx/11.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Controllers.LoginController"
+           stylesheets="@/css/login.css"
+           styleClass="root-container">
+
+    <children>
+
+        <!-- Contenedor principal -->
+        <VBox alignment="CENTER"
+              maxHeight="650.0" maxWidth="500.0"
+              minHeight="550.0" minWidth="400.0"
+              prefHeight="600.0" prefWidth="450.0"
+              spacing="20"
+              styleClass="login-container">
+
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
+
+            <children>
+                <!-- Icono -->
+                <ImageView fx:id="iconoLogin"
+                           fitWidth="90"
+                           fitHeight="90"
+                           preserveRatio="true"
+                           pickOnBounds="true"
+                           styleClass="app-icon1">
+                    <image>
+                        <Image url="/img/icon1.png"/>
+                    </image>
+                </ImageView>
+
+                <!-- Header -->
+                <VBox alignment="CENTER" spacing="10.0" styleClass="header-section">
+                    <children>
+                        <Label styleClass="app-title" text="Bienvenido"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0"/>
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Form Section -->
+                <VBox spacing="20.0" styleClass="form-section">
+                    <children>
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label styleClass="field-label" text="Correo Electrónico"/>
+                                <TextField fx:id="txtEmail"
+                                           promptText="Ingrese su correo"
+                                           styleClass="text-field"/>
+                            </children>
+                        </VBox>
+
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label styleClass="field-label" text="Contraseña"/>
+                                <PasswordField fx:id="txtPassword"
+                                               promptText="Ingrese su contraseña"
+                                               styleClass="text-field"/>
+                            </children>
+                        </VBox>
+
+                        <Label fx:id="lblMessage"
+                               styleClass="message-label"
+                               textAlignment="CENTER"
+                               wrapText="true"
+                               maxWidth="Infinity"
+                               prefWidth="340"
+                               alignment="CENTER"/>
+
+                        <Button maxWidth="1.7976931348623157E308"
+                                mnemonicParsing="false"
+                                onAction="#handleLogin"
+                                styleClass="login-button"
+                                text="Iniciar Sesión">
+                            <VBox.margin>
+                                <Insets top="10.0"/>
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="40.0" right="40.0"/>
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Footer -->
+                <VBox alignment="CENTER" spacing="15.0" styleClass="footer-section">
+                    <children>
+                        <Separator styleClass="separator"/>
+                        <Label styleClass="register-text" text="¿No tienes cuenta?"/>
+                        <Button mnemonicParsing="false"
+                                onAction="#handleRegister"
+                                styleClass="register-button"
+                                text="Crear cuenta"/>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+
+        <!-- ✅ Mensaje flotante fuera del contenedor -->
+        <Label fx:id="successBox"
+               text="Registro exitoso"
+               visible="false"
+               managed="false"
+               styleClass="success-box"
+               StackPane.alignment="TOP_LEFT"
+               alignment="CENTER"
+               translateX="20"
+               translateY="20"/>
+    </children>
+</StackPane>
