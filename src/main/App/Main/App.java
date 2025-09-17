@@ -15,7 +15,7 @@ public class App extends Application {
         );
         Scene scene = new Scene(loader.load());
         primaryStage.setScene(scene);
-        WindowManager.setupWindow(primaryStage, "", true, 1366, 768);
+        WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
     }
 }

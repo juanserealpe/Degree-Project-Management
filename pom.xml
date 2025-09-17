@@ -15,32 +15,36 @@
     </properties>
 
     <dependencies>
-            <!-- JavaFX Controls -->
-            <dependency>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-controls</artifactId>
-                <version>17.0.16</version>
-            </dependency>
+        <!-- JavaFX Controls -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17.0.16</version>
+            <classifier>win</classifier>
+        </dependency>
 
-            <!-- JavaFX FXML -->
-            <dependency>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-fxml</artifactId>
-                <version>17.0.16</version>
-            </dependency>
+        <!-- JavaFX FXML -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>17.0.16</version>
+            <classifier>win</classifier>
+        </dependency>
 
-            <!-- JavaFX Graphics -->
-            <dependency>
-                <groupId>org.openjfx</groupId>
-                <artifactId>javafx-graphics</artifactId>
-                <version>17.0.16</version>
-            </dependency>
-        <!-- ControlsFX (componentes adicionales para JavaFX) -->
-            <dependency>
-                <groupId>org.controlsfx</groupId>
-                <artifactId>controlsfx</artifactId>
-                <version>11.2.1</version>
-            </dependency>
+        <!-- JavaFX Graphics -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>17.0.16</version>
+            <classifier>win</classifier>
+        </dependency>
+
+        <!-- ControlsFX -->
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.2.1</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
         <dependency>
