@@ -42,7 +42,12 @@ public class User {
 
     public User() {
     }
-
+    public int getId() {
+        return this.accountId;
+    }
+    public void setId(int id) {
+        this.accountId = id;
+    }
     public List<Role> getRoles() {
         return roles;
     }

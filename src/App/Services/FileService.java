@@ -5,8 +5,7 @@ import App.Interfaces.IFileService;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,7 +19,42 @@ public class FileService implements IFileService {
     private static final List<String> DANGEROUS_CHARS = Arrays.asList("../", "\0", "%00", ":", ";", "*", "?");
     private boolean fileAlreadyUploaded = false;
     private static final String UPLOAD_DIRECTORY = "uploads/";
+    @Override
+    public String readFile(String path, String filename) throws IOException {
+        File file = new File(path + filename);
+        if (!file.exists()) {
+            throw new FileNotFoundException("Archivo no encontrado: " + file.getAbsolutePath());
+        }
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            return reader.readLine();
+        }
+    }
+
+    @Override
+    public String saveFile(String path, String filename, String content) throws IOException {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        File file = new File(path + filename);
+        try{
+            FileWriter fw = new FileWriter(file);
+            fw.write(content);
+            fw.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        try {
+            Runtime.getRuntime().exec("attrib +H " + file.getAbsolutePath());
+        } catch (Exception e) {
+            System.err.println("No se pudo ocultar el archivo: " + e.getMessage());
+        }
+
+        return file.getAbsolutePath();
+    }
     @Override
     public String uploadFile(String path) throws FileException {
         try {

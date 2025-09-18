@@ -3,6 +3,7 @@ package App.Repositories;
 import App.DataBase.DbConnection;
 import App.Interfaces.IRepository;
 import App.Models.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +39,35 @@ public class UserRepository implements IRepository<User> {
 
         } catch (SQLException e) {
             System.out.println("Error al obtener usuario por email: " + e.getMessage());
+        }
+
+        return user;
+    }
+    public User getById(int id) {
+        String sql = "SELECT u.name, u.lastName, u.phone, a.email, a.idProgram, a.idAccount " +
+                "FROM Account a " +
+                "JOIN User u ON a.idUser = u.idUser " +
+                "WHERE a.idAccount = ?";
+        User user = null;
+
+        try (Connection conn = dbConnection.toConnect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    user = new User();
+                    user.setEmail(rs.getString("email"));
+                    user.setNames(rs.getString("name"));
+                    user.setLastNames(rs.getString("lastName"));
+                    user.setProgramId(rs.getInt("idProgram"));
+                    user.setAccountId(rs.getInt("idAccount"));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener usuario por id_account: " + e.getMessage());
         }
 
         return user;

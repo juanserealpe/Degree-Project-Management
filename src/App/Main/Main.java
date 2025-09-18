@@ -2,30 +2,10 @@ package App.Main;
 
 import App.Dtos.DirectorDTO;
 import App.Dtos.StudentDTO;
-import App.Interfaces.IAccountRepository;
-import App.Interfaces.IDataNormalizerServices;
-import App.Interfaces.IEncrypt;
-import App.Interfaces.IRepository;
-import App.Interfaces.IRoleRepository;
-import App.Interfaces.IValidatorRegisterServices;
-import App.Models.Account;
-import App.Models.Director;
-import App.Models.Role;
-import App.Models.Student;
+import App.Interfaces.*;
 import App.Models.User;
-import App.Repositories.AccountRepository;
-import App.Repositories.DirectorRepository;
-import App.Repositories.RoleRepository;
-import App.Repositories.StudentRepository;
-import App.Repositories.UserRepository;
-import App.Services.AuthService;
-import App.Services.DataNormalizerServices;
-import App.Services.DirectorServices;
-import App.Services.EncryptService;
-import App.Services.StudentServices;
-import App.Services.ValidatorRegisterServices;
-import java.util.ArrayList;
-import java.util.List;
+import App.Repositories.*;
+import App.Services.*;
 
 public class Main {
 
@@ -47,6 +27,12 @@ public class Main {
         IEncrypt _encryptService3 = new EncryptService();
         IValidatorRegisterServices _validatorService2 = new ValidatorRegisterServices();
         DirectorServices directorService = new DirectorServices(_directorRepo, _encryptService3, _validatorService2, dataService1);
+        CookieService cookieService = new CookieService();
+        UserRepository userRepo = (UserRepository) _userRepo;
+        //cookieService.setCookie(userRepo.getById(1));
+        User user = cookieService.getUserByCookie();
+
+
         /*
         Student newStudent = new Student("juanvaronaov1@unicauca.edu.co", "JuAn", "VaROnA", 0, 1, "3015056565");
         Account newAccount = new Account("juanse1A?");

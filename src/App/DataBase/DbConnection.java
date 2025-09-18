@@ -1,13 +1,14 @@
 package App.DataBase;
 
 import App.Interfaces.IDbConnection;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnection implements IDbConnection {
 
-    private final String URL = "jdbc:sqlite:C:\\Users\\juans\\Desktop\\Sw2\\Degree-Project-Management\\database2.db";
+    private final String URL = "jdbc:sqlite:database2.db";
 
     @Override
     public Connection toConnect() {
