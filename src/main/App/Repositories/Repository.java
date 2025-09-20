@@ -1,7 +1,7 @@
-package main.App.Repositories;
+package Repositories;
 
-import main.App.DataBase.DbConnection;
-import main.App.Utilities.OperationResult;
+import DataBase.DbConnection;
+import Utilities.OperationResult;
 import org.sqlite.SQLiteException;
 
 import java.sql.Connection;
@@ -25,7 +25,9 @@ public abstract class Repository{
         }
         resultScript = OperationResult.CreateUnconfiguredResult();
     }
-
+    public OperationResult getOperationResult(){
+        return resultScript;
+    }
     private boolean HandleInvalidScript(){
         this.resultScript = OperationResult.CreateUnconfiguredResult();
         return false;

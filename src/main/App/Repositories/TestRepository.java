@@ -1,4 +1,4 @@
-package main.App.Repositories;
+package Repositories;
 
 public class TestRepository extends Repository{
         public boolean INSERT(String script, Object[] params){

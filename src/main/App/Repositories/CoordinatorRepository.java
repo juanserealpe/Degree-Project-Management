@@ -1,7 +1,7 @@
 package Repositories;
 
-import main.App.Enums.EnumState;
-import main.App.Models.FormatA;
+import Enums.EnumState;
+import Models.FormatA;
 
 import java.util.List;
 import java.util.Map;
