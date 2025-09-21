@@ -7,6 +7,7 @@ module app.main {
     requires javafx.graphics;
     requires javafx.base;
     requires java.sql;
+    requires org.xerial.sqlitejdbc;
 
     opens Main to javafx.fxml;
     opens Controllers to javafx.fxml;
