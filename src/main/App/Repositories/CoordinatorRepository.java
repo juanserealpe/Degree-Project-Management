@@ -2,6 +2,7 @@ package Repositories;
 
 import Enums.EnumState;
 import Models.FormatA;
+import Utilities.BaseRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
  * @author Alexp
  *
  **/
-public class CoordinatorRepository extends Repository {
+public class CoordinatorRepository extends BaseRepository {
 
     public CoordinatorRepository(){
     }

@@ -1,8 +1,6 @@
-package Repositories;
+package Utilities;
 
 import DataBase.DbConnection;
-import Utilities.DbOperationResult;
-import org.sqlite.SQLiteException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,11 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class Repository{
+public abstract class BaseRepository {
     protected Connection connBd;
     protected DbOperationResult resultScript;
 
-    public Repository() {
+    public BaseRepository() {
         try{
             this.connBd = DbConnection.getConnection();
             loadConstraintForeingKey();

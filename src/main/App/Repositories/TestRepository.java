@@ -1,6 +1,8 @@
 package Repositories;
 
-public class TestRepository extends Repository{
+import Utilities.BaseRepository;
+
+public class TestRepository extends BaseRepository {
         public boolean INSERT(String script, Object[] params){
             boolean successful = makeInsert(script, params);
             printResult();
