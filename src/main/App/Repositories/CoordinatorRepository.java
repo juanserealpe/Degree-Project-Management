@@ -18,7 +18,7 @@ public class CoordinatorRepository extends Repository {
     public List<FormatA> getFormatAPending(){
         String script = "SELECT * FROM FormatA WHERE currentStatus = ?;";
         Object[] params = { EnumState.ESPERA.toString() };
-        if(!(makeQuery(script, params))) return null;
+        if(!(makeRetrieve(script, params))) return null;
         List<Map<String, Object>> vData = resultScript.getPayload();
         return null;
     }
@@ -26,13 +26,13 @@ public class CoordinatorRepository extends Repository {
     public boolean updateStateFormatA(int pIdStudent, EnumState pNewState) {
         String script = "UPDATE FormatAs SET current_status = ? WHERE idStudent = ?";
         Object[] pParams = {pNewState.toString(), pIdStudent};
-        if(makeDml(script, pParams)) return updateCountAttemps(pIdStudent);
+        if(makeUpdate(script, pParams)) return updateCountAttemps(pIdStudent);
         else return false;
     }
 
     private boolean updateCountAttemps(int pIdStudent){
         String script = "UPDATE FormatA SET attempt = attempt + 1 WHERE idStudent = ?";
         Object[] pParams = {pIdStudent};
-        return makeDml(script,pParams);
+        return makeUpdate(script,pParams);
     }
 }

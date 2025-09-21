@@ -1,7 +1,7 @@
 package Repositories;
 
 import DataBase.DbConnection;
-import Utilities.OperationResult;
+import Utilities.DbOperationResult;
 import org.sqlite.SQLiteException;
 
 import java.sql.Connection;
@@ -15,60 +15,86 @@ import java.util.Map;
 
 public abstract class Repository{
     protected Connection connBd;
-    protected OperationResult resultScript;
+    protected DbOperationResult resultScript;
 
     public Repository() {
         try{
             this.connBd = DbConnection.getConnection();
+            loadConstraintForeingKey();
         }catch(Exception exc){
             System.out.println(exc.getMessage());
         }
-        resultScript = OperationResult.CreateUnconfiguredResult();
+        resultScript = DbOperationResult.CreateUnconfiguredResult();
     }
-    public OperationResult getOperationResult(){
+    private void loadConstraintForeingKey(){
+        makeInsert("PRAGMA foreign_keys = OFF", null);
+    }
+    public DbOperationResult getOperationResult(){
         return resultScript;
     }
     private boolean HandleInvalidScript(){
-        this.resultScript = OperationResult.CreateUnconfiguredResult();
+        this.resultScript = DbOperationResult.CreateUnconfiguredResult();
         return false;
     }
     private boolean isValidScript(String pScript){
         return (!(pScript == null  || pScript.isEmpty()));
     }
+
     /*
-     * Used from DML and Query
+     * Used from DML
      */
-    protected boolean makeDml(String pScript, Object[] pParamsToReplace){
+    protected boolean makeInsert(String pScript, Object[] pParamsToReplace){
         if(!(isValidScript(pScript))) return HandleInvalidScript();
         try{
-            resultScript = executeUpdate(pScript, pParamsToReplace);
+            int vRowsAffected = executeUpdate(pScript, pParamsToReplace);
+            if(vRowsAffected == 0)
+                resultScript = DbOperationResult.createFailedInsertResult();
+            else
+                resultScript = DbOperationResult.createSuccessfulInsertResult(vRowsAffected);
         }catch(Exception exc){
-            resultScript = this.typeOfError(exc);
+            resultScript = DbOperationResult.CreateErrorExceptionResult(exc.getMessage());
         }
         return resultScript.isSuccess();
     }
-    protected boolean makeQuery(String pScript, Object[] pParamsToReplace){
-        if(pScript == null  || pScript.isEmpty()) return HandleInvalidScript();
+    protected boolean makeUpdate(String pScript, Object[] pParamsToReplace){
+        if(!(isValidScript(pScript))) return HandleInvalidScript();
         try{
-            resultScript = executeQuery(pScript, pParamsToReplace);
+            int vRowsAffected = executeUpdate(pScript, pParamsToReplace);
+            if(vRowsAffected == 0)
+                resultScript = DbOperationResult.createFailedUpdateResult();
+            else
+                resultScript = DbOperationResult.createSuccessfulUpdateResult(vRowsAffected);
         }catch(Exception exc){
-            resultScript = this.typeOfError(exc);
+            resultScript = DbOperationResult.CreateErrorExceptionResult(exc.getMessage());
+        }
+        return resultScript.isSuccess();
+    }
+    protected boolean makeRetrieve(String pScript, Object[] pParamsToReplace){
+        if(!(isValidScript(pScript))) return HandleInvalidScript();
+        try{
+            List<Map<String, Object>> vData = executeQuery(pScript, pParamsToReplace);
+            if(vData == null || vData.isEmpty())
+                resultScript = DbOperationResult.createFailedRetrieveResult();
+            else
+                resultScript = DbOperationResult.createSuccessfulRetrieveResult(vData);
+        }catch(Exception exc){
+            resultScript = DbOperationResult.CreateErrorExceptionResult(exc.getMessage());
         }
         return resultScript.isSuccess();
     }
     /*
      * Privates
      */
-    private OperationResult executeUpdate(String pScript, Object[] pParams) throws Exception {
+    private int executeUpdate(String pScript, Object[] pParams) throws Exception {
         try (PreparedStatement stmt = connBd.prepareStatement(pScript)) {
             if(pParams != null && pParams.length != 0){
                 for (int idx = 0; idx < pParams.length; idx++)
                     stmt.setObject(idx + 1, pParams[idx]);
             }
-            return OperationResult.CreateSuccessfulUpdateResult("Realized operation", stmt.executeUpdate());
+            return stmt.executeUpdate();
         }
     }
-    private OperationResult executeQuery(String pScript, Object[] pParams) throws Exception {
+    private List<Map<String, Object>> executeQuery(String pScript, Object[] pParams) throws Exception {
         List<Map<String, Object>> varResults = new ArrayList<>();
         try (PreparedStatement varStmt = connBd.prepareStatement(pScript)) {
             if (pParams != null && pParams.length != 0) {
@@ -85,15 +111,7 @@ public abstract class Repository{
                 }
             }
         }
-        return  OperationResult.CreateSuccessfulQueryResult("Correct", varResults);
-    }
-    private OperationResult typeOfError(Exception exc) {
-        if (exc instanceof SQLiteException sqliteEx){
-            return OperationResult.CreateErrorResult(sqliteEx.getMessage(), sqliteEx.getResultCode().code);
-        }
-        if(exc instanceof NullPointerException nullPointerExc)
-            return OperationResult.CreateErrorResult(nullPointerExc.getMessage(), -1);
-        return OperationResult.CreateErrorResult(exc.getMessage(), 99);
+        return varResults;
     }
 }
 
