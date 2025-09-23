@@ -1,55 +1,45 @@
 package App.Models;
 
-public class FormatA {
+import java.util.Date;
 
-    private int idFormato;
-    private Student student;
-    private Director director_n1;
-    private Director director_n2;
+public class FormatA extends Process{
     private String title;
-    private String currentStatus;
-    private int attempts;
+    private String observations;
+    private int attempt;
+    private String URL;
 
-    public FormatA(int idFormato, Student student, Director director_n1, Director director_n2, String title, String currentStatus, int attempts) {
-        this.idFormato = idFormato;
-        this.student = student;
-        this.director_n1 = director_n1;
-        this.director_n2 = director_n2;
+    public FormatA(String title, String observations, String URL, int attempt) {
         this.title = title;
-        this.currentStatus = currentStatus;
-        this.attempts = attempts;
+        this.observations = observations;
+        this.URL = URL;
+        this.attempt = attempt;
     }
 
-    public int getIdFormato() {
-        return idFormato;
+    public FormatA() {
     }
 
-    public void setIdFormato(int idFormato) {
-        this.idFormato = idFormato;
+    public String getURL() {
+        return URL;
     }
 
-    public Student getStudent() {
-        return student;
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 
-    public void setStudent(Student student) {
-        this.student = student;
+    public int getAttempt() {
+        return attempt;
     }
 
-    public Director getDirector_n1() {
-        return director_n1;
+    public void setAttempt(int attempt) {
+        this.attempt = attempt;
     }
 
-    public void setDirector_n1(Director director_n1) {
-        this.director_n1 = director_n1;
+    public String getObservations() {
+        return observations;
     }
 
-    public Director getDirector_n2() {
-        return director_n2;
-    }
-
-    public void setDirector_n2(Director director_n2) {
-        this.director_n2 = director_n2;
+    public void setObservations(String observations) {
+        this.observations = observations;
     }
 
     public String getTitle() {
@@ -60,20 +50,23 @@ public class FormatA {
         this.title = title;
     }
 
-    public String getCurrentStatus() {
-        return currentStatus;
+    @Override
+    public Date getDate() {
+        return super.getDate();
     }
 
-    public void setCurrentStatus(String currentStatus) {
-        this.currentStatus = currentStatus;
+    @Override
+    public EnumState getEnumState() {
+        return super.getEnumState();
     }
 
-    public int getAttempts() {
-        return attempts;
+    @Override
+    public void setDate(Date date) {
+        super.setDate(date);
     }
 
-    public void setAttempts(int attempts) {
-        this.attempts = attempts;
+    @Override
+    public void setEnumState(EnumState enumState) {
+        super.setEnumState(enumState);
     }
-
 }
