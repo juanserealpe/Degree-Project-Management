@@ -15,20 +15,18 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.11.0</version> <!-- versión estable a 2025 -->
             <scope>test</scope>
         </dependency>
-
         <!-- JavaFX Controls -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>17.0.16</version>
-            <classifier>linux</classifier>
+            <classifier>win</classifier>
         </dependency>
 
         <!-- JavaFX FXML -->
@@ -36,7 +34,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.16</version>
-            <classifier>linux</classifier>
+            <classifier>win</classifier>
         </dependency>
 
         <!-- JavaFX Graphics -->
@@ -44,7 +42,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>17.0.16</version>
-            <classifier>linux</classifier>
+            <classifier>win</classifier>
         </dependency>
 
         <!-- ControlsFX -->
@@ -53,7 +51,6 @@
             <artifactId>controlsfx</artifactId>
             <version>11.2.1</version>
         </dependency>
-
 
         <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
         <dependency>
