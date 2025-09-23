@@ -4,12 +4,17 @@ import DataBase.DbConnection;
 import Dtos.UserRegisterDTO;
 import Interfaces.IRepository;
 import Utilities.BaseRepository;
+import Utilities.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class UserRegisterRepository extends BaseRepository implements IRepository<UserRegisterDTO> {
+
+    public UserRegisterRepository(Connection connection) {
+        super(connection);
+    }
     @Override
     public void add(UserRegisterDTO entity) {
         String insertUserSQL = "INSERT INTO User (name, lastName, phone) VALUES (?, ?, ?)";
@@ -17,10 +22,8 @@ public class UserRegisterRepository extends BaseRepository implements IRepositor
         String insertAccountRoleSQL = "INSERT INTO Account_Role (idAccount, idRole) VALUES (?, ?)";
 
         try (Connection conn = DbConnection.getConnection()) {
-            conn.setAutoCommit(false); // Inicia transacción
-            this.connBd = conn; // 🔹 aseguramos que tu helper use la misma conexión
+            conn.setAutoCommit(false);
 
-            // 1️⃣ Insertar User y obtener el ID
             int userId = makeInsertWithGeneratedKey(insertUserSQL,
                     new Object[]{entity.getUser().getName(), entity.getUser().getLastName(), entity.getUser().getPhoneNumber()});
 
@@ -29,14 +32,11 @@ public class UserRegisterRepository extends BaseRepository implements IRepositor
             }
             entity.getAccount().setIdAccount(userId);
 
-            // 2️⃣ Insertar Account
             boolean accountInserted = makeInsert(insertAccountSQL,
                     new Object[]{entity.getAccount().getIdAccount(), entity.getAccount().getEmail(), entity.getPassword(), entity.getAccount().getProgram().ordinal()});
             if (!accountInserted) {
                 throw new SQLException("No se pudo insertar la cuenta");
             }
-
-            // 3️⃣ Insertar Roles
             for (var role : entity.getAccount().getRoles()) {
                 boolean roleInserted = makeInsert(insertAccountRoleSQL,
                         new Object[]{entity.getAccount().getIdAccount(), role.getId()});
@@ -44,9 +44,8 @@ public class UserRegisterRepository extends BaseRepository implements IRepositor
                     throw new SQLException("No se pudo insertar el rol: " + role);
                 }
             }
-
             conn.commit();
-            System.out.println("✅ Usuario registrado correctamente con cuenta y roles.");
+            Logger.info(UserRegisterRepository.class,"Usuario registrado correctamente");
 
         } catch (SQLException e) {
             e.printStackTrace();

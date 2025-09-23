@@ -1,32 +1,25 @@
 package Dtos;
 
-import Enums.EnumProgram;
-import Enums.EnumRole;
 import Models.Account;
 import Models.User;
 
-import java.util.List;
-
 public class UserRegisterDTO {
+    private String password;
+    private User user;
+    private Account account;
 
-    private String Password;
-    private User User;
-    private Account Account;
-
-    public UserRegisterDTO(Account Account, User User, String Password) {
-        this.User = User;
-        this.Account = Account;
-        this.Password = Password;
+    public UserRegisterDTO(String password, User user, Account account) {
+        this.password = password;
+        this.user = user;
+        this.account = account;
     }
 
-    public UserRegisterDTO() {}
+    public String getPassword() {return this.password;}
+    public void  setPassword(String password) {this.password = password;}
 
-    public String getPassword() { return Password; }
-    public void setPassword(String password) { this.Password = password; }
+    public User getUser() {return this.user;}
+    public void setUser(User user) {this.user = user;}
 
-    public User getUser() { return User; }
-    public void setUser(User user) { this.User = user; }
-
-    public Account getAccount() { return Account; }
-    public void setAccount(Account account) { this.Account = account; }
+    public Account getAccount() {return this.account;}
+    public void setAccount(Account account) {this.account = account;}
 }
