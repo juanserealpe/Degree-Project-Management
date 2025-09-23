@@ -40,7 +40,7 @@ public class LoginController {
             Object data = stage.getUserData();
             if (data instanceof String) {
                 showSuccessBox((String) data);
-                stage.setUserData(null); // limpiar para que no se repita
+                stage.setUserData(null);
             }
         });
     }
@@ -73,10 +73,6 @@ public class LoginController {
             System.out.println(ex.getMessage());
         }
     }
-
-
-
-
 
     @FXML
     private void handleRegister(ActionEvent event) {

@@ -2,10 +2,7 @@ package Utilities;
 
 import DataBase.DbConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +33,33 @@ public abstract class BaseRepository {
     }
     private boolean isValidScript(String pScript){
         return (!(pScript == null  || pScript.isEmpty()));
+    }
+
+    protected int makeInsertWithGeneratedKey(String pScript, Object[] pParamsToReplace) throws SQLException {
+        if (!isValidScript(pScript)) {
+            HandleInvalidScript();
+            return -1;
+        }
+        try (PreparedStatement stmt = connBd.prepareStatement(pScript, Statement.RETURN_GENERATED_KEYS)) {
+            if (pParamsToReplace != null) {
+                for (int idx = 0; idx < pParamsToReplace.length; idx++) {
+                    stmt.setObject(idx + 1, pParamsToReplace[idx]);
+                }
+            }
+            int rows = stmt.executeUpdate();
+            if (rows == 0) {
+                resultScript = DbOperationResult.createFailedInsertResult();
+                return -1;
+            }
+            try (ResultSet keys = stmt.getGeneratedKeys()) {
+                if (keys.next()) {
+                    int id = keys.getInt(1);
+                    resultScript = DbOperationResult.createSuccessfulInsertResult(rows);
+                    return id;
+                }
+            }
+            return -1;
+        }
     }
 
     /*
