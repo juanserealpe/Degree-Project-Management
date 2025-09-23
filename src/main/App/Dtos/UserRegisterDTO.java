@@ -22,4 +22,14 @@ public class UserRegisterDTO {
 
     public Account getAccount() {return this.account;}
     public void setAccount(Account account) {this.account = account;}
+
+    @Override
+    public String toString() {
+        return "UserRegisterDTO{" +
+                "password='" + password + '\'' +
+                ", user=" + (user != null ? user.toString() : "null") +
+                ", account=" + (account != null ? account.toString() : "null") +
+                '}';
+    }
+
 }

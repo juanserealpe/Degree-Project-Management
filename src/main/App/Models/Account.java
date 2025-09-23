@@ -37,4 +37,16 @@ public class Account {
 
     public List<EnumRole> getRoles() { return Roles; }
     public void setRoles(List<EnumRole> roles) { this.Roles = roles; }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "IdAccount=" + IdAccount +
+                ", Program=" + Program +
+                ", Email='" + Email + '\'' +
+                ", User=" + (User != null ? User.toString() : "null") +
+                ", Roles=" + (Roles != null ? Roles.toString() : "[]") +
+                '}';
+    }
+
 }
