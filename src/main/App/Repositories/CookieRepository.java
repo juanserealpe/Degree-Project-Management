@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class CookieRepository implements IRepository<Cookie>{
     public void add(Cookie prmItem) {
         String sql = "INSERT INTO Cookie (CookieUUID, Duration, UserId) VALUES (?, ?, ?)";
 
-        try (Connection conn = dbConnection.toConnect();
+        try (Connection conn = DbConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, prmItem.CookieUUID);
@@ -30,6 +31,7 @@ public class CookieRepository implements IRepository<Cookie>{
 
             pstmt.executeUpdate();
             System.out.println("Cookie agregada exitosamente.");
+            DbConnection.closeConnection(conn);
         } catch (SQLException e) {
             System.out.println("Error al agregar cookie: " + e.getMessage());
             e.printStackTrace();
@@ -69,6 +71,7 @@ public class CookieRepository implements IRepository<Cookie>{
 
                 cookies.add(cookie);
             }
+            DbConnection.closeConnection(conn);
         } catch (SQLException e) {
             System.out.println("Error al obtener cookies: " + e.getMessage());
             e.printStackTrace();
@@ -90,10 +93,11 @@ public class CookieRepository implements IRepository<Cookie>{
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     int userId = rs.getInt("UserId");
-                    return new Cookie(prmString, null, userId);
+                    Instant duration = rs.getTimestamp("Duration").toInstant();
+                    return new Cookie(prmString, duration, userId);
                 }
             }
-
+            DbConnection.closeConnection(conn);
         } catch (SQLException e) {
             System.err.println("Error al obtener UserId desde Cookie: " + e.getMessage());
         }
