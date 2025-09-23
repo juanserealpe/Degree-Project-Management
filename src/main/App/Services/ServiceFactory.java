@@ -16,6 +16,8 @@ import java.sql.Connection;
  * controlada a partir de una conexión a la base de datos.
  *
  * Todos los servicios se crean con una conexión compartida a la base de datos.
+ *
+ * @Author juanserealpe
  */
 public class ServiceFactory {
 

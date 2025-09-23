@@ -1,5 +1,18 @@
 package Exceptions;
 
+/**
+ * Excepción específica para fallos en el registro de usuarios.
+ *
+ * Esta clase maneja diferentes escenarios de validación al registrar
+ * un usuario, incluyendo errores en contraseña, correo electrónico,
+ * teléfono, nombres, apellidos y selección de roles. Proporciona métodos
+ * estáticos para crear instancias con mensajes claros y específicos
+ * según el tipo de error encontrado.
+ *
+ * @author juanserealpe
+ */
+
+
 public class RegisterUserFailerException extends AppException {
 
     public RegisterUserFailerException(String message) {

@@ -1,5 +1,6 @@
 package Main;
 
+import Controllers.LoginController;
 import DataBase.DbConnection;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
@@ -10,20 +11,46 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 
+/**
+ * Clase principal de la aplicación JavaFX.
+ *
+ * Esta clase se encarga de inicializar la aplicación:
+ * - Establece la conexión a la base de datos.
+ * - Crea una única instancia de {@link ServiceFactory} para inyectar servicios en los controllers.
+ * - Carga la vista de login desde el archivo FXML.
+ * - Configura y muestra la ventana principal mediante {@link WindowManager}.
+ *
+ *  @author juanseralpe
+ */
 public class App extends Application {
 
+    private ServiceFactory serviceFactory; // Fábrica de servicios para inyección en controllers
+
+    /**
+     * Método principal de inicio de la aplicación JavaFX.
+     *
+     * @param primaryStage Escenario principal donde se muestran las vistas.
+     * @throws Exception Si ocurre un error al cargar el FXML o establecer la conexión.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
+        // Establecer la conexión a la base de datos
         Connection connection = DbConnection.getConnection();
-        ServiceFactory factory = new ServiceFactory(connection);
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/views/AuthViews/LoginView.fxml")
-        );
+
+        // Crear la fábrica de servicios UNA sola vez
+        serviceFactory = new ServiceFactory(connection);
+
+        // Cargar la interfaz de login desde el FXML
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
         Scene scene = new Scene(loader.load());
+
+        // Obtener el controller de login y pasarle la fábrica de servicios
+        LoginController controller = loader.getController();
+        controller.setServiceFactory(serviceFactory);
+
+        // Configurar y mostrar la ventana principal
         primaryStage.setScene(scene);
         WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
     }
 }
-
-
