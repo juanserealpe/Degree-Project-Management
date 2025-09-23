@@ -20,4 +20,13 @@ public class User {
     public String getPhoneNumber() {return PhoneNumber;}
     public void setPhoneNumber(String phoneNumber) {this.PhoneNumber = phoneNumber;}
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "Name='" + Name + '\'' +
+                ", LastName='" + LastName + '\'' +
+                ", PhoneNumber='" + PhoneNumber + '\'' +
+                '}';
+    }
+
 }

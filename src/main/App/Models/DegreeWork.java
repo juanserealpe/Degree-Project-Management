@@ -14,9 +14,7 @@ public class DegreeWork {
     private EnumState state;
     private Date date;
 
-    public DegreeWork(List<Integer> studentIds, int directorId, int codirectorId,
-                      List<Process> processes, EnumModality modality,
-                      EnumState state, Date date) {
+    public DegreeWork(List<Integer> studentIds, int directorId, int codirectorId,List<Process> processes, EnumModality modality,EnumState state, Date date) {
         this.studentIds = studentIds;
         this.directorId = directorId;
         this.codirectorId = codirectorId;
@@ -25,7 +23,6 @@ public class DegreeWork {
         this.state = state;
         this.date = date;
     }
-
     public List<Integer> getStudentIds() { return studentIds; }
     public void setStudentIds(List<Integer> studentIds) { this.studentIds = studentIds; }
 
@@ -46,4 +43,13 @@ public class DegreeWork {
 
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
+
+    public int getCountStudents(){
+        if(studentIds == null) return 0;
+        else return studentIds.size();
+    }
+    public int getCountProcess(){
+        if(processes == null) return 0;
+        else return processes.size();
+    }
 }
