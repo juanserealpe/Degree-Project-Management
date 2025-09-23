@@ -98,12 +98,51 @@ public class CredentialRepository extends BaseRepository implements IRepository<
     /**
      * Obtiene un usuario por su ID.
      *
-     * @param id ID del usuario.
+     * @param idAccount ID de la cuenta.
      * @return DTO del usuario o null si no se encuentra.
      */
     @Override
-    public UserRegisterDTO getById(int id) {
-        return null;
+    public UserRegisterDTO getById(int idAccount) {
+        if (idAccount <= 0) return null;
+
+        try {
+            // Consultar cuenta por ID
+            String accountSql = "SELECT idAccount, email, idProgram, password FROM Account WHERE idAccount = ?";
+            boolean accountFound = makeRetrieve(accountSql, new Object[]{idAccount});
+            if (!accountFound) return null;
+
+            Map<String, Object> accountRow = getOperationResult().getPayload().get(0);
+            int idAccountResult = (int) accountRow.get("idAccount");
+            String emailResult = (String) accountRow.get("email");
+            int programId = (int) accountRow.get("idProgram");
+            String passwordResult = (String) accountRow.get("password");
+
+            EnumProgram programResult =
+                    Arrays.stream(EnumProgram.values())
+                            .filter(p -> p.getId() == programId)
+                            .findFirst()
+                            .orElse(null);
+            Account account = new Account();
+            account.setIdAccount(idAccountResult);
+            account.setEmail(emailResult);
+            account.setProgram(programResult);
+
+            // Consultar roles asociados (misma consulta que en el original)
+            String rolesSql = "SELECT r.idRole FROM Account_Role ar JOIN Role r ON ar.idRole = r.idRole WHERE ar.idAccount = ?";
+            boolean rolesFound = makeRetrieve(rolesSql, new Object[]{idAccount});
+            if (rolesFound) {
+                List<EnumRole> roles = getOperationResult().getPayload().stream()
+                        .map(row -> EnumRole.values()[(int) row.get("idRole") - 1])
+                        .toList();
+                account.setRoles(roles);
+            }
+
+            return new UserRegisterDTO(passwordResult, null, account);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
