@@ -2,9 +2,7 @@ package Services;
 
 import Dtos.UserRegisterDTO;
 import Interfaces.*;
-import Models.Account;
 import Repositories.CredentialRepository;
-
 import java.sql.Connection;
 
 /**
@@ -16,6 +14,8 @@ import java.sql.Connection;
  *
  * Permite centralizar la creación de servicios y mantener la inyección de dependencias
  * controlada a partir de una conexión a la base de datos.
+ *
+ * Todos los servicios se crean con una conexión compartida a la base de datos.
  */
 public class ServiceFactory {
 
@@ -43,10 +43,50 @@ public class ServiceFactory {
         this.dataService = new DataNormalizerServices();
     }
 
+    // --------------------- GETTERS ---------------------
+
+    /**
+     * Obtiene la conexión compartida a la base de datos.
+     *
+     * @return La conexión a la base de datos.
+     */
+    public Connection getConnection() {
+        return connection;
+    }
+
+    /**
+     * Obtiene el servicio de encriptación de contraseñas.
+     *
+     * @return Instancia de IEncrypt.
+     */
+    public IEncrypt getEncryptService() {
+        return encryptService;
+    }
+
+    /**
+     * Obtiene el servicio de validación de datos de registro.
+     *
+     * @return Instancia de IValidatorRegisterServices.
+     */
+    public IValidatorRegisterServices getValidatorService() {
+        return validatorService;
+    }
+
+    /**
+     * Obtiene el servicio de normalización de datos.
+     *
+     * @return Instancia de IDataNormalizerServices.
+     */
+    public IDataNormalizerServices getDataNormalizerService() {
+        return dataService;
+    }
+
+    // --------------------- SERVICIOS COMPLEJOS ---------------------
+
     /**
      * Obtiene una instancia de IAuthService.
      *
-     * Crea los repositorios necesarios (credenciales de usuario y cuentas)
+     * Este método crea los repositorios necesarios (credenciales de usuario y cuentas)
      * y construye el servicio de autenticación con las dependencias requeridas.
      *
      * @return Instancia de IAuthService lista para usar.
