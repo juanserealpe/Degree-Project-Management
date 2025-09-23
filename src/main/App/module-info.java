@@ -8,6 +8,7 @@ module app.main {
     requires javafx.base;
     requires java.sql;
     requires jbcrypt;
+    requires java.desktop;
 
     opens Main to javafx.fxml;
     opens Controllers to javafx.fxml;
