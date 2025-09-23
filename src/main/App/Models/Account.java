@@ -19,6 +19,10 @@ public class Account {
         this.Roles = roles;
     }
 
+    public Account() {
+
+    }
+
     public int getIdAccount() { return IdAccount; }
     public void setIdAccount(int idAccount) { this.IdAccount = idAccount; }
 

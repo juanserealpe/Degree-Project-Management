@@ -10,15 +10,16 @@ public class Logger {
         return LocalDateTime.now().toString();
     }
 
-    public static void info(String message) {
-        System.out.println("[INFO][" + timestamp() + "] " + message);
+    public static void info(Class<?> source, String message) {
+        System.out.println("[INFO][" + timestamp() + "][" + source.getSimpleName() + "] " + message);
     }
 
-    public static void warn(String message) {
-        System.out.println("[WARN][" + timestamp() + "] " + message);
+    public static void warn(Class<?> source, String message) {
+        System.out.println("[WARN][" + timestamp() + "][" + source.getSimpleName() + "] " + message);
     }
 
-    public static void error(String message) {
-        System.err.println("[ERROR][" + timestamp() + "] " + message);
+    public static void error(Class<?> source, String message) {
+        System.err.println("[ERROR][" + timestamp() + "][" + source.getSimpleName() + "] " + message);
     }
+
 }
