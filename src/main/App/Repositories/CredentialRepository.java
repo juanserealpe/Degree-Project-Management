@@ -15,11 +15,32 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Repositorio para la gestión de credenciales de usuarios.
+ *
+ * Esta clase se encarga de realizar operaciones CRUD sobre usuarios y cuentas,
+ * incluyendo la inserción de roles asociados a la cuenta. Se extiende de {@link BaseRepository}
+ * para aprovechar métodos genéricos de acceso a base de datos y aplica transacciones
+ * para garantizar la consistencia de los datos.
+ *
+ * @author juanserealpe
+ */
 public class CredentialRepository extends BaseRepository implements IRepository<UserRegisterDTO> {
 
+    /**
+     * Constructor que recibe la conexión a la base de datos.
+     *
+     * @param connection Conexión a la base de datos.
+     */
     public CredentialRepository(Connection connection) {
         super(connection);
     }
+
+    /**
+     * Agrega un nuevo usuario junto con su cuenta y roles asociados.
+     *
+     * @param entity DTO con la información del usuario, cuenta y roles.
+     */
     @Override
     public void add(UserRegisterDTO entity) {
 
@@ -30,16 +51,18 @@ public class CredentialRepository extends BaseRepository implements IRepository<
         try (Connection conn = DbConnection.getConnection()) {
             conn.setAutoCommit(false);
 
+            // Insertar usuario y obtener el ID generado
             int userId = makeInsertWithGeneratedKey(insertUserSQL,
                     new Object[]{entity.getUser().getName(), entity.getUser().getLastName(), entity.getUser().getPhoneNumber()});
-
             if (userId == -1) throw new SQLException("No se pudo insertar el usuario");
             entity.getAccount().setIdAccount(userId);
 
+            // Insertar cuenta asociada
             boolean accountInserted = makeInsert(insertAccountSQL,
                     new Object[]{entity.getAccount().getIdAccount(), entity.getAccount().getEmail(), entity.getPassword(), entity.getAccount().getProgram().ordinal()});
             if (!accountInserted) throw new SQLException("No se pudo insertar la cuenta");
 
+            // Insertar roles asociados a la cuenta
             for (var role : entity.getAccount().getRoles()) {
                 boolean roleInserted = makeInsert(insertAccountRoleSQL,
                         new Object[]{entity.getAccount().getIdAccount(), role.getId()});
@@ -47,6 +70,8 @@ public class CredentialRepository extends BaseRepository implements IRepository<
                     throw new SQLException("No se pudo insertar el rol: " + role);
                 }
             }
+
+            // Confirmar transacción
             conn.commit();
             Logger.info(CredentialRepository.class,"Usuario : " + entity.toString() + " registrado correctamente en la base de datos.");
 
@@ -60,27 +85,39 @@ public class CredentialRepository extends BaseRepository implements IRepository<
         }
     }
 
-
     @Override
     public void update(UserRegisterDTO entity) {
-
+        // Implementar actualización de usuario y cuenta
     }
 
     @Override
     public void delete(UserRegisterDTO entity) {
-
+        // Implementar eliminación de usuario y cuenta
     }
 
+    /**
+     * Obtiene un usuario por su ID.
+     *
+     * @param id ID del usuario.
+     * @return DTO del usuario o null si no se encuentra.
+     */
     @Override
     public UserRegisterDTO getById(int id) {
         return null;
     }
 
+    /**
+     * Obtiene un usuario por su correo electrónico.
+     *
+     * @param email Correo electrónico del usuario.
+     * @return DTO del usuario con cuenta y roles; null si no se encuentra.
+     */
     @Override
     public UserRegisterDTO getByString(String email) {
         if (email == null || email.isEmpty()) return null;
 
         try {
+            // Consultar cuenta
             String accountSql = "SELECT idAccount, email, idProgram, password FROM Account WHERE email = ?";
             boolean accountFound = makeRetrieve(accountSql, new Object[]{email});
             if (!accountFound) return null;
@@ -101,11 +138,12 @@ public class CredentialRepository extends BaseRepository implements IRepository<
             account.setEmail(emailResult);
             account.setProgram(programResult);
 
+            // Consultar roles asociados
             String rolesSql = "SELECT r.idRole FROM Account_Role ar JOIN Role r ON ar.idRole = r.idRole WHERE ar.idAccount = ?";
             boolean rolesFound = makeRetrieve(rolesSql, new Object[]{idAccount});
             if (rolesFound) {
                 List<EnumRole> roles = getOperationResult().getPayload().stream()
-                        .map(row -> EnumRole.values()[(int) row.get("idRole") - 1]) // Ajuste según tu enum
+                        .map(row -> EnumRole.values()[(int) row.get("idRole") - 1]) // Ajuste según enum
                         .toList();
                 account.setRoles(roles);
             }
@@ -118,10 +156,11 @@ public class CredentialRepository extends BaseRepository implements IRepository<
         }
     }
 
-
-
-
-
+    /**
+     * Obtiene todos los usuarios registrados.
+     *
+     * @return Lista vacía (pendiente implementación completa).
+     */
     @Override
     public List<UserRegisterDTO> getAll() {
         return List.of();

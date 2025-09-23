@@ -9,6 +9,8 @@ import org.mindrot.jbcrypt.BCrypt;
  * Esta clase implementa la interfaz IEncrypt y proporciona métodos
  * para encriptar contraseñas usando el algoritmo BCrypt y para
  * verificar contraseñas contra su hash.
+ *
+ * @Author juanserealpe
  */
 public class EncryptService implements IEncrypt {
 

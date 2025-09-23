@@ -15,6 +15,8 @@ import Utilities.Logger;
  * la verificación de correo electrónico y contraseña.
  * Utiliza un repositorio para obtener los datos del usuario y un
  * servicio de cifrado para comparar la contraseña ingresada con la almacenada.
+ *
+ * @author juanseralpe
  */
 public class AuthService implements IAuthService {
 

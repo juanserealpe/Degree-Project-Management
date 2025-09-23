@@ -15,6 +15,8 @@ import Models.User;
  *  - Registrar el usuario en el repositorio correspondiente.
  *
  * Depende de servicios de validación, encriptación y normalización de datos.
+ *
+ * @author juanserealpe
  */
 public class UserRegisterServices implements IUserRegisterServices {
 

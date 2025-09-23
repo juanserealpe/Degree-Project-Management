@@ -19,6 +19,8 @@ import Interfaces.IValidatorRegisterServices;
  *  - Roles asignados al usuario
  *
  * Lanza excepciones específicas de tipo RegisterUserFailerException si alguna validación falla.
+ *
+ * @Authors JhersonCastro, ElkinHoyos, juanserealpe
  */
 public class ValidatorRegisterServices implements IValidatorRegisterServices {
 

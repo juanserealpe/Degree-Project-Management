@@ -11,6 +11,22 @@ import java.io.IOException;
 import java.util.List;
 import java.util.prefs.Preferences;
 
+/**
+ * Utilidad para la gestión de ventanas en JavaFX.
+ *
+ * Esta clase proporciona métodos para configurar y controlar ventanas
+ * (Stage) de la aplicación, incluyendo tamaño estándar, centrado en pantalla,
+ * restauración de dimensiones, maximización inicial y cambio de escenas.
+ * También permite guardar y restaurar posiciones y tamaños de ventanas
+ * mediante Preferences, y soporta múltiples tipos de ventanas preconfiguradas
+ * mediante la clase interna WindowTypes.
+ *
+ * Facilita la consistencia visual y el manejo de múltiples monitores en la aplicación.
+ *
+ * @author juanserealpe
+ */
+
+
 public class WindowManager {
 
     private static final double STANDARD_WIDTH = 800;

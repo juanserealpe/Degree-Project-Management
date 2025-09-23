@@ -28,7 +28,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>17.0.16</version>
-            <classifier>win</classifier>
+            <classifier>linux</classifier>
         </dependency>
 
         <!-- JavaFX FXML -->
@@ -36,7 +36,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.16</version>
-            <classifier>win</classifier>
+            <classifier>linux</classifier>
         </dependency>
 
         <!-- JavaFX Graphics -->
@@ -44,7 +44,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>17.0.16</version>
-            <classifier>win</classifier>
+            <classifier>linux</classifier>
         </dependency>
 
         <!-- ControlsFX -->
@@ -53,6 +53,7 @@
             <artifactId>controlsfx</artifactId>
             <version>11.2.1</version>
         </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
         <dependency>
