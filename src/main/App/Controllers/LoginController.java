@@ -1,6 +1,7 @@
 package Controllers;
 
 import Interfaces.IAuthService;
+import Services.ServiceFactory;
 import Utilities.WindowManager;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -28,10 +29,16 @@ public class LoginController {
 
 
     private IAuthService authService;
+    private ServiceFactory serviceFactory;
+
+
+    public void setServiceFactory(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+        this.authService = serviceFactory.getAuthService();
+    }
 
     @FXML
     public void initialize() {
-        //this.authService = ServiceFactory.getAuthService();
         successBox.setVisible(false);
         successBox.setManaged(false);
 
