@@ -6,11 +6,15 @@ import Enums.EnumProgram;
 import Enums.EnumRole;
 import Interfaces.IRepository;
 import Models.Account;
+import Models.User;
 import Utilities.BaseRepository;
 import Utilities.Logger;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -153,6 +157,73 @@ public class CredentialRepository extends BaseRepository implements IRepository<
      */
     @Override
     public UserRegisterDTO getByString(String email) {
+        String sql = """
+        SELECT 
+            a.idAccount, a.email, a.password, a.idProgram,
+            u.name, u.lastName, u.phone
+        FROM Account a
+        JOIN User u ON a.idAccount = u.idUser
+        WHERE a.email = ?
+    """;
+
+        try (PreparedStatement stmt = DbConnection.getConnection().prepareStatement(sql)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // User
+                    User user = new User();
+                    user.setName(rs.getString("name"));
+                    user.setLastName(rs.getString("lastName"));
+                    user.setPhoneNumber(rs.getString("phone"));
+
+                    // Account
+                    Account account = new Account();
+                    int idAccount = rs.getInt("idAccount");
+                    account.setIdAccount(idAccount);
+                    account.setEmail(rs.getString("email"));
+                    account.setProgram(EnumProgram.fromId(rs.getInt("idProgram")));
+                    account.setUser(user);
+
+                    // roles
+                    account.setRoles(getRolesByAccountId(idAccount));
+
+                    // Construir DTO
+                    UserRegisterDTO dto = new UserRegisterDTO();
+                    dto.setPassword(rs.getString("password"));
+                    dto.setUser(user);
+                    dto.setAccount(account);
+
+                    return dto;
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al recuperar usuario por email", e);
+        }
+    }
+    private List<EnumRole> getRolesByAccountId(int idAccount) {
+        String sql = "SELECT idRole FROM Account_Role WHERE idAccount = ?";
+        List<EnumRole> roles = new ArrayList<>();
+
+        try (PreparedStatement stmt = DbConnection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idAccount);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int idRole = rs.getInt("idRole");
+                    roles.add(EnumRole.fromId(idRole));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al recuperar roles del usuario", e);
+        }
+
+        return roles;
+    }
+
+
+    /*@Override
+    public UserRegisterDTO getByString(String email) {
         if (email == null || email.isEmpty()) return null;
 
         try {
@@ -193,7 +264,7 @@ public class CredentialRepository extends BaseRepository implements IRepository<
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
 
     /**
      * Obtiene todos los usuarios registrados.
