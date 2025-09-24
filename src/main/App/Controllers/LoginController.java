@@ -73,7 +73,7 @@ public class LoginController {
             authService.isLoginValid(email, password);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            WindowManager.changeScene(stage, "/fxml/SelectRoleView.fxml", "");
+            WindowManager.changeScene(stage, "/views/AuthViews/SelectRoleView.fxml", "");
 
         } catch (Exception ex) {
             showErrorMessage(ex.getMessage());
