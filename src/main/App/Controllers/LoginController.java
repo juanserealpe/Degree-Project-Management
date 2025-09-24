@@ -77,6 +77,8 @@ public class LoginController extends BaseController {
 
             authService.isLoginValid(email, password);
             //Login válido... seguido a esto enviar a una vista...
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
             String resource = App.getRolResource(Session.getRoles().get(0));
             WindowManager.changeScene(stage, resource, Session.getRoles().get(0).name());
         } catch (Exception ex) {

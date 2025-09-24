@@ -7,17 +7,15 @@ import Models.FormatA;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.*;
 
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CoordinatorViewController {
+public class CoordinatorViewController extends BaseController{
     @FXML
     Pane SideMenuContainer;
 

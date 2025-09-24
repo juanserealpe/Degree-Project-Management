@@ -1,17 +1,22 @@
 package Controllers;
 
+import Models.Session;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-public class SideMenuController {
+public class SideMenuController extends BaseController{
+    public Label jLabelEmail;
     @FXML
     private VBox rolButtons;
 
@@ -20,10 +25,10 @@ public class SideMenuController {
         put("Director", List.of("Crear Formato A", "ver Proyectos"));
         put("Coordinador", List.of("Calificar formatos A"));
     }};
-
     @FXML
     public void initialize() {
         initData();
+        jLabelEmail.setText(Session.getEmail());
     }
 
     public void initData() {
@@ -127,6 +132,7 @@ public class SideMenuController {
     @FXML
     private void handleCloseSession(ActionEvent event) throws IOException {
         System.out.println("Closing session");
+        super.LogOut(event);
         // Lógica para cerrar sesión
     }
 }
