@@ -2,7 +2,7 @@ package Main;
 
 import Controllers.LoginController;
 import DataBase.DbConnection;
-import Models.Account;
+import Dtos.UserRegisterDTO;
 import Services.CookieService;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
@@ -38,7 +38,7 @@ public class App extends Application {
         CookieService cookieService = new CookieService();
         serviceFactory = new ServiceFactory(DbConnection.getConnection());
 
-        Account result = cookieService.getAccountByCookie();
+        UserRegisterDTO result = cookieService.getUserRegisterDTOByCookie();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
         Parent root = loader.load();

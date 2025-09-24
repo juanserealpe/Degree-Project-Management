@@ -33,16 +33,22 @@ public class FileService implements IFileService {
 
     @Override
     public String saveFile(String path, String filename, String content) throws IOException {
-        File dir = new File(path);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
         File file = new File(path + filename);
-        try{
-            FileWriter fw = new FileWriter(file);
+        File parentDir = file.getParentFile();
+        if(!parentDir.exists()){
+            parentDir.mkdirs();
+        }
+        if (!file.exists()) {
+            boolean created = file.createNewFile();
+            if (!created) {
+                throw new IOException("The file can't be created");
+            }
+        }
+        if(!file.canWrite()){
+            throw new IOException("Access is denied, the file can't be written");
+        }
+        try(FileWriter fw = new FileWriter(file)) {
             fw.write(content);
-            fw.close();
         }catch(IOException e){
             e.printStackTrace();
         }

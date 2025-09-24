@@ -15,9 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Repositorio para la gestión de credenciales de usuarios.
@@ -107,45 +105,48 @@ public class CredentialRepository extends BaseRepository implements IRepository<
      */
     @Override
     public UserRegisterDTO getById(int idAccount) {
-        if (idAccount <= 0) return null;
+        String sql = """
+        SELECT 
+            a.email, a.password, a.idProgram,
+            u.name, u.lastName, u.phone
+        FROM Account a
+        JOIN User u ON a.idAccount = u.idUser
+        WHERE a.idAccount = ?
+    """;
 
-        try {
-            // Consultar cuenta por ID
-            String accountSql = "SELECT idAccount, email, idProgram, password FROM Account WHERE idAccount = ?";
-            boolean accountFound = makeRetrieve(accountSql, new Object[]{idAccount});
-            if (!accountFound) return null;
+        try (PreparedStatement stmt = DbConnection.getConnection().prepareStatement(sql)) {
+            stmt.setInt(1, idAccount);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // User
+                    User user = new User();
+                    user.setName(rs.getString("name"));
+                    user.setLastName(rs.getString("lastName"));
+                    user.setPhoneNumber(rs.getString("phone"));
 
-            Map<String, Object> accountRow = getOperationResult().getPayload().get(0);
-            int idAccountResult = (int) accountRow.get("idAccount");
-            String emailResult = (String) accountRow.get("email");
-            int programId = (int) accountRow.get("idProgram");
-            String passwordResult = (String) accountRow.get("password");
+                    // Account
+                    Account account = new Account();
+                    account.setIdAccount(idAccount);
+                    account.setEmail(rs.getString("email"));
+                    account.setProgram(EnumProgram.fromId(rs.getInt("idProgram")));
+                    account.setUser(user);
 
-            EnumProgram programResult =
-                    Arrays.stream(EnumProgram.values())
-                            .filter(p -> p.getId() == programId)
-                            .findFirst()
-                            .orElse(null);
-            Account account = new Account();
-            account.setIdAccount(idAccountResult);
-            account.setEmail(emailResult);
-            account.setProgram(programResult);
+                    // roles
+                    account.setRoles(getRolesByAccountId(idAccount));
 
-            // Consultar roles asociados (misma consulta que en el original)
-            String rolesSql = "SELECT r.idRole FROM Account_Role ar JOIN Role r ON ar.idRole = r.idRole WHERE ar.idAccount = ?";
-            boolean rolesFound = makeRetrieve(rolesSql, new Object[]{idAccount});
-            if (rolesFound) {
-                List<EnumRole> roles = getOperationResult().getPayload().stream()
-                        .map(row -> EnumRole.values()[(int) row.get("idRole") - 1])
-                        .toList();
-                account.setRoles(roles);
+                    // Construir DTO
+                    UserRegisterDTO dto = new UserRegisterDTO();
+                    dto.setPassword(null);
+                    dto.setUser(user);
+                    dto.setAccount(account);
+
+                    return dto;
+                } else {
+                    return null;
+                }
             }
-
-            return new UserRegisterDTO(passwordResult, null, account);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al recuperar usuario por email", e);
         }
     }
 

@@ -83,7 +83,7 @@ public class CookieRepository implements IRepository<Cookie>{
 
     @Override
     public Cookie getByString(String prmString) {
-        String sql = "SELECT UserId FROM Cookie WHERE CookieUUID = ?";
+        String sql = "SELECT UserId, Duration FROM Cookie WHERE CookieUUID = ?";
 
         try (Connection conn = DbConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
