@@ -27,11 +27,11 @@ public class CookieService {
             System.err.println(e.getMessage());
         }
     }
-    public void setCookie(Account account) {
+    public void setCookie(int accountId) {
         String uuid = UUID.randomUUID().toString();
         Instant expiration = Instant.now().plus(7, ChronoUnit.DAYS);
 
-        Cookie cookie = new Cookie(uuid, expiration, account.getIdAccount());
+        Cookie cookie = new Cookie(uuid, expiration, accountId);
 
         try {
             cookieRepository.add(cookie);

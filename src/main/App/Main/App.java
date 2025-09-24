@@ -2,6 +2,8 @@ package Main;
 
 import Controllers.LoginController;
 import DataBase.DbConnection;
+import Models.Account;
+import Services.CookieService;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
 import javafx.application.Application;
@@ -32,15 +34,23 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
+        CookieService cookieService = new CookieService();
+        Account result = cookieService.getAccountByCookie();
+        FXMLLoader loader;
+        if(result == null) {
+            loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
+            LoginController loginController= loader.getController();
+            loginController.setServiceFactory(serviceFactory);
+        }else{
+            loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
+            //TODO: crear implementacion
+        }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
         Scene scene = new Scene(loader.load());
         primaryStage.setScene(scene);
         WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
         serviceFactory = new ServiceFactory(DbConnection.getConnection());
-        LoginController loginController= loader.getController();
-        loginController.setServiceFactory(serviceFactory);
 
         /*
         // Establecer la conexión a la base de datos
