@@ -9,8 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-
 /**
  * Clase principal de la aplicación JavaFX.
  *
@@ -35,11 +33,15 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/SelectRoleView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
         Scene scene = new Scene(loader.load());
         primaryStage.setScene(scene);
         WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
+        serviceFactory = new ServiceFactory(DbConnection.getConnection());
+        LoginController loginController= loader.getController();
+        loginController.setServiceFactory(serviceFactory);
+
         /*
         // Establecer la conexión a la base de datos
         Connection connection = DbConnection.getConnection();

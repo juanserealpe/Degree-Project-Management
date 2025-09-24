@@ -89,7 +89,9 @@ public class LoginController {
     private void handleRegister(ActionEvent event) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            WindowManager.changeScene(stage, "/fxml/RegisterView.fxml", "");
+            RegisterController registerController =  WindowManager.changeScene(stage, "/views/AuthViews/RegisterView.fxml", "");
+            registerController.setServiceFactory(serviceFactory);
+
         } catch (IOException e) {
             e.printStackTrace();
             showInfoMessage("Error al abrir el formulario de registro");
