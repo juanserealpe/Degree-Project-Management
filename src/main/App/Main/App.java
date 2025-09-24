@@ -8,8 +8,11 @@ import Services.ServiceFactory;
 import Utilities.WindowManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
 
 /**
  * Clase principal de la aplicación JavaFX.
@@ -35,42 +38,19 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         CookieService cookieService = new CookieService();
-        Account result = cookieService.getAccountByCookie();
-        FXMLLoader loader;
-        if(result == null) {
-            loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
-            LoginController loginController= loader.getController();
-            loginController.setServiceFactory(serviceFactory);
-        }else{
-            loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
-            //TODO: crear implementacion
-        }
-
-        Scene scene = new Scene(loader.load());
-        primaryStage.setScene(scene);
-        WindowManager.setupWindow(primaryStage, "", true, 600, 800);
-        primaryStage.show();
         serviceFactory = new ServiceFactory(DbConnection.getConnection());
 
-        /*
-        // Establecer la conexión a la base de datos
-        Connection connection = DbConnection.getConnection();
+        Account result = cookieService.getAccountByCookie();
 
-        // Crear la fábrica de servicios UNA sola vez
-        serviceFactory = new ServiceFactory(connection);
-
-        // Cargar la interfaz de login desde el FXML
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
-        Scene scene = new Scene(loader.load());
+        Parent root = loader.load();
 
-        // Obtener el controller de login y pasarle la fábrica de servicios
-        LoginController controller = loader.getController();
-        controller.setServiceFactory(serviceFactory);
+        LoginController loginController = loader.getController();
+        loginController.setServiceFactory(serviceFactory);
 
-        // Configurar y mostrar la ventana principal
+        Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
-        */
     }
 }
