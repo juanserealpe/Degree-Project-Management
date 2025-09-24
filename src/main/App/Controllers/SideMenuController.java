@@ -1,7 +1,5 @@
 package Controllers;
 
-import Interfaces.IAuthService;
-import Services.ServiceFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -32,8 +30,7 @@ public class SideMenuController {
     };
 
     @FXML
-    public void initialize(String rolActual) {
-        initData("Director");
+    public void initialize() {
     }
 
     public void initData(String rolActual) {
@@ -74,7 +71,7 @@ public class SideMenuController {
         else
             button.getStyleClass().add("btn_MenuElement");
         button.setOnAction(e -> {
-            System.out.println("click en: "+nameOption+" index: "+index+" subIndex: "+subIndex);
+            System.out.println("click en: "+nameOption+" ["+index+"]["+subIndex+"]");
             //logica segun click boton
             // Cerrar vista actual y abrir nueva lista segun rol
         });

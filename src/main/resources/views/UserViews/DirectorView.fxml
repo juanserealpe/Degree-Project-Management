@@ -5,7 +5,12 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DirectorViewController">
+<BorderPane prefHeight="600.0"
+            prefWidth="900.0"
+            style="-fx-background-color: #f5f5f5;"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.DirectorViewController">
 
     <left>
         <Pane fx:id="SideMenuContainer">
