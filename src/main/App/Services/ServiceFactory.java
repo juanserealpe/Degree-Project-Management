@@ -3,6 +3,7 @@ package Services;
 import Dtos.UserRegisterDTO;
 import Interfaces.*;
 import Repositories.CredentialRepository;
+
 import java.sql.Connection;
 
 /**
@@ -95,7 +96,8 @@ public class ServiceFactory {
      */
     public IAuthService getAuthService() {
         IRepository<UserRegisterDTO> userRepository = new CredentialRepository(connection);
-        return new AuthService(encryptService, userRepository);
+        CookieService cookieService = new CookieService();
+        return new AuthService(encryptService, userRepository, cookieService);
     }
 
     /**

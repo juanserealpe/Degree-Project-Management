@@ -1,37 +1,38 @@
 package Services;
 
+import DataBase.DbConnection;
+import Dtos.UserRegisterDTO;
 import Interfaces.IFileService;
 import Interfaces.IRepository;
-import Models.Account;
 import Models.Cookie;
 import Repositories.CookieRepository;
+import Repositories.CredentialRepository;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class CookieService {
-    private final String path = System.getProperty("user.home") + File.separator + "ProjectManager" + File.separator;
+    private final String path = System.getProperty("user.home") + "/AppData/Local/ProjectManager/";
     private final String filename = "cookie.txt";
     private IFileService  fileService;
     private IRepository<Cookie> cookieRepository;
-    //TODO: private UserRepository userRepository;
+    private CredentialRepository userRepository;
     public CookieService() {
         this.fileService = new FileService();
         cookieRepository = new CookieRepository();
         try{
-            //TODO: userRepository = new CredentialRepository();
+            userRepository = new CredentialRepository(DbConnection.getConnection());
         }catch(Exception e) {
             System.err.println(e.getMessage());
         }
     }
-    public void setCookie(Account account) {
+    public void setCookie(int accountId) {
         String uuid = UUID.randomUUID().toString();
         Instant expiration = Instant.now().plus(7, ChronoUnit.DAYS);
 
-        Cookie cookie = new Cookie(uuid, expiration, account.getIdAccount());
+        Cookie cookie = new Cookie(uuid, expiration, accountId);
 
         try {
             cookieRepository.add(cookie);
@@ -41,10 +42,11 @@ public class CookieService {
         }
     }
 
-    public Account getAccountByCookie() {
+    public UserRegisterDTO getUserRegisterDTOByCookie() {
         try {
             String content = fileService.readFile(path, filename);
             Cookie cookie = cookieRepository.getByString(content);
+            return userRepository.getById(cookie.getUserId());
             //TODO: return userRepository.getById(cookie.getuserId());
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();

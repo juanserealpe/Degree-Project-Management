@@ -23,16 +23,17 @@ public class AuthService implements IAuthService {
 
     private final IEncrypt _encryptService;               // Servicio de cifrado
     private final IRepository<UserRegisterDTO> _userRepository; // Repositorio de usuarios
-
+    private final CookieService _cookieService;
     /**
      * Constructor que recibe los servicios necesarios para autenticación.
      *
      * @param _encryptService Servicio de cifrado de contraseñas.
      * @param _userRepository Repositorio de usuarios para consultar información.
      */
-    public AuthService(IEncrypt _encryptService, IRepository<UserRegisterDTO> _userRepository) {
+    public AuthService(IEncrypt _encryptService, IRepository<UserRegisterDTO> _userRepository, CookieService _cookieService) {
         this._encryptService = _encryptService;
         this._userRepository = _userRepository;
+        this._cookieService = _cookieService;
     }
 
     /**
@@ -59,6 +60,7 @@ public class AuthService implements IAuthService {
         if (!isPasswordEqual) {
             Logger.warn(AuthService.class, "isLoginValid: contraseña incorrecta para " + prmEmail);
             throw LoginFailedException.invalidCredentials();
+            _cookieService.setCookie(result.getAccount().getIdAccount());
         }
 
         Logger.info(AuthService.class, "isLoginValid: login válido para " + prmEmail);

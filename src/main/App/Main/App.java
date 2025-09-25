@@ -2,14 +2,15 @@ package Main;
 
 import Controllers.LoginController;
 import DataBase.DbConnection;
+import Dtos.UserRegisterDTO;
+import Services.CookieService;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.sql.Connection;
 
 /**
  * Clase principal de la aplicación JavaFX.
