@@ -9,7 +9,6 @@ import Interfaces.IValidatorRegisterServices;
 import Models.Account;
 import Models.User;
 import Services.ServiceFactory;
-import Utilities.WindowManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

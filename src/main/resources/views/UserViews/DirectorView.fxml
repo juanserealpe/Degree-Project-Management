@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DirectorViewController">
+
+    <left>
+        <VBox fx:id="panelMenu" alignment="TOP_CENTER" prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #4a6bff, #6a8aff); -fx-padding: 20;" BorderPane.alignment="CENTER">
+
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.2)" offsetX="2" offsetY="2" radius="10" />
+            </effect>
+
+            <Label text="Sesión Iniciada" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="18.0" />
+                </font>
+                <padding>
+                    <Insets bottom="20" />
+                </padding>
+            </Label>
+
+            <Label fx:id="jLabelEmail" style="-fx-background-color: rgba(255,255,255,0.2); -fx-background-radius: 5; -fx-padding: 5 10;" text="usuario@ejemplo.com" textFill="WHITE">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Button fx:id="btnCerrarSesion" prefHeight="40" prefWidth="140" style="-fx-background-color: #ff6666; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold;" text="Cerrar Sesión">
+                <effect>
+                    <DropShadow color="rgba(0,0,0,0.2)" offsetX="2" offsetY="2" radius="5" />
+                </effect>
+            </Button>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox fx:id="panelRight" alignment="TOP_CENTER" spacing="20" style="-fx-background-color: white; -fx-padding: 20;" BorderPane.alignment="CENTER">
+
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.1)" offsetX="2" offsetY="2" radius="10" />
+            </effect>
+
+            <Label text="Gestión de Procesos" textFill="#4a6bff">
+                <font>
+                    <Font name="System Bold" size="20.0" />
+                </font>
+                <padding>
+                    <Insets bottom="10" />
+                </padding>
+            </Label>
+
+            <TableView fx:id="tblProcesos" prefHeight="350">
+                <columns>
+                    <TableColumn prefWidth="60" text="ID" />
+                    <TableColumn prefWidth="200" text="Título" />
+                    <TableColumn prefWidth="120" text="Estado" />
+                    <TableColumn prefWidth="120" text="Fecha" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+
+            <Button fx:id="btnCrearNuevoProceso" prefHeight="40" prefWidth="180" style="-fx-background-color: #00cc66; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold;" text="Nuevo trabajo de grado">
+                <effect>
+                    <DropShadow color="rgba(0,0,0,0.2)" offsetX="2" offsetY="2" radius="5" />
+                </effect>
+            </Button>
+        </VBox>
+    </center>
+
+</BorderPane>
