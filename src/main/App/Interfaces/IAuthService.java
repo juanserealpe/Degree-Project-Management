@@ -5,5 +5,5 @@ import Dtos.UserRegisterDTO;
 
 public interface IAuthService {
 
-    public UserRegisterDTO isLoginValid(String prmEmail, String prmPassword) throws Exception;
+    public void isLoginValid(String prmEmail, String prmPassword) throws Exception;
 }

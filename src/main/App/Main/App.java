@@ -34,13 +34,6 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/SelectRoleView.fxml"));
-        Scene scene = new Scene(loader.load());
-        primaryStage.setScene(scene);
-        WindowManager.setupWindow(primaryStage, "", true, 600, 800);
-        primaryStage.show();
-        /*
         // Establecer la conexión a la base de datos
         Connection connection = DbConnection.getConnection();
 
@@ -59,6 +52,5 @@ public class App extends Application {
         primaryStage.setScene(scene);
         WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
-        */
     }
 }
