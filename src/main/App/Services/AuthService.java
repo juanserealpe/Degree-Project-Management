@@ -60,14 +60,13 @@ public class AuthService implements IAuthService {
         if (!isPasswordEqual) {
             Logger.warn(AuthService.class, "isLoginValid: contraseña incorrecta para " + prmEmail);
             throw LoginFailedException.invalidCredentials();
-            _cookieService.setCookie(result.getAccount().getIdAccount());
         }
 
         Logger.info(AuthService.class, "isLoginValid: login válido para " + prmEmail);
 
         // Limpiar la contraseña antes de continuar
         result.setPassword(null);
-
+        _cookieService.setCookie(result.getAccount().getIdAccount());
         // Iniciar sesión
         Session.setRoles(result.getAccount().getRoles());
         Session.setEmail(result.getAccount().getEmail());
