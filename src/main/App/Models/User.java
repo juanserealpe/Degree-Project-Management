@@ -4,7 +4,7 @@ public class User {
     private String Name;
     private String LastName;
     private String PhoneNumber;
-
+    public User() {}
     public User(String name, String lastName, String phoneNumber) {
         this.Name = name;
         this.LastName = lastName;

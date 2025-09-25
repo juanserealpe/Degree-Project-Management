@@ -23,3 +23,4 @@ nbproject/build-impl.xml
 
 database.db
 /dist/
+/.idea/
