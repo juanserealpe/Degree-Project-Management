@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class CookieService {
-    private final String path = System.getProperty("user.home") + "/AppData/Local/ProjectManager/";
+    private final String path = System.getProperty("user.dir") + "/Secrets/ProjectManager/";
     private final String filename = "cookie.txt";
     private IFileService  fileService;
     private IRepository<Cookie> cookieRepository;
@@ -46,8 +46,10 @@ public class CookieService {
         try {
             String content = fileService.readFile(path, filename);
             Cookie cookie = cookieRepository.getByString(content);
+            if(cookie == null) return null;
+            //Si existe la cookie, pero ya expiro, retornar null
+            if(cookie.getDuration().isBefore(Instant.now())) return null;
             return userRepository.getById(cookie.getUserId());
-            //TODO: return userRepository.getById(cookie.getuserId());
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }

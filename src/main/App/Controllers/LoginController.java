@@ -2,7 +2,6 @@ package Controllers;
 
 import Interfaces.IAuthService;
 import Services.ServiceFactory;
-import Utilities.WindowManager;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,7 +17,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
-public class LoginController {
+public class LoginController extends BaseController {
 
     @FXML
     private TextField txtEmail;
@@ -33,9 +32,9 @@ public class LoginController {
     private IAuthService authService;
     private ServiceFactory serviceFactory;
 
-
+    @Override
     public void setServiceFactory(ServiceFactory serviceFactory) {
-        this.serviceFactory = serviceFactory;
+        super.setServiceFactory(serviceFactory);
         this.authService = serviceFactory.getAuthService();
     }
 
