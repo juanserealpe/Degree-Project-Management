@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
  *
  * @author juanserealpe
  */
-public class RegisterController implements Initializable {
+public class RegisterController extends BaseController implements Initializable {
 
     // ==================== CAMPOS FXML ====================
 
@@ -108,8 +108,7 @@ public class RegisterController implements Initializable {
 
     // ==================== SERVICIOS ====================
 
-    /** Fábrica de servicios para acceder a las diferentes capas de la aplicación */
-    private ServiceFactory serviceFactory;
+
 
     /** Servicio encargado de las validaciones del formulario de registro */
     private IValidatorRegisterServices _validatorService;
@@ -125,8 +124,9 @@ public class RegisterController implements Initializable {
      *
      * @param serviceFactory La fábrica de servicios de la aplicación
      */
+    @Override
     public void setServiceFactory(ServiceFactory serviceFactory) {
-        this.serviceFactory = serviceFactory;
+        super.setServiceFactory(serviceFactory);
         this._validatorService = serviceFactory.getValidatorService();
         this._userServices = serviceFactory.getUserService();
     }

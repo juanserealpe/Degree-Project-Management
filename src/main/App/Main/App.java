@@ -1,18 +1,20 @@
 package Main;
 
-import Controllers.LoginController;
+import Controllers.BaseController;
 import DataBase.DbConnection;
 import Dtos.UserRegisterDTO;
+import Enums.EnumRole;
+import Models.Session;
 import Services.CookieService;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Clase principal de la aplicación JavaFX.
@@ -61,13 +63,39 @@ public class App extends Application {
         // Crear la fábrica de servicios UNA sola vez
         serviceFactory = new ServiceFactory(connection);
 
-        // Cargar la interfaz de login desde el FXML
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
-        Scene scene = new Scene(loader.load());
+        // Crea CookieService
+        CookieService cookieService = new CookieService();
+        UserRegisterDTO userRegisterDTO = cookieService.getUserRegisterDTOByCookie();
 
-        // Obtener el controller de login y pasarle la fábrica de servicios
-        LoginController controller = loader.getController();
-        controller.setServiceFactory(serviceFactory);
+        // Verificar si existe el usuario con esa cookie, si es null, cargar el LoginView.fxml
+        Scene scene;
+        if(userRegisterDTO == null) {
+
+            // Cargar la interfaz de login desde el FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
+            scene = new Scene(loader.load());
+
+            // Obtener el controller de login y pasarle la fábrica de servicios
+            BaseController controller = loader.getController();
+            controller.setServiceFactory(serviceFactory);
+        }else{
+            Session.setEmail(userRegisterDTO.getAccount().getEmail());
+            List<EnumRole> roles = userRegisterDTO.getAccount().getRoles();
+            Session.setRoles(userRegisterDTO.getAccount().getRoles());
+            //Cargar la ventana del primer rol
+            String resource;
+            switch (roles.get(0)){
+                case JURY -> resource =  "/views/UserViews/JuryView.fxml";
+                case DIRECTOR ->  resource =  "/views/UserViews/DirectorView.fxml";
+                case COORDINATOR ->   resource =  "/views/UserViews/CoordinatorView.fxml";
+                case UNDERGRADUATE_STUDENT ->   resource =  "/views/UserViews/StudentView.fxml";
+                default -> resource =  "/views/AuthViews/LoginView.fxml"; //No tiene sentido, volvemos a el login
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+            scene = new Scene(loader.load());
+        }
+
 
         // Configurar y mostrar la ventana principal
         primaryStage.setScene(scene);
