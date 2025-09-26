@@ -34,6 +34,8 @@ public class ServiceFactory {
     /** Servicio de normalización de datos */
     private final IDataNormalizerServices dataService;
 
+    /** Servicio de cookies*/
+    private final CookieService cookieService;
     /**
      * Constructor de la fábrica de servicios.
      *
@@ -44,10 +46,16 @@ public class ServiceFactory {
         this.encryptService = new EncryptService();
         this.validatorService = new ValidatorRegisterServices();
         this.dataService = new DataNormalizerServices();
+        this.cookieService = new CookieService();
     }
 
     // --------------------- GETTERS ---------------------
-
+    /**
+     * Obtiene el servicio para las cookies
+     *
+     * @return La conexión a la base de datos.
+     */
+    public CookieService getCookieService() {return cookieService;}
     /**
      * Obtiene la conexión compartida a la base de datos.
      *

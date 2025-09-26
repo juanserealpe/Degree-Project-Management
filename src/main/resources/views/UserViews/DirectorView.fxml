@@ -36,7 +36,11 @@
 
             <Region VBox.vgrow="ALWAYS" />
 
-            <Button fx:id="btnCerrarSesion" prefHeight="40" prefWidth="140" style="-fx-background-color: #ff6666; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold;" text="Cerrar Sesión">
+            <Button fx:id="btnerrorSesion"
+                    prefHeight="40" prefWidth="140"
+                    style="-fx-background-color: #ff6666; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold;" text="Cerrar Sesión"
+                    onAction="#LogOut"
+            >
                 <effect>
                     <DropShadow color="rgba(0,0,0,0.2)" offsetX="2" offsetY="2" radius="5" />
                 </effect>

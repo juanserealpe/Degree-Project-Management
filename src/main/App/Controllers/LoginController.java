@@ -1,7 +1,10 @@
 package Controllers;
 
 import Interfaces.IAuthService;
+import Main.App;
+import Models.Session;
 import Services.ServiceFactory;
+import Utilities.WindowManager;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -69,11 +72,13 @@ public class LoginController extends BaseController {
     private void handleLogin(ActionEvent event) throws IOException {
         String email = txtEmail.getText();
         String password = txtPassword.getText();
-
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
+
             authService.isLoginValid(email, password);
             //Login válido... seguido a esto enviar a una vista...
-
+            String resource = App.getRolResource(Session.getRoles().get(0));
+            WindowManager.changeScene(stage, resource, Session.getRoles().get(0).name());
         } catch (Exception ex) {
             showErrorMessage(ex.getMessage());
             System.out.println(ex.getMessage());

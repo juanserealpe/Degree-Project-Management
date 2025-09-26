@@ -77,7 +77,7 @@ public class App extends Application {
         primaryStage.show();
     }
 
-    private static String getRolResource(EnumRole rol) {
+    public static String getRolResource(EnumRole rol) {
         String resource;
         switch (rol){
             case JURY -> resource =  "/views/UserViews/JuryView.fxml";
