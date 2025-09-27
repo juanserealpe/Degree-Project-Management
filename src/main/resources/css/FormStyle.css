@@ -1,0 +1,31 @@
+.error-field-style{
+    -fx-border-color: red;
+}
+
+.error-label-style{
+    -fx-text-fill: red;
+}
+
+.no-able-button-style {
+    -fx-background-color: gray; /* Changes the background color to gray */
+    -fx-text-fill: black; /* Changes the text color to black */
+}
+
+.able-button-style {
+    -fx-background-color: green; /* Changes the background color to green */
+    -fx-text-fill: white; /* Changes the text color to white */
+}
+
+.tittle-style{
+    -fx-text-fill: #1a237e;
+    -fx-font-weight: bold;
+}
+
+.background-style{
+    -fx-background-color: #ffffff;
+}
+
+.text-field-style:focused {
+    -fx-border-color: #1a237e;
+    -fx-effect: dropshadow(gaussian, rgba(26,35,126,0.2), 8, 0.3, 0, 2);
+}
