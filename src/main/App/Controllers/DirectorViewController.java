@@ -19,10 +19,14 @@ public class DirectorViewController extends BaseController{
             //inicializar el menu.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView/SideMenu.fxml"));
             Node sideMenu = loader.load();
+
+            // Asegurar que el menú ocupe todo el espacio disponible
+            SideMenuContainer.getChildren().clear();
+            SideMenuContainer.getChildren().add(sideMenu);
+
             SideMenuController controller = loader.getController();
             //pasarle la sesion al menu
             controller.initData(session);
-            SideMenuContainer.getChildren().add(sideMenu);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -76,11 +76,11 @@ public class LoginController extends BaseController {
         try {
             //authService.isLoginValid(email, password);
 
-            Session session = new Session();
+            Session session = new Session();//creando una sesion de prueba porque no se como se consigue la info desde aca.
             session.setEmail("prueba@unicauca.edu.co");
             List<EnumRole> roles = new ArrayList<>();
-            roles.add(EnumRole.COORDINATOR);
             roles.add(EnumRole.DIRECTOR);
+            roles.add(EnumRole.COORDINATOR);
             session.setRoles(roles);
 
             //Cargar la ventana del primer rol
@@ -90,8 +90,7 @@ public class LoginController extends BaseController {
             Scene scene = new Scene(loader.load());
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            BaseController controller =
-                    (CoordinatorViewController) WindowManager.changeScene(stage, resource, "");
+            BaseController controller = WindowManager.changeScene(stage, resource, "");
             controller.setServiceFactory(serviceFactory);
             //pasar la sesion a la vista
             controller.initData(session);
