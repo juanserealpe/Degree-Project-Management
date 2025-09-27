@@ -35,24 +35,6 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        CookieService cookieService = new CookieService();
-        serviceFactory = new ServiceFactory(DbConnection.getConnection());
-
-        UserRegisterDTO result = cookieService.getUserRegisterDTOByCookie();
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
-        Parent root = loader.load();
-
-        LoginController loginController = loader.getController();
-        loginController.setServiceFactory(serviceFactory);
-
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        WindowManager.setupWindow(primaryStage, "", true, 600, 800);
-        primaryStage.show();
-
-
-        /*
         // Establecer la conexión a la base de datos
         Connection connection = DbConnection.getConnection();
 
@@ -93,7 +75,6 @@ public class App extends Application {
         primaryStage.setScene(scene);
         WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
-        */
     }
 
     private static String getRolResource(EnumRole rol) {
