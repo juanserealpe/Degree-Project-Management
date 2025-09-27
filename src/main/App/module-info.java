@@ -9,6 +9,8 @@ module app.main {
     requires java.sql;
     requires jbcrypt;
     requires java.desktop;
+    requires org.apache.pdfbox;
+    requires javafx.swing;
 
     opens Main to javafx.fxml;
     opens Controllers to javafx.fxml;
@@ -18,4 +20,6 @@ module app.main {
 
     exports Main;
     exports Controllers;
+    exports Utilities;
+    opens Utilities to javafx.fxml;
 }
