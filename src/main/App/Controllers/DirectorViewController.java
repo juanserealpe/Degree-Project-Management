@@ -1,14 +1,26 @@
 package Controllers;
 
-import Models.Session;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
-public class DirectorViewController extends BaseController {
+public class DirectorViewController {
     @FXML
-    public Label jLabelEmail;
+    Pane SideMenuContainer;
+    @FXML
     public void initialize() {
-        jLabelEmail.setText(Session.getEmail());
+        try {
+            System.out.println("Inicializando DirectorViewController...");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView/SideMenu.fxml"));
+            Node sideMenu = loader.load();
+            SideMenuController controller = loader.getController();
+            controller.initData("Coordinador");
+            SideMenuContainer.getChildren().add(sideMenu);
+            System.out.println("SideMenu cargado correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();  // Esto imprimirá todo el stack trace real
+        }
     }
 
 }
