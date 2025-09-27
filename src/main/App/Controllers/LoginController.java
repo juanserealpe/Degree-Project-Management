@@ -71,13 +71,17 @@ public class LoginController extends BaseController {
         String password = txtPassword.getText();
 
         try {
-            authService.isLoginValid(email, password);
-            //Login válido... seguido a esto enviar a una vista...
+            //authService.isLoginValid(email, password);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            CoordinatorViewController controller =
+                    (CoordinatorViewController) WindowManager.changeScene(stage, "/views/UserViews/CoordinatorView.fxml", "");
 
         } catch (Exception ex) {
+            // Mostrar mensaje de error en caso de fallo en la autenticación
             showErrorMessage(ex.getMessage());
             System.out.println(ex.getMessage());
         }
+
     }
 
     @FXML
