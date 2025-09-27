@@ -5,9 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-import java.io.IOException;
+public class DirectorViewController extends BaseController{
 
-public class DirectorViewController {
     @FXML
     Pane SideMenuContainer;
     @FXML

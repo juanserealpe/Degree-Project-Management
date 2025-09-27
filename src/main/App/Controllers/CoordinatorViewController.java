@@ -1,4 +1,3 @@
-
 package Controllers;
 
 import Enums.EnumState;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CoordinatorViewController {
+public class CoordinatorViewController extends BaseController{
     @FXML
     Pane SideMenuContainer;
 

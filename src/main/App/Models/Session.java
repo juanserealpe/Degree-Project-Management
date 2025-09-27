@@ -1,7 +1,6 @@
 package Models;
 
 import Enums.EnumRole;
-import Services.AuthService;
 import Utilities.Logger;
 
 import java.util.List;
@@ -18,7 +17,10 @@ public class Session {
     public static void setEmail(String email) {Session.email = email;}
 
     public static List<EnumRole> getRoles() {return roles;}
-
+    public static void logOut(){
+        Session.roles.clear();
+        Session.email = "";
+    }
     public static void setRoles(List<EnumRole> roles) {
         Logger.info(Session.class, "setRoles: roles " + roles);
         Session.roles = roles;
