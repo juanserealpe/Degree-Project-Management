@@ -16,9 +16,9 @@ public class SideMenuController {
     private VBox rolButtons;
 
     private final Map<String, List<String>> menuItems = new LinkedHashMap<>() {{
-        put("Student", List.of("Mis Cursos", "Ver Notas"));
-        put("Director", List.of("Crear Formato A", "Ver proyectos que dirijo"));
-        put("Coordinador", List.of("Calificar formatos A", "OpciónCoor2"));
+        put("Student", List.of("Mi Proyecto"));
+        put("Director", List.of("Crear Formato A", "ver Proyectos"));
+        put("Coordinador", List.of("Calificar formatos A"));
     }};
 
     @FXML
@@ -94,7 +94,7 @@ public class SideMenuController {
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(150), subMenu);
         translateTransition.setFromY(0);
         translateTransition.setToY(-10);
-
+        translateTransition.setDuration(Duration.millis(200));
         fadeTransition.setOnFinished(e -> {
             subMenu.setVisible(false);
             subMenu.setManaged(false);
