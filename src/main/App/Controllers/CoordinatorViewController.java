@@ -3,6 +3,7 @@ package Controllers;
 import Enums.EnumState;
 import Enums.EnumTypeProcess;
 import Models.FormatA;
+import Models.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,32 +26,26 @@ public class CoordinatorViewController extends BaseController{
 
     @FXML
     public void initialize() {
+    }
+    public void initData(Session session) {
         try {
             //inicializar el menu.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView/SideMenu.fxml"));
             Node sideMenu = loader.load();
-            SideMenuController controller = loader.getController();
-            controller.initData();
+
+            // Asegurar que el menú ocupe todo el espacio disponible
+            SideMenuContainer.getChildren().clear();
             SideMenuContainer.getChildren().add(sideMenu);
+
+            SideMenuController controller = loader.getController();
+            //pasarle la sesion al menu
+            controller.initData(session);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<FormatA> list = new ArrayList<>();
-        FormatA newFormatA = new FormatA(new Date(1), EnumState.ESPERA, EnumTypeProcess.FORMAT_A);
-        newFormatA.setTittle("titulo1");
-        list.add(newFormatA);
-        list.add(newFormatA);
-        list.add(newFormatA);
-        list.add(newFormatA);
-        list.add(newFormatA);
-        list.add(newFormatA);
-        list.add(newFormatA);
-        list.add(newFormatA);
-        list.add(newFormatA);
-        list.add(newFormatA);
-
-        loadFormatACards(list);
-    }
+        //EJEMPLO
+        loadSampleData();
+    };
 
     private void loadFormatACards(List<FormatA> formatos) {
         CardsContainer.getColumnConstraints().clear();
@@ -128,5 +123,20 @@ public class CoordinatorViewController extends BaseController{
         // Aquí puedes abrir un modal, cambiar de vista, etc.
     }
 
+    private void loadSampleData() {
+        List<FormatA> list = new ArrayList<>();
+        FormatA newFormatA = new FormatA(new Date(1), EnumState.ESPERA, EnumTypeProcess.FORMAT_A);
+        newFormatA.setTittle("titulo1");
+
+        for (int i = 0; i < 6; i++) {
+            list.add(newFormatA);
+        }
+
+        System.out.println("Cargando " + list.size() + " tarjetas");
+        loadFormatACards(list);
+
+        // Verificar que las tarjetas se hayan añadido
+        System.out.println("Número de hijos en CardsContainer: " + CardsContainer.getChildren().size());
+    }
 
 }

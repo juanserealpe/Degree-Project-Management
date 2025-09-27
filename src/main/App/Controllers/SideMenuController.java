@@ -1,5 +1,7 @@
 package Controllers;
 
+import Enums.EnumRole;
+import Models.Session;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -10,51 +12,62 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class SideMenuController {
+public class SideMenuController extends BaseController {
     @FXML
     private VBox rolButtons;
 
     private final Map<String, List<String>> menuItems = new LinkedHashMap<>() {{
-        put("Student", List.of("Mi Proyecto"));
-        put("Director", List.of("Crear Formato A", "ver Proyectos"));
-        put("Coordinador", List.of("Calificar formatos A"));
+        put(String.valueOf(EnumRole.UNDERGRADUATE_STUDENT), List.of("Mi Proyecto"));
+        put(String.valueOf(EnumRole.DIRECTOR), List.of("Crear Formato A", "ver Proyectos"));
+        put(String.valueOf(EnumRole.COORDINATOR), List.of("Calificar formatos A"));
     }};
 
     @FXML
     public void initialize() {
-        initData();
     }
 
-    public void initData() {
+    public void initData(Session session) {
         rolButtons.getChildren().clear();
         rolButtons.getStyleClass().add("side-menu");
 
-        menuItems.forEach((rol, opciones) -> {
-            VBox rolBox = new VBox();
-            rolBox.getStyleClass().add("rol-container");
+        // Obtener los roles de la sesión actual
+        Set<String> sessionRoles = session.getRoles().stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
 
-            // Botón del rol
-            Button rolButton = createButton(rol, false);
-            rolBox.getChildren().add(rolButton);
+        // Filtrar los menuItems para mostrar solo los roles de la sesión
+        menuItems.entrySet().stream()
+                .filter(entry -> sessionRoles.contains(entry.getKey()))
+                .forEach(entry -> {
+                    String rol = entry.getKey();
+                    List<String> opciones = entry.getValue();
 
-            // Submenús
-            VBox subMenu = new VBox();
-            subMenu.getStyleClass().add("sub-menu");
-            subMenu.setVisible(false);
-            subMenu.setManaged(false);
+                    VBox rolBox = new VBox();
+                    rolBox.getStyleClass().add("rol-container");
 
-            for (String opcion : opciones) {
-                subMenu.getChildren().add(createButton(opcion, true));
-            }
+                    // Botón del rol
+                    Button rolButton = createButton(rol, false);
+                    rolBox.getChildren().add(rolButton);
 
-            rolBox.getChildren().add(subMenu);
+                    // Submenús
+                    VBox subMenu = new VBox();
+                    subMenu.getStyleClass().add("sub-menu");
+                    subMenu.setVisible(false);
+                    subMenu.setManaged(false);
 
-            // Animación al hacer click en el rol
-            rolButton.setOnAction(e -> toggleSubMenu(subMenu, rolButton));
+                    for (String opcion : opciones) {
+                        subMenu.getChildren().add(createButton(opcion, true));
+                    }
 
-            rolButtons.getChildren().add(rolBox);
-        });
+                    rolBox.getChildren().add(subMenu);
+
+                    // Animación al hacer click en el rol
+                    rolButton.setOnAction(e -> toggleSubMenu(subMenu, rolButton));
+
+                    rolButtons.getChildren().add(rolBox);
+                });
     }
 
     private void toggleSubMenu(VBox subMenu, Button rolButton) {

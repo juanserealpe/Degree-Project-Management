@@ -1,7 +1,7 @@
 package Controllers;
 
+import Enums.EnumRole;
 import Interfaces.IAuthService;
-import Main.App;
 import Models.Session;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginController extends BaseController {
 
@@ -54,7 +56,6 @@ public class LoginController extends BaseController {
             }
         });
     }
-
     private void showSuccessBox(String message) {
         successBox.setText(message);
         successBox.setVisible(true);
@@ -72,13 +73,29 @@ public class LoginController extends BaseController {
     private void handleLogin(ActionEvent event) throws IOException {
         String email = txtEmail.getText();
         String password = txtPassword.getText();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
+            //authService.isLoginValid(email, password);
 
-            authService.isLoginValid(email, password);
-            //Login válido... seguido a esto enviar a una vista...
-            String resource = App.getRolResource(Session.getRoles().get(0));
-            WindowManager.changeScene(stage, resource, Session.getRoles().get(0).name());
+            Session session = new Session();
+            session.setEmail("prueba@unicauca.edu.co");
+            List<EnumRole> roles = new ArrayList<>();
+            roles.add(EnumRole.COORDINATOR);
+            roles.add(EnumRole.DIRECTOR);
+            session.setRoles(roles);
+
+            //Cargar la ventana del primer rol
+            String resource = getRolResource(roles.get(0));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+            Scene scene = new Scene(loader.load());
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            BaseController controller =
+                    (CoordinatorViewController) WindowManager.changeScene(stage, resource, "");
+            controller.setServiceFactory(serviceFactory);
+            //pasar la sesion a la vista
+            controller.initData(session);
+
         } catch (Exception ex) {
             // Mostrar mensaje de error en caso de fallo en la autenticación
             showErrorMessage(ex.getMessage());
@@ -86,7 +103,17 @@ public class LoginController extends BaseController {
         }
 
     }
-
+    private static String getRolResource(EnumRole rol) {
+        String resource;
+        switch (rol){
+            case JURY -> resource =  "/views/UserViews/JuryView.fxml";
+            case DIRECTOR ->  resource =  "/views/UserViews/DirectorView.fxml";
+            case COORDINATOR ->   resource =  "/views/UserViews/CoordinatorView.fxml";
+            case UNDERGRADUATE_STUDENT ->   resource =  "/views/UserViews/StudentView.fxml";
+            default -> resource =  "/views/AuthViews/LoginView.fxml"; //No tiene sentido, volvemos a el login
+        }
+        return resource;
+    }
     @FXML
     private void handleRegister(ActionEvent event) {
         try {

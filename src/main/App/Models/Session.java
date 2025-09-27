@@ -10,7 +10,7 @@ public class Session {
     private static String email;
     private static List<EnumRole> roles;
 
-    private Session() {}
+    public Session() {}
 
     public static String getEmail() {return email;}
 
