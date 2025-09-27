@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DegreeWork {
+    private int idDegreeWork;
     private List<Integer> studentIds;
     private int directorId;
     private int codirectorId;
@@ -23,8 +24,9 @@ public class DegreeWork {
         this.state = state;
         this.date = date;
     }
-    public DegreeWork(List<Integer> studentIds, int directorId, int codirectorId,List<Process> processes, EnumModality modality,Date date) {
+    public DegreeWork(int idDegreeWork,List<Integer> studentIds, int directorId, int codirectorId,List<Process> processes, EnumModality modality,Date date) {
         this.studentIds = studentIds;
+        this.idDegreeWork = idDegreeWork;
         this.directorId = directorId;
         this.codirectorId = codirectorId;
         this.processes = processes;
@@ -59,5 +61,12 @@ public class DegreeWork {
     public int getCountProcess(){
         if(processes == null) return 0;
         else return processes.size();
+    }
+    public int getIdDegreeWork() {
+        return idDegreeWork;
+    }
+
+    public void setIdDegreeWork(int idDegreeWork) {
+        this.idDegreeWork = idDegreeWork;
     }
 }
