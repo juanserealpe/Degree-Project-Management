@@ -79,6 +79,7 @@ public class App extends Application {
         primaryStage.setScene(scene);
         WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
+
     }
 
     private static String getRolResource(EnumRole rol) {
