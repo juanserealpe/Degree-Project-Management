@@ -23,6 +23,14 @@ public class DegreeWork {
         this.state = state;
         this.date = date;
     }
+    public DegreeWork(List<Integer> studentIds, int directorId, int codirectorId,List<Process> processes, EnumModality modality,Date date) {
+        this.studentIds = studentIds;
+        this.directorId = directorId;
+        this.codirectorId = codirectorId;
+        this.processes = processes;
+        this.modality = modality;
+        this.date = date;
+    }
     public List<Integer> getStudentIds() { return studentIds; }
     public void setStudentIds(List<Integer> studentIds) { this.studentIds = studentIds; }
 
