@@ -1,0 +1,18 @@
+.btn_MenuElement{
+    -fx-background-color: #CCCCCC;
+        -fx-background-radius: 0;
+        -fx-border-color: transparent;
+        -fx-padding: 0;
+        -fx-text-fill: black;
+        -fx-font-size: 14px;
+        -fx-effect: null;
+}
+.btn_subMenuElement{
+    -fx-background-color: #808080;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+    -fx-text-fill: black;
+    -fx-font-size: 14px;
+    -fx-effect: null;
+}

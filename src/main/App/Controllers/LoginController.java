@@ -80,9 +80,11 @@ public class LoginController extends BaseController {
             String resource = App.getRolResource(Session.getRoles().get(0));
             WindowManager.changeScene(stage, resource, Session.getRoles().get(0).name());
         } catch (Exception ex) {
+            // Mostrar mensaje de error en caso de fallo en la autenticación
             showErrorMessage(ex.getMessage());
             System.out.println(ex.getMessage());
         }
+
     }
 
 

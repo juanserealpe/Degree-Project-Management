@@ -1,17 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.StackPane?>
-<StackPane maxHeight="-Infinity"
-           maxWidth="-Infinity"
-           minHeight="-Infinity"
-           minWidth="-Infinity"
-           prefHeight="400.0"
-           prefWidth="600.0"
-           xmlns="http://javafx.com/javafx/11.0.1"
-           xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <Label text="vista coordinador" />
-    </children>
-</StackPane>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CoordinatorViewController">
+
+    <left>
+        <Pane fx:id="SideMenuContainer">
+            <!-- espacio para el sub menu-->
+        </Pane>
+    </left>
+
+    <center>
+        <VBox fx:id="panelCenter" alignment="TOP_CENTER" spacing="20" style="-fx-background-color: white; -fx-padding: 20;" BorderPane.alignment="CENTER">
+
+            <effect>
+                <DropShadow color="rgba(0,0,0,0.1)" offsetX="2" offsetY="2" radius="10" />
+            </effect>
+
+            <Label text="Formatos A Pendientes" textFill="#4a6bff">
+                <font>
+                    <Font name="System Bold" size="20.0" />
+                </font>
+                <padding>
+                    <Insets bottom="10" />
+                </padding>
+            </Label>
+
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                <content>
+                    <GridPane fx:id="CardsContainer">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                    </GridPane>
+                </content>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
