@@ -5,7 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
-public class DirectorViewController {
+public class DirectorViewController extends BaseController{
+
     @FXML
     Pane SideMenuContainer;
     @FXML
