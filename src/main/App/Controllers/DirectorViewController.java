@@ -13,16 +13,16 @@ public class DirectorViewController {
     @FXML
     public void initialize() {
         try {
-            System.out.println("Inicializando DirectorViewController...");
+            //inicializar el menu.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView/SideMenu.fxml"));
             Node sideMenu = loader.load();
             SideMenuController controller = loader.getController();
-            controller.initData("Coordinador");
+            controller.initData();
             SideMenuContainer.getChildren().add(sideMenu);
-            System.out.println("SideMenu cargado correctamente");
         } catch (Exception e) {
-            e.printStackTrace();  // Esto imprimirá todo el stack trace real
+            e.printStackTrace();
         }
+
     }
 
 }

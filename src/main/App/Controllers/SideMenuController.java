@@ -1,81 +1,82 @@
 package Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-/*
-* FXMLLoader loader = new FXMLLoader(getClass().getResource("SideMenu.fxml"));
-Parent root = loader.load();
-SideMenuController controller = loader.getController();
-controller.initData("Director"); // ejemplo
-*
-*
-* FXMLLoader loader = new FXMLLoader(getClass().getResource("SideMenu.fxml"));
-Node sideMenu = loader.load();
-SideMenuController controller = loader.getController();
-controller.initData("Student");
 
-borderPane.setLeft(sideMenu);
-* */
-
+import java.io.IOException;
+import java.util.*;
 
 public class SideMenuController {
     @FXML
     private VBox rolButtons;
 
-    String[][] menuItems = new String[][] {
-            {"Student"},
-            {"Director", "Crear Formato A", "Ver proyectos que dirigo"},
-            {"Coordinador", "Calificar formatos A", "opcionCoor2"}
-    };
+    // Estructura: rol -> lista de opciones
+    private final Map<String, List<String>> menuItems = new LinkedHashMap<>() {{
+        put("Student", List.of("Mis Cursos", "Ver Notas"));
+        put("Director", List.of("Crear Formato A", "Ver proyectos que dirijo"));
+        put("Coordinador", List.of("Calificar formatos A", "OpciónCoor2"));
+    }};
 
     @FXML
     public void initialize() {
+        initData();
     }
 
-    public void initData(String rolActual) {
-        // inicializar submenu dinamicos segun roles
-        for (int i = 0; i < menuItems.length ; i++) {
-            //si estamos en el rol actual, desplegar sub menu, si no otros roles como boton.
-            if(menuItems[i][0].equals(rolActual)) {
-                addsubMenu(menuItems[i][0], i);
-            }else{
-                rolButtons.getChildren().add(addSubElement(menuItems[i][0], i, 0,false));
+    public void initData() {
+        rolButtons.getChildren().clear();
+
+        //no menuItems, segun lista de sesion.
+        menuItems.forEach((rol, opciones) -> {
+            VBox rolBox = new VBox(); // Contenedor de rol + submenú
+
+            // Botón del rol
+            Button rolButton = createButton(rol, false);
+            rolBox.getChildren().add(rolButton);
+
+            // Submenús
+            VBox subMenu = new VBox();
+            subMenu.setVisible(false); // inicialmente oculto
+            subMenu.setManaged(false); // no ocupa espacio cuando está oculto
+
+            for (String opcion : opciones) {
+                subMenu.getChildren().add(createButton(opcion, true));
             }
 
-        }
-    }
+            rolBox.getChildren().add(subMenu);
 
-    private void addsubMenu(String rol, int index) {
-        int len = menuItems[index].length;
-        //crea elemento del submenu
-        VBox subMenu = new VBox();
+            // Toggle al hacer click en el rol
+            rolButton.setOnAction(e -> {
+                boolean visible = subMenu.isVisible();
+                subMenu.setVisible(!visible);
+                subMenu.setManaged(!visible);
+            });
 
-        //agregar sub elemento del submenu
-        for (int i = 0; i < menuItems[index].length; i++) {
-            if(i==0)
-                subMenu.getChildren().add(addSubElement(menuItems[index][i], index, i,false));
-            else
-                subMenu.getChildren().add(addSubElement(menuItems[index][i], index, i,true));
-        }
-
-        //agregar subMenu al menu
-        rolButtons.getChildren().add(subMenu);
-    }
-    private Button addSubElement(String nameOption, int index, int subIndex, boolean isSubItem) {
-        Button button = new Button();
-        button.setText(nameOption);
-        button.setMaxWidth(Double.MAX_VALUE);
-        if(isSubItem)
-            button.getStyleClass().add("btn_subMenuElement");
-        else
-            button.getStyleClass().add("btn_MenuElement");
-        button.setOnAction(e -> {
-            System.out.println("click en: "+nameOption+" ["+index+"]["+subIndex+"]");
-            //logica segun click boton
-            // Cerrar vista actual y abrir nueva lista segun rol
+            rolButtons.getChildren().add(rolBox);
         });
+    }
+
+    private Button createButton(String nameOption, boolean isSubItem) {
+        Button button = new Button(nameOption);
+        button.setMaxWidth(Double.MAX_VALUE);
+
+        if (isSubItem) {
+            button.getStyleClass().add("btn_subMenuElement");
+        } else {
+            button.getStyleClass().add("btn_MenuElement");
+        }
+
+        button.setOnAction(e -> handleAction(nameOption, isSubItem));
         return button;
     }
 
+    private void handleAction(String nameOption, boolean isSubItem) {
+        System.out.println("click en: " + nameOption + (isSubItem ? " (submenu)" : " (rol)"));
+        // Aquí va la lógica de navegación o acciones
+    }
+    @FXML
+    private void handleCloseSession(ActionEvent event) throws IOException {
+        System.out.println("Closing session");
+    }
 }

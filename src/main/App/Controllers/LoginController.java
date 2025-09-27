@@ -72,8 +72,8 @@ public class LoginController {
         try {
             //authService.isLoginValid(email, password);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            DirectorViewController controller =
-                    (DirectorViewController) WindowManager.changeScene(stage, "/views/UserViews/DirectorView.fxml", "");
+            CoordinatorViewController controller =
+                    (CoordinatorViewController) WindowManager.changeScene(stage, "/views/UserViews/CoordinatorView.fxml", "");
 
 
         } catch (Exception ex) {
