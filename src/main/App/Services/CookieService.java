@@ -55,4 +55,11 @@ public class CookieService {
         }
         return null;
     }
+    public void ResetCookie() {
+        try {
+            fileService.saveFile(path, filename, "");
+        } catch (IOException e) {
+            System.out.println("Error to reset cookie " + e);
+        }
+    }
 }

@@ -28,9 +28,8 @@ public class LoginController extends BaseController {
     @FXML
     private Label successBox;
 
-
     private IAuthService authService;
-    private ServiceFactory serviceFactory;
+    // Removemos la declaración duplicada de serviceFactory ya que está en BaseController
 
     @Override
     public void setServiceFactory(ServiceFactory serviceFactory) {
@@ -52,6 +51,7 @@ public class LoginController extends BaseController {
             }
         });
     }
+
     private void showSuccessBox(String message) {
         successBox.setText(message);
         successBox.setVisible(true);
@@ -80,10 +80,6 @@ public class LoginController extends BaseController {
         }
     }
 
-
-
-
-
     @FXML
     private void handleRegister(ActionEvent event) {
         try {
@@ -94,14 +90,14 @@ public class LoginController extends BaseController {
 
             // Obtener el controller y pasarle la misma instancia de ServiceFactory
             RegisterController controller = loader.getController();
-            controller.setServiceFactory(this.serviceFactory); // <- aquí pasas la factory
+            controller.setServiceFactory(this.serviceFactory); // <- usar serviceFactory heredado de BaseController
+
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
             showInfoMessage("Error al abrir el formulario de registro");
         }
     }
-
 
     private void showErrorMessage(String message) {
         lblMessage.setText(message);

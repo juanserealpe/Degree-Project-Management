@@ -49,7 +49,6 @@ public class App extends Application {
         // Verificar si existe el usuario con esa cookie, si es null, cargar el LoginView.fxml
         Scene scene;
         if(userRegisterDTO == null) {
-
             // Cargar la interfaz de login desde el FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
             scene = new Scene(loader.load());
@@ -58,9 +57,12 @@ public class App extends Application {
             BaseController controller = loader.getController();
             controller.setServiceFactory(serviceFactory);
         }else{
-            Session.setEmail(userRegisterDTO.getAccount().getEmail());
+
+            Session session = new Session();
+            session.setEmail(userRegisterDTO.getAccount().getEmail());
             List<EnumRole> roles = userRegisterDTO.getAccount().getRoles();
-            Session.setRoles(userRegisterDTO.getAccount().getRoles());
+            session.setRoles(userRegisterDTO.getAccount().getRoles());
+
             //Cargar la ventana del primer rol
             String resource = getRolResource(roles.get(0));
 
@@ -68,6 +70,8 @@ public class App extends Application {
             scene = new Scene(loader.load());
             BaseController controller = loader.getController();
             controller.setServiceFactory(serviceFactory);
+            //pasar la sesion a la vista
+            controller.initData(session);
         }
 
 
@@ -75,7 +79,6 @@ public class App extends Application {
         primaryStage.setScene(scene);
         WindowManager.setupWindow(primaryStage, "", true, 600, 800);
         primaryStage.show();
-
     }
 
     private static String getRolResource(EnumRole rol) {
@@ -89,4 +92,4 @@ public class App extends Application {
         }
         return resource;
     }
-}
+}   

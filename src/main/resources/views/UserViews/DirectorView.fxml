@@ -3,40 +3,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DirectorViewController">
+<BorderPane prefHeight="600.0"
+            prefWidth="900.0"
+            style="-fx-background-color: #f5f5f5;"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.DirectorViewController">
 
     <left>
-        <VBox fx:id="panelMenu" alignment="TOP_CENTER" prefWidth="200" spacing="20" style="-fx-background-color: linear-gradient(to bottom, #4a6bff, #6a8aff); -fx-padding: 20;" BorderPane.alignment="CENTER">
-
-            <effect>
-                <DropShadow color="rgba(0,0,0,0.2)" offsetX="2" offsetY="2" radius="10" />
-            </effect>
-
-            <Label text="Sesión Iniciada" textFill="WHITE">
-                <font>
-                    <Font name="System Bold" size="18.0" />
-                </font>
-                <padding>
-                    <Insets bottom="20" />
-                </padding>
-            </Label>
-
-            <Label fx:id="jLabelEmail" style="-fx-background-color: rgba(255,255,255,0.2); -fx-background-radius: 5; -fx-padding: 5 10;" text="usuario@ejemplo.com" textFill="WHITE">
-                <font>
-                    <Font size="14.0" />
-                </font>
-            </Label>
-
-            <Region VBox.vgrow="ALWAYS" />
-
-            <Button fx:id="btnCerrarSesion" prefHeight="40" prefWidth="140" style="-fx-background-color: #ff6666; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-weight: bold;" text="Cerrar Sesión">
-                <effect>
-                    <DropShadow color="rgba(0,0,0,0.2)" offsetX="2" offsetY="2" radius="5" />
-                </effect>
-            </Button>
-        </VBox>
+        <Pane fx:id="SideMenuContainer">
+            <!-- espacio para el sub menu-->
+        </Pane>
     </left>
 
     <center>

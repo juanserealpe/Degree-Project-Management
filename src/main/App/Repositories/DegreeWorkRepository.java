@@ -3,6 +3,7 @@ package Repositories;
 import Enums.EnumModality;
 import Enums.EnumState;
 import Enums.EnumTypeProcess;
+import Interfaces.IDegreeWorkRepository;
 import Models.DegreeWork;
 import Models.FormatA;
 import Models.User;
@@ -16,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class DegreeWorkRepository extends BaseRepository {
+public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkRepository {
     /**
      * Constructor que recibe la conexión a la base de datos.
      *

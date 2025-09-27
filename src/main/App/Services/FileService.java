@@ -33,34 +33,39 @@ public class FileService implements IFileService {
 
     @Override
     public String saveFile(String path, String filename, String content) throws IOException {
-        File file = new File(path + filename);
+        File file = new File(path, filename); // Separar path y filename evita errores de concatenación
         File parentDir = file.getParentFile();
-        if(!parentDir.exists()){
-            parentDir.mkdirs();
-        }
-        if (!file.exists()) {
-            boolean created = file.createNewFile();
-            if (!created) {
-                throw new IOException("The file can't be created");
+
+        // Validación de existencia y permisos de carpeta
+        if (!parentDir.exists()) {
+            if (!parentDir.mkdirs()) {
+                throw new IOException("No se pudo crear el directorio: " + parentDir.getAbsolutePath());
             }
         }
-        if(!file.canWrite()){
-            throw new IOException("Access is denied, the file can't be written");
-        }
-        try(FileWriter fw = new FileWriter(file)) {
-            fw.write(content);
-        }catch(IOException e){
-            e.printStackTrace();
+        if (!parentDir.canWrite()) {
+            throw new IOException("No se puede escribir en el directorio: " + parentDir.getAbsolutePath());
         }
 
-        try {
-            Runtime.getRuntime().exec("attrib +H " + file.getAbsolutePath());
-        } catch (Exception e) {
-            System.err.println("No se pudo ocultar el archivo: " + e.getMessage());
+        // Validación de archivo
+        if (!file.exists()) {
+            if (!file.createNewFile()) {
+                throw new IOException("No se pudo crear el archivo: " + file.getAbsolutePath());
+            }
+        }
+        if (!file.canWrite()) {
+            throw new IOException("No se puede escribir en el archivo: " + file.getAbsolutePath());
+        }
+
+        // Escritura segura
+        try (FileWriter fw = new FileWriter(file, false)) { // false = sobrescribir
+            fw.write(content);
+        } catch (IOException e) {
+            throw new IOException("Error al escribir en el archivo: " + file.getAbsolutePath(), e);
         }
 
         return file.getAbsolutePath();
     }
+
     @Override
     public String uploadFile(String path) throws FileException {
         try {

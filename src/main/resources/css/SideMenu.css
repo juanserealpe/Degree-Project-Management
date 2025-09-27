@@ -1,0 +1,128 @@
+/* Estilos generales para el menú lateral */
+.side-menu {
+    -fx-background-color: transparent;
+    -fx-spacing: 5px;
+}
+
+/* Contenedor de cada rol */
+.rol-container {
+    -fx-spacing: 0px;
+    -fx-background-color: transparent;
+}
+
+/* Botones principales (roles) */
+.btn_MenuElement {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-text-fill: #4a6bff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 15px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+.btn_MenuElement:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #3a5bef;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}
+
+.btn_MenuElement:pressed {
+    -fx-background-color: #f0f4ff;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Estado activo cuando el submenú está expandido */
+.btn_MenuElement:active {
+    -fx-background-color: #3a5bef;
+    -fx-text-fill: white;
+}
+
+/* Botones de submenú */
+.btn_subMenuElement {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-text-fill: #5a7bfc;
+    -fx-font-size: 12px;
+    -fx-padding: 10px 15px 10px 25px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-alignment: center-left;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 3px;
+    -fx-transition: all 0.2s ease;
+}
+
+.btn_subMenuElement:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #4a6bff;
+    -fx-border-color: #4a6bff;
+    -fx-translate-x: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+.btn_subMenuElement:pressed {
+    -fx-background-color: #e8edff;
+    -fx-scale-x: 0.99;
+    -fx-scale-y: 0.99;
+}
+
+/* Submenú con animación */
+.sub-menu {
+    -fx-padding: 5px 0px 5px 15px;
+    -fx-spacing: 3px;
+    -fx-background-color: transparent;
+}
+
+/* Botón de cerrar sesión */
+.btn-logout {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-text-fill: #ff4757;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-padding: 12px 15px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.btn-logout:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #ff3742;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}
+
+.btn-logout:pressed {
+    -fx-background-color: #ffecee;
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+}
+
+/* Animaciones para el despliegue del submenú */
+.slide-in {
+    -fx-transition: all 0.3s ease-out;
+}
+
+/* Efectos de texto para mejor legibilidad */
+.btn_MenuElement .text {
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.8), 0, 0, 0, 1);
+}
+
+.btn_subMenuElement .text {
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.5), 0, 0, 0, 1);
+}
+
+.btn-logout .text {
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.8), 0, 0, 0, 1);
+}
