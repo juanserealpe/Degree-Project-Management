@@ -71,8 +71,8 @@ public class CoordinatorViewController extends BaseController{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UserViews/CoordinatorViews/evalueteFormatAModal.fxml"));
             Pane modalContent = loader.load();
             EvaluateFormatAController controller = loader.getController();
+            controller.setServiceFactory(this.serviceFactory);
             controller.initData(degreeWork, this::handleCalificacionResultado);
-            setServiceFactory(this.serviceFactory);
 
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);

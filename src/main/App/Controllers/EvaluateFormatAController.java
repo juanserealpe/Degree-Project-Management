@@ -47,7 +47,7 @@ public class EvaluateFormatAController extends BaseController implements Initial
         loadData();
     }
 
-    @FXML
+    @Override
     public void setServiceFactory(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
         this.coordinatorService = serviceFactory.getCoordinatorService();

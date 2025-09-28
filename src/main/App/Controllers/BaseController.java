@@ -161,10 +161,13 @@ public abstract class BaseController {
 
         // IDs de Estudiantes
         List<Integer> idsStudents = degreeWork.getStudentIds();
+        System.out.println(idsStudents);
+        System.out.println(coordinatorService.getEmailByAccountId(idsStudents.get(0)));
         String emails = "";
         for (Integer idStudent : idsStudents) {
-            emails = emails+",\n "+coordinatorService.getEmailByAccountId(idStudent);
+            emails += " "+coordinatorService.getEmailByAccountId(idStudent);
         }
+
         String estudiantesText = "Estudiantes: " + emails;
         Label lblEstudiantes = new Label(estudiantesText);
         lblEstudiantes.setStyle("-fx-font-size: 12px; -fx-wrap-text: true;");
