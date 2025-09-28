@@ -5,10 +5,12 @@ import Builders.ProcessCreator;
 import DataBase.DbConnection;
 import Enums.EnumModality;
 import Enums.EnumState;
+import Interfaces.IFileService;
 import Models.*;
 import Models.Process;
 import Repositories.CookieRepository;
 import Repositories.DegreeWorkRepository;
+import Services.FileService;
 import Utilities.WindowManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,7 +28,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,9 @@ public class NewDegreeWorkController extends BaseController{
     private Session instance;
     Connection connection = DbConnection.getConnection();
     private final DegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
-    private CookieRepository cookie = new CookieRepository();
+    private final CookieRepository cookieRepository = new CookieRepository();
+    private final String path = System.getProperty("user.dir") + "/Secrets/ProjectManager/";
+    private final IFileService fileService = new FileService();
 
     @FXML
     Pane SideMenuContainer;
@@ -91,7 +94,7 @@ public class NewDegreeWorkController extends BaseController{
     }
 
     @FXML
-    void btnCreateDW(ActionEvent event) throws SQLException {
+    void btnCreateDW(ActionEvent event) throws SQLException, IOException {
         //Ejemplo
         //Aquí debería traer los datos de la base de datos
 
@@ -102,8 +105,10 @@ public class NewDegreeWorkController extends BaseController{
 
         //Trayendo id de directores
         int director = 0;
-        List<Cookie> cookies = cookie.getAll();
-        if (!cookies.isEmpty()){director = cookies.get(0).UserId;}
+        String filename = "cookie.txt";
+        String content = fileService.readFile(path, filename);
+        Cookie cookie = cookieRepository.getByString(content);
+        director = cookie.UserId;
         int codirector = degreeWorkRepository.getIdAccountByEmail(idCodirector.getText());
 
         //nuevo Formato A
