@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SideMenuController extends BaseController {
+    public Label jLabelEmail;
     @FXML
     private VBox rolButtons;
 
@@ -44,7 +46,7 @@ public class SideMenuController extends BaseController {
         this.instance = instance;
         rolButtons.getChildren().clear();
         rolButtons.getStyleClass().add("side-menu");
-
+        jLabelEmail.setText(instance.getEmail());
         // Obtener los roles de la sesión actual
         Set<String> sessionRoles = instance.getRoles().stream()
                 .map(Enum::name)
