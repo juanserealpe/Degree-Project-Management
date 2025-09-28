@@ -47,6 +47,7 @@ public class LoginController extends BaseController {
 
         Platform.runLater(() -> {
             Stage stage = (Stage) successBox.getScene().getWindow();
+            if(stage == null){return;}
             Object data = stage.getUserData();
             if (data instanceof String) {
                 showSuccessBox((String) data);
@@ -94,8 +95,8 @@ public class LoginController extends BaseController {
         String resource;
         switch (rol){
             case JURY -> resource =  "/views/UserViews/JuryView.fxml";
-            case DIRECTOR ->  resource = "/views/UserViews/DirectorViews/DirectorView.fxml";
-            case COORDINATOR ->   resource = "/views/UserViews/CoordinatorViews/CoordinatorView.fxml";
+            case DIRECTOR ->  resource =  "/views/UserViews/DirectorViews/DirectorView.fxml";
+            case COORDINATOR ->   resource =  "/views/UserViews/CoordinatorView.fxml";
             case UNDERGRADUATE_STUDENT ->   resource =  "/views/UserViews/StudentView.fxml";
             default -> resource =  "/views/AuthViews/LoginView.fxml"; //No tiene sentido, volvemos a el login
         }

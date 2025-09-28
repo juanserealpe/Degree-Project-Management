@@ -9,10 +9,9 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,6 +24,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SideMenuController extends BaseController {
+    public Label jLabelEmail;
     @FXML
     private VBox rolButtons;
 
@@ -44,7 +44,7 @@ public class SideMenuController extends BaseController {
         this.instance = instance;
         rolButtons.getChildren().clear();
         rolButtons.getStyleClass().add("side-menu");
-
+        jLabelEmail.setText(instance.getEmail());
         // Obtener los roles de la sesión actual
         Set<String> sessionRoles = instance.getRoles().stream()
                 .map(Enum::name)
@@ -166,10 +166,10 @@ public class SideMenuController extends BaseController {
     @FXML
     private void handleCloseSession(ActionEvent event) throws IOException {
         System.out.println("Closing session");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
-        Scene scene = new Scene(loader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         BaseController controller = WindowManager.changeScene(stage,"/views/AuthViews/LoginView.fxml","");
+        Session.getInstance().logOut();
+        serviceFactory.getCookieService().ResetCookie();
         controller.setServiceFactory(serviceFactory);
     }
 }
