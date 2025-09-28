@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -159,15 +160,20 @@ public abstract class BaseController {
         lblTitulo.setMaxWidth(250);
 
         // IDs de Estudiantes
-        String estudiantesText = "Estudiantes: " + getStudentIdsText(degreeWork.getStudentIds());
+        List<Integer> idsStudents = degreeWork.getStudentIds();
+        String emails = "";
+        for (Integer idStudent : idsStudents) {
+            emails = emails+",\n "+coordinatorService.getEmailByAccountId(idStudent);
+        }
+        String estudiantesText = "Estudiantes: " + emails;
         Label lblEstudiantes = new Label(estudiantesText);
         lblEstudiantes.setStyle("-fx-font-size: 12px; -fx-wrap-text: true;");
         lblEstudiantes.setMaxWidth(250);
 
         // Director y Codirector
-        String directoresText = "Director: " + degreeWork.getDirectorId() +
+        String directoresText = "Director: " + coordinatorService.getEmailByAccountId(degreeWork.getDirectorId()) +
                 (degreeWork.getCodirectorId() != 0 ?
-                        " | Codirector: " + degreeWork.getCodirectorId() : "");
+                        " | Codirector: " + coordinatorService.getEmailByAccountId(degreeWork.getCodirectorId()) : "");
         Label lblDirectores = new Label(directoresText);
         lblDirectores.setStyle("-fx-font-size: 12px;");
 

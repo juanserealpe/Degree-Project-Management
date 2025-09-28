@@ -28,4 +28,5 @@ public class CoordinatorService {
     public List<FormatA> getPendingFormatsA(){return repository.getPendingFormatsA();}
     public FormatA getFormatAByDegreeWorkId(int pIdDegreeWork){ return repository.getFormatAByDegreeWorkId(pIdDegreeWork);}
     public List<DegreeWork> getPendingDegreeWorks() { return repository.getPendingDegreeWorks();}
+    public String getEmailByAccountId(int pIdAccount){ return repository.getEmailByAccountId(pIdAccount);}
 }
