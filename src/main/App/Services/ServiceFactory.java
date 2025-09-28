@@ -3,6 +3,7 @@ package Services;
 import Dtos.UserRegisterDTO;
 import Interfaces.*;
 import Repositories.CredentialRepository;
+import Repositories.DegreeWorkRepository;
 
 import java.sql.Connection;
 
@@ -50,6 +51,11 @@ public class ServiceFactory {
     }
 
     // --------------------- GETTERS ---------------------
+
+    public CoordinatorService getCoordinatorService() {
+        IDegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
+        return new CoordinatorService(degreeWorkRepository);
+    }
     /**
      * Obtiene el servicio para las cookies
      *
