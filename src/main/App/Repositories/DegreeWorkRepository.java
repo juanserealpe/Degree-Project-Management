@@ -103,6 +103,15 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
         if(!(makeRetrieve(vScript, vParams))) return null;
         return (String) resultScript.getPayload().get(0).get("email");
     }
+
+    @Override
+    public int getIdAccountByEmail(String pEmail){
+        String vScript = "SELECT idAccount from Account WHERE email = ?";
+        Object[] vParams = new Object[]{pEmail};
+        if(!(makeRetrieve(vScript, vParams))) return 0;
+        return (int) resultScript.getPayload().get(0).get("idAccount");
+    }
+
     @Override
     public boolean evaluateFormatAByDegreeWorkId(int pIdDegreeWork , String pObservation, EnumState pNewState){
         String vScript = "UPDATE FormatA SET currentStatus = ?, observation = ? WHERE idDegreeWork = ?";
@@ -143,6 +152,11 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
         if (degreeWorks == null || degreeWorks.isEmpty()) return null;
 
         return degreeWorks.get(0);
+    }
+
+    public boolean insertNewDegreeWork(){
+
+        return false;
     }
 
 

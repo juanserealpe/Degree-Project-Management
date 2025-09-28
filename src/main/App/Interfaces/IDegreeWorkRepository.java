@@ -26,6 +26,8 @@ public interface IDegreeWorkRepository {
 
     String getEmailByAccountId(int pIdAccount);
 
+    int getIdAccountByEmail(String pEmail);
+
     boolean evaluateFormatAByDegreeWorkId(int pIdDegreeWork, String pObservation, EnumState pNewState);
 
     int getIdDegreeWorkByAccountId(int pIdAccount);

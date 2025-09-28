@@ -9,6 +9,7 @@ import Models.DegreeWork;
 import Models.Session;
 import Models.Process;
 import Models.FormatA;
+import Repositories.DegreeWorkRepository;
 import Utilities.WindowManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,7 @@ public class NewDegreeWorkController extends BaseController{
 
     private Session instance;
     Connection connection = DbConnection.getConnection();
+    private final DegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
 
     @FXML
     Pane SideMenuContainer;
@@ -92,9 +94,10 @@ public class NewDegreeWorkController extends BaseController{
     void btnCreateDW(ActionEvent event) {
         //Ejemplo
         //Aquí debería traer los datos de la base de datos
+
         List<Integer> idStudents = new ArrayList<>();
-        idStudents.add(1);
-        idStudents.add(2);
+        idStudents.add(degreeWorkRepository.getIdAccountByEmail(idStudent1.getText()));
+        idStudents.add(degreeWorkRepository.getIdAccountByEmail(idStudent2.getText()));
         ProcessCreator creator = new CreateFormatA();
         Process[] process = new Process[1];
         process[0] = creator.createProcess();
@@ -104,6 +107,7 @@ public class NewDegreeWorkController extends BaseController{
         DegreeWork degreeWork = new DegreeWork(idStudents, 101, 102, List.of(process), EnumModality.INVESTIGACION, EnumState.INACTIVO,  Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         //Aquí debería insertar el trabajo de grado en la BD
+
         //HELP
 
         //Redirige al usuario a La vista del director
