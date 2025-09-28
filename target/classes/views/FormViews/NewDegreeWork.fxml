@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="5.0" styleClass="background-style" stylesheets="@/css/FormStyle.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="5.0" styleClass="background-style" stylesheets="@/css/FormStyle.css" xmlns="http://javafx.com/javafx/17.0.16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DirectorViewController">
    <children>
       <Label alignment="CENTER" prefHeight="42.0" prefWidth="600.0" styleClass="tittle-style" text="Nuevo Trabajo de Grado" textAlignment="CENTER">
          <font>
@@ -26,7 +26,7 @@
       <Label prefHeight="17.0" prefWidth="602.0" text="Estudiante 2" />
       <TextField fx:id="idStudent2" prefHeight="40.0" prefWidth="600.0" styleClass="text-field-style" />
       <Label fx:id="idStudent2Error" prefHeight="17.0" prefWidth="572.0" />
-      <Button fx:id="idConfirmBtn" mnemonicParsing="false" onAction="#btnConfirm" prefHeight="25.0" prefWidth="604.0" text="Confirmar" />
+      <Button fx:id="idConfirmBtn" mnemonicParsing="false" prefHeight="25.0" prefWidth="604.0" text="Confirmar" />
    </children>
    <padding>
       <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
