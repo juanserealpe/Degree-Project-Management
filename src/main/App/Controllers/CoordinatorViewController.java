@@ -42,16 +42,14 @@ public class CoordinatorViewController extends BaseController{
 
     @FXML
     GridPane CardsContainer;
-
-
-
-
+    CoordinatorService serviceCoordinator;
 
     @FXML
     public void initialize() {
     }
     public void initData(Session instance) {
         try {
+            serviceCoordinator = this.serviceFactory.getCoordinatorService();
             //inicializar el menu.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView/SideMenu.fxml"));
             Node sideMenu = loader.load();
@@ -63,8 +61,7 @@ public class CoordinatorViewController extends BaseController{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        loadSampleData();//EJEMPLO
-        //loadData();
+        loadData();
     };
 
     private void handleCalificar(Object degreeWorkObj) {
@@ -99,7 +96,7 @@ public class CoordinatorViewController extends BaseController{
     private void handleCalificacionResultado(boolean exito) {
         if (exito) {
             showAlert("Éxito", "Formato A calificado exitosamente.");
-            loadSampleData();
+            loadData();
         } else {
             showAlert("Error", "No se pudo calificar el Formato A. Intente nuevamente.");
         }
@@ -120,28 +117,7 @@ public class CoordinatorViewController extends BaseController{
         alert.showAndWait();
     }
     private  void loadData() {
-        CoordinatorService serviceCoorinator = this.serviceFactory.getCoordinatorService();
-        //List<DegreeWork> listDegreeWork = serviceCoorinator.getPendingDegreeWorks();
-        //loadDegreeWork(listDegreeWork, CardsContainer, this::handleCalificar);
-    }
-    private void loadSampleData() {
-        List<DegreeWork> listDegreeWork = new ArrayList<>();
-
-        for (int i = 0; i < 6; i++) {
-            // Crear FormatA y asociarlo al DegreeWork
-            FormatA newFormatA = new FormatA(new Date(1), EnumState.ESPERA, EnumTypeProcess.FORMAT_A);
-            newFormatA.setTittle("titulo"+i);
-            newFormatA.setURL("C://Users//Usuario//Desktop//1.- Cartas DnD - Por DaniDux.pdf");
-
-            DegreeWork degreeWork = new DegreeWork();
-            degreeWork.setIdDegreeWork(i);
-            degreeWork.getProcesses().add(newFormatA);
-            listDegreeWork.add(degreeWork);
-        }
-
-        System.out.println("Cargando " + listDegreeWork.size() + " tarjetas");
+        List<DegreeWork> listDegreeWork = serviceCoordinator.getPendingDegreeWorks();
         loadDegreeWork(listDegreeWork, CardsContainer, this::handleCalificar);
-
-        System.out.println("Número de hijos en CardsContainer: " + CardsContainer.getChildren().size());
     }
 }
