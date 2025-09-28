@@ -4,11 +4,11 @@ import Enums.EnumMenuOption;
 import Enums.EnumRole;
 import Models.Session;
 import Utilities.MenuOption;
+import Utilities.WindowManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -65,11 +65,9 @@ public class SideMenuController extends BaseController {
                     subMenu.getStyleClass().add("sub-menu");
                     subMenu.setVisible(false);
                     subMenu.setManaged(false);
-                    for (int i = 0; i < menuOptions.size(); i++) {
-                        MenuOption menuOption = menuOptions.get(i);
-                        subMenu.getChildren().add(createButton(menuOption.getDescripcion(), menuOption.getId(), true));
+                    for(MenuOption menuOption : menuOptions) {
+                        subMenu.getChildren().add(createButton(menuOption.getDescripcion(), menuOption, true));
                     }
-
                     rolBox.getChildren().add(subMenu);
 
                     // Animación al hacer click en el rol
@@ -135,7 +133,7 @@ public class SideMenuController extends BaseController {
         button.setOnAction(e -> changeView(e, nameOption));
         return button;
     }
-    private Button createButton(String nameOption, EnumMenuOption menuOption, boolean isSubItem) {
+    private Button createButton(String nameOption, MenuOption menuOption, boolean isSubItem) {
         Button button = new Button(nameOption);
         button.setMaxWidth(Double.MAX_VALUE);
         button.setMinHeight(35);
@@ -150,14 +148,23 @@ public class SideMenuController extends BaseController {
         return button;
     }
 
-    private void handleAction(ActionEvent event, EnumMenuOption menuOption, boolean isSubItem) {
-        System.out.println("Click en: " + menuOption + (isSubItem ? " (submenu)" : " (rol)"));
+    private void handleAction(ActionEvent event, MenuOption menuOption, boolean isSubItem) {
+        System.out.println("Click en: " + menuOption.getDescripcion() + (isSubItem ? " (submenu)" : " (rol)"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader;
-        switch (menuOption) {
-
+        String  fxml;
+        switch (menuOption.getId()) {
+            case MI_PROYECTO ->  fxml = "/views/Me/project.fxml";
+            case VER_PROYECTOS ->   fxml ="/views/DegreeWorks.fxml";
+            case CREAR_FORMATO_A -> fxml = "/views/CreateDegreeWorks.fxml";
+            case CALIFICAR_FORMATOS_A -> fxml = "/views/CalificarDegreeWorks.fxml";
+            default -> fxml = null;
         }
-
+        if (fxml != null) {return;}
+        try {
+            WindowManager.changeScene(stage,fxml, menuOption.getDescripcion());
+        } catch (IOException e) {
+            System.err.println("Error al cargar el fichero: " + e.getMessage());
+        }
         // Lógica de navegación aquí
     }
     private void changeView(ActionEvent event, String nameOption) {
