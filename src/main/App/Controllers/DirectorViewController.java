@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 public class DirectorViewController extends BaseController{
     public GridPane CardsContainer;
@@ -42,6 +43,29 @@ public class DirectorViewController extends BaseController{
 
     @FXML
     private Label idTittleError;
+
+    @FXML
+    private Label lblDate;
+
+    @FXML
+    private Label lblDescription;
+
+    @FXML
+    private Label lblDirectors;
+
+    @FXML
+    private Label lblStudents;
+
+    @FXML
+    private Label lblTittle;
+
+    @FXML
+    private Label lblUrl;
+
+    @FXML
+    void btnShowPDF(MouseEvent event) {
+        //ShowPDF();
+    }
     @FXML
     public void initialize() {
 
