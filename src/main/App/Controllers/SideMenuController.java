@@ -149,7 +149,7 @@ public class SideMenuController extends BaseController {
         switch (menuOption.getId()) {
             case MI_PROYECTO ->  fxml = "/views/UserViews/StudentView.fxml";
             case VER_PROYECTOS ->   fxml = "/views/UserViews/DirectorViews/DirectorView.fxml";
-            case CREAR_FORMATO_A -> fxml = "/views/UserViews/DirectorViews/CreateDegreeWork.fxml";
+            case CREAR_FORMATO_A -> fxml = "/views/FormViews/NewDegreeWork.fxml";
             case CALIFICAR_FORMATOS_A -> fxml = "/views/UserViews/CoordinatorViews/CoordinatorView.fxml";
             default -> fxml = null;
         }
