@@ -3,3 +3,4 @@ package Interfaces;
 public interface DoingSomething {
     void apply(Object obj);
 }
+

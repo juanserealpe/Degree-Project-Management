@@ -1,0 +1,56 @@
+# SYSTEM REQUIREMENTS
+- OS: Windows 10/11, macOS, or Linux
+- Java: JDK 8 or higher (recommended: JDK 21+)
+- RAM: 1 GB minimum
+- Disk: 500 MB for Maven repo + 10 MB for Maven itself
+
+# STEP 1: INSTALL JAVA
+- Download JDK from https://www.oracle.com/java/technologies/downloads/
+- Install to: C:\Program Files\Java\jdk-XX
+- Set JAVA_HOME:
+    - Variable name: JAVA_HOME
+    - Value: C:\Program Files\Java\jdk-XX
+- Add to PATH: %JAVA_HOME%\bin
+
+# STEP 2: INSTALL MAVEN
+- Download Maven binary ZIP from https://maven.apache.org/download.cgi
+- Extract to: C:\Tools\apache-maven-3.9.11
+- Set M2_HOME:
+    - Variable name: M2_HOME
+    - Value: C:\Tools\apache-maven-3.9.11
+- Add to PATH: %M2_HOME%\bin
+- Verify:
+    - Run: mvn --version
+
+# STEP 3: CLONE ICEPDF
+- Run: git clone https://github.com/pdf4j/icepdf.git
+- Navigate to: cd icepdf
+
+# STEP 4: COMPILE MODULE
+- Run: mvn clean install -pl core
+- This installs `pdf4j-icepdf-core` to your local Maven repo
+
+# STEP 5: ADD DEPENDENCY TO YOUR PROJECT
+- In your pom.xml:
+<dependency>
+  <groupId>org.pdf4j.icepdf</groupId>
+  <artifactId>pdf4j-icepdf-core</artifactId>
+  <version>6.1.1</version>
+</dependency>
+
+# STEP 6: TEST PDF RENDERING
+- Sample Java code:
+Document pdfDoc = new Document();
+pdfDoc.setFile("path/to/file.pdf");
+BufferedImage img = pdfDoc.getPageImage(0, GraphicsRenderingHints.SCREEN, Page.BOUNDARY_CROPBOX, 0f, 1.0f);
+ImageIO.write(img, "png", new File("output.png"));
+pdfDoc.dispose();
+
+# OPTIONAL: INTEGRATE WITH JavaFX OR Swing
+- Use ImageView or Canvas to display rendered image
+- Validate file existence and permissions before loading
+
+# OPTIONAL: USE MAVEN DAEMON (mvnd)
+- Download from https://maven.apache.org/download.cgi (section: Maven Daemon)
+- Extract and add to PATH
+- Run: mvnd clean install -pl core
