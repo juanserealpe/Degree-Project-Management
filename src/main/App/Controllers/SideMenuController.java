@@ -3,13 +3,16 @@ package Controllers;
 import Enums.EnumMenuOption;
 import Enums.EnumRole;
 import Models.Session;
+import Services.ServiceFactory;
 import Utilities.MenuOption;
 import Utilities.WindowManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -26,6 +29,8 @@ public class SideMenuController extends BaseController {
     @FXML
     private VBox rolButtons;
 
+    private Session instance;
+
     private final Map<String, List<MenuOption>> menuItems = new LinkedHashMap<>() {{
         put(String.valueOf(EnumRole.UNDERGRADUATE_STUDENT), List.of(new MenuOption(EnumMenuOption.MI_PROYECTO,"Mi Proyecto")));
         put(String.valueOf(EnumRole.DIRECTOR), List.of(new MenuOption(EnumMenuOption.CREAR_FORMATO_A,"Crear Formato A"),
@@ -36,13 +41,13 @@ public class SideMenuController extends BaseController {
     @FXML
     public void initialize() {
     }
-
-    public void initData(Session session) {
+    public void initData(Session instance) {
+        this.instance = instance;
         rolButtons.getChildren().clear();
         rolButtons.getStyleClass().add("side-menu");
 
         // Obtener los roles de la sesión actual
-        Set<String> sessionRoles = session.getRoles().stream()
+        Set<String> sessionRoles = instance.getRoles().stream()
                 .map(Enum::name)
                 .collect(Collectors.toSet());
 
@@ -57,7 +62,7 @@ public class SideMenuController extends BaseController {
                     rolBox.getStyleClass().add("rol-container");
 
                     // Botón del rol
-                    Button rolButton = createButton(rol);
+                    Button rolButton = createButton(rol, null, false);
                     rolBox.getChildren().add(rolButton);
 
                     // Submenús
@@ -123,16 +128,6 @@ public class SideMenuController extends BaseController {
         fadeTransition.play();
         translateTransition.play();
     }
-    private Button createButton(String nameOption) {
-        Button button = new Button(nameOption);
-        button.setMaxWidth(Double.MAX_VALUE);
-        button.setMinHeight(35);
-
-        button.getStyleClass().add("btn_MenuElement");
-
-        button.setOnAction(e -> changeView(e, nameOption));
-        return button;
-    }
     private Button createButton(String nameOption, MenuOption menuOption, boolean isSubItem) {
         Button button = new Button(nameOption);
         button.setMaxWidth(Double.MAX_VALUE);
@@ -140,40 +135,42 @@ public class SideMenuController extends BaseController {
 
         if (isSubItem) {
             button.getStyleClass().add("btn_subMenuElement");
+            button.setOnAction(e -> handleAction(e, menuOption));
         } else {
             button.getStyleClass().add("btn_MenuElement");
         }
 
-        button.setOnAction(e -> handleAction(e, menuOption, isSubItem));
         return button;
     }
 
-    private void handleAction(ActionEvent event, MenuOption menuOption, boolean isSubItem) {
-        System.out.println("Click en: " + menuOption.getDescripcion() + (isSubItem ? " (submenu)" : " (rol)"));
+    private void handleAction(ActionEvent event, MenuOption menuOption) {
+        System.out.println("Click en: " + menuOption.getDescripcion() + " (rol)");
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         String  fxml;
         switch (menuOption.getId()) {
-            case MI_PROYECTO ->  fxml = "/views/Me/project.fxml";
-            case VER_PROYECTOS ->   fxml ="/views/DegreeWorks.fxml";
-            case CREAR_FORMATO_A -> fxml = "/views/CreateDegreeWorks.fxml";
-            case CALIFICAR_FORMATOS_A -> fxml = "/views/CalificarDegreeWorks.fxml";
+            case MI_PROYECTO ->  fxml = "/views/UserViews/StudentView.fxml";
+            case VER_PROYECTOS ->   fxml = "/views/UserViews/DirectorViews/DirectorView.fxml";
+            case CREAR_FORMATO_A -> fxml = "/views/UserViews/DirectorViews/CreateDegreeWork.fxml";
+            case CALIFICAR_FORMATOS_A -> fxml = "/views/UserViews/CoordinatorView.fxml";
             default -> fxml = null;
         }
-        if (fxml != null) {return;}
         try {
-            WindowManager.changeScene(stage,fxml, menuOption.getDescripcion());
+            BaseController controller = WindowManager.changeScene(stage,fxml, menuOption.getDescripcion());
+            controller.setServiceFactory(serviceFactory);
+            controller.initData(instance);
+
         } catch (IOException e) {
             System.err.println("Error al cargar el fichero: " + e.getMessage());
         }
-        // Lógica de navegación aquí
-    }
-    private void changeView(ActionEvent event, String nameOption) {
-        System.out.println("Click en: " + nameOption);
     }
 
     @FXML
     private void handleCloseSession(ActionEvent event) throws IOException {
         System.out.println("Closing session");
-        // Lógica para cerrar sesión
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
+        Scene scene = new Scene(loader.load());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        BaseController controller = WindowManager.changeScene(stage,"/views/AuthViews/LoginView.fxml","");
+        controller.setServiceFactory(serviceFactory);
     }
 }

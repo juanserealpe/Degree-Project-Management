@@ -89,7 +89,7 @@ public class App extends Application {
         String resource;
         switch (rol){
             case JURY -> resource =  "/views/UserViews/JuryView.fxml";
-            case DIRECTOR ->  resource =  "/views/UserViews/DirectorView.fxml";
+            case DIRECTOR ->  resource = "/views/UserViews/DirectorViews/DirectorView.fxml";
             case COORDINATOR ->   resource =  "/views/UserViews/CoordinatorView.fxml";
             case UNDERGRADUATE_STUDENT ->   resource =  "/views/UserViews/StudentView.fxml";
             default -> resource =  "/views/AuthViews/LoginView.fxml"; //No tiene sentido, volvemos a el login

@@ -38,6 +38,7 @@ public class DirectorViewController extends BaseController{
             SideMenuController controller = loader.getController();
             //pasarle la sesion al menu
             controller.initData(session);
+            controller.setServiceFactory(this.serviceFactory);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,7 +48,7 @@ public class DirectorViewController extends BaseController{
         }*/
 
         List<FormatA> formatAList = serviceFactory.getDirectorService().getFormatAByDirectorId(session.getId());
-        if(formatAList.isEmpty())return;
+        if(formatAList == null)return;
         loadFormatACards(formatAList, CardsContainer, this::viewMore);
     }
     private void viewMore(Object _formatA){
