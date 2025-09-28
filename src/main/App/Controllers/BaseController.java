@@ -4,6 +4,7 @@ import Interfaces.DoingSomething;
 import Models.DegreeWork;
 import Models.FormatA;
 import Models.Session;
+import Services.CoordinatorService;
 import Services.ServiceFactory;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,11 +14,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class BaseController {
+    CoordinatorService coordinatorService;
     /** Fábrica de servicios para acceder a las diferentes capas de la aplicación */
     protected ServiceFactory serviceFactory;
     private  Session session;
     public void setServiceFactory(ServiceFactory serviceFactory) {
         this.serviceFactory = serviceFactory;
+        coordinatorService = serviceFactory.getCoordinatorService();
     }
     public void initData(Session session) {};
 
@@ -42,7 +45,11 @@ public abstract class BaseController {
         int row = 0;
 
         for (DegreeWork work : degreeWorks) {
-            VBox card = createCard(work, doingSomething);
+            FormatA formatA = coordinatorService.getFormatAByDegreeWorkId(work.getIdDegreeWork());
+            VBox card = new VBox();
+            if(formatA != null){
+                card = createCard(work, doingSomething);
+            }
 
             if (row >= CardsContainer.getRowConstraints().size()) {
                 RowConstraints rowConstraints = new RowConstraints();
@@ -143,7 +150,7 @@ public abstract class BaseController {
         card.setMaxSize(320, 200);
 
         // Obtener el FormatA asociado al DegreeWork
-        FormatA formatA = getFormatAFromDegreeWork(degreeWork);
+        FormatA formatA = coordinatorService.getFormatAByDegreeWorkId(degreeWork.getIdDegreeWork());
 
         // Título del FormatoA
         String titulo = formatA != null && formatA.getTittle() != null ? formatA.getTittle() : "Sin título";
@@ -173,11 +180,6 @@ public abstract class BaseController {
         Label lblIntentos = new Label("Intentos: " + formatA.getAttempts());
         lblIntentos.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #d35400;");
 
-        // Estado del DegreeWork
-        Label lblEstado = new Label("Estado: " +
-                (degreeWork.getState() != null ? degreeWork.getState().toString() : "No definido"));
-        lblEstado.setStyle("-fx-font-size: 11px; -fx-text-fill: #2c3e50;");
-
         Button btnCalificar = new Button("Calificar");
         btnCalificar.setStyle("-fx-background-color: #4a6bff; -fx-text-fill: white; -fx-font-size: 12px;");
         btnCalificar.setOnAction(e -> doingSomething.apply(degreeWork));
@@ -196,18 +198,6 @@ public abstract class BaseController {
             card.getChildren().add(btnCalificar);
         }
         return card;
-    }
-
-    // Método auxiliar para obtener el FormatA de un DegreeWork
-    private FormatA getFormatAFromDegreeWork(DegreeWork degreeWork) {
-        if (degreeWork != null && degreeWork.getProcesses() != null) {
-            for (Object process : degreeWork.getProcesses()) {
-                if (process instanceof FormatA) {
-                    return (FormatA) process;
-                }
-            }
-        }
-        return null;
     }
 
     // Método auxiliar para formatear los IDs de estudiantes
