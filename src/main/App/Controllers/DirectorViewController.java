@@ -6,11 +6,42 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class DirectorViewController extends BaseController{
     public GridPane CardsContainer;
     @FXML
     Pane SideMenuContainer;
+
+    @FXML
+    private TextField idCodirector;
+
+    @FXML
+    private Label idCodirectorError;
+
+    @FXML
+    private Button idConfirmBtn;
+
+    @FXML
+    private TextField idStudent1;
+
+    @FXML
+    private Label idStudent1Error;
+
+    @FXML
+    private TextField idStudent2;
+
+    @FXML
+    private Label idStudent2Error;
+
+    @FXML
+    private TextField idTittle;
+
+    @FXML
+    private Label idTittleError;
     @FXML
     public void initialize() {
 
