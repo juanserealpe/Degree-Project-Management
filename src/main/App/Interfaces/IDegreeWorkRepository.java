@@ -31,4 +31,5 @@ public interface IDegreeWorkRepository {
     int getIdDegreeWorkByAccountId(int pIdAccount);
 
     int getFormatAAttempts(int pIdFormatA);
+    DegreeWork getDegreeWorkByIdStudent(int pIdStudentAccount);
 }
