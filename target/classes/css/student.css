@@ -1,0 +1,125 @@
+/* Contenedor raíz */
+.root-container {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Contenedor del menú lateral */
+.side-menu-container {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 0 1 0 0;
+}
+
+/* Contenido principal */
+.main-content {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Header */
+.header-section {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.2, 0, 2);
+    -fx-padding: 20px;
+}
+
+.welcome-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a237e;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #495057;
+}
+
+.section-separator {
+    -fx-background-color: #e9ecef;
+}
+
+/* Contenedor del FormatA */
+.format-container {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.2, 0, 2);
+    -fx-padding: 20px;
+    -fx-min-height: 300px;
+}
+
+/* Información del FormatA */
+.format-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+    -fx-padding: 5px 0;
+}
+
+.format-state {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+    -fx-padding: 3px 0;
+}
+
+.format-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #868e96;
+    -fx-padding: 3px 0;
+}
+
+/* Mensaje cuando no hay FormatA */
+.no-format-message {
+    -fx-font-size: 16px;
+    -fx-text-fill: #6c757d;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.2, 0, 2);
+    -fx-padding: 40px;
+    -fx-min-height: 200px;
+    -fx-wrap-text: true;
+}
+
+/* Sección de acciones */
+.actions-section {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0.2, 0, 2);
+    -fx-padding: 15px;
+}
+
+/* Botón de actualizar */
+.refresh-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.refresh-button:hover {
+    -fx-background-color: #0056b3;
+}
+
+.refresh-button:pressed {
+    -fx-background-color: #004085;
+}
+
+/* Estados del FormatA */
+.format-state-pending {
+    -fx-text-fill: #ffc107;
+    -fx-font-weight: bold;
+}
+
+.format-state-approved {
+    -fx-text-fill: #28a745;
+    -fx-font-weight: bold;
+}
+
+.format-state-rejected {
+    -fx-text-fill: #dc3545;
+    -fx-font-weight: bold;
+}

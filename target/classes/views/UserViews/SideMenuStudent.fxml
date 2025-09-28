@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controllers.SideMenuStudentController"
+      spacing="10.0"
+      styleClass="side-menu"
+      stylesheets="@/css/sidemenu.css">
+
+    <padding>
+        <Insets top="20" right="15" bottom="20" left="15"/>
+    </padding>
+
+    <children>
+        <!-- Logo o título -->
+        <VBox alignment="CENTER" spacing="10.0" styleClass="menu-header">
+            <children>
+                <Label text="📚" styleClass="menu-icon"/>
+                <Label text="Portal Estudiante" styleClass="menu-title"/>
+                <Label fx:id="lblUserEmail" text="usuario@unicauca.edu.co" styleClass="menu-subtitle"/>
+            </children>
+            <VBox.margin>
+                <Insets bottom="20"/>
+            </VBox.margin>
+        </VBox>
+
+        <Separator styleClass="menu-separator"/>
+
+        <!-- Opciones del menú -->
+        <VBox spacing="5.0" styleClass="menu-options">
+            <children>
+                <Button fx:id="btnHome"
+                        text="🏠 Inicio"
+                        maxWidth="Infinity"
+                        styleClass="menu-button"
+                        onAction="#handleHome"/>
+
+                <Button fx:id="btnMyFormatA"
+                        text="📄 Mi Formato A"
+                        maxWidth="Infinity"
+                        styleClass="menu-button, menu-button-active"
+                        onAction="#handleMyFormatA"/>
+            </children>
+        </VBox>
+
+        <!-- Spacer para empujar el logout hacia abajo -->
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <Separator styleClass="menu-separator"/>
+
+        <!-- Botón de cerrar sesión -->
+        <Button fx:id="btnLogout"
+                text="🚪 Cerrar Sesión"
+                maxWidth="Infinity"
+                styleClass="menu-button, logout-button"
+                onAction="#handleLogout"/>
+    </children>
+</VBox>

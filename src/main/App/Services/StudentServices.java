@@ -38,7 +38,10 @@ public class StudentServices {
      */
     public FormatA getFormatAByStudent(int studentAccountId) {
         int degreeWorkId = repository.getIdDegreeWorkByAccountId(studentAccountId);
-        if (degreeWorkId == 0) return null;
+        if (degreeWorkId == 0) {
+            Logger.warn(StudentServices.class, "No se encontró un formato para el estudiante con ID: " + studentAccountId);
+            return null;
+        }
         return repository.getFormatAByDegreeWorkId(degreeWorkId);
     }
 }

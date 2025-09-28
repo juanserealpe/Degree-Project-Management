@@ -1,0 +1,146 @@
+/* Contenedor principal del menú lateral */
+.side-menu {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 0 1 0 0;
+    -fx-min-width: 250px;
+    -fx-max-width: 250px;
+    -fx-pref-width: 250px;
+}
+
+/* Header del menú */
+.menu-header {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 8px;
+    -fx-padding: 15px;
+    -fx-alignment: center;
+}
+
+.menu-icon {
+    -fx-font-size: 32px;
+    -fx-text-fill: #1a237e;
+}
+
+.menu-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a237e;
+    -fx-text-alignment: center;
+}
+
+.menu-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6c757d;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+/* Separadores del menú */
+.menu-separator {
+    -fx-background-color: #dee2e6;
+    -fx-pref-height: 1px;
+}
+
+/* Sección de opciones del menú */
+.menu-options {
+    -fx-spacing: 5px;
+}
+
+/* Botones del menú */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #495057;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-padding: 12px 15px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+    -fx-alignment: center-left;
+    -fx-text-alignment: left;
+}
+
+.menu-button:hover {
+    -fx-background-color: #e9ecef;
+    -fx-text-fill: #1a237e;
+}
+
+.menu-button:pressed {
+    -fx-background-color: #dee2e6;
+}
+
+/* Botón activo del menú */
+.menu-button-active {
+    -fx-background-color: #1a237e;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.menu-button-active:hover {
+    -fx-background-color: #283593;
+    -fx-text-fill: white;
+}
+
+/* Botón de cerrar sesión */
+.logout-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.logout-button:hover {
+    -fx-background-color: #c82333;
+    -fx-text-fill: white;
+}
+
+.logout-button:pressed {
+    -fx-background-color: #bd2130;
+}
+
+/* Efectos de transición suaves */
+.menu-button {
+    -fx-transition: all 0.2s ease;
+}
+
+/* Espaciado y alineación */
+.menu-options .menu-button {
+    -fx-margin: 2px 0;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media screen and (max-width: 800px) {
+    .side-menu {
+        -fx-min-width: 200px;
+        -fx-max-width: 200px;
+        -fx-pref-width: 200px;
+    }
+
+    .menu-title {
+        -fx-font-size: 14px;
+    }
+
+    .menu-button {
+        -fx-font-size: 13px;
+        -fx-padding: 10px 12px;
+    }
+}
+
+/* Estados de focus para accesibilidad */
+.menu-button:focused {
+    -fx-border-color: #007bff;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+}
+
+/* Sombras sutiles para darle profundidad */
+.menu-header {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0.2, 0, 1);
+}
+
+.menu-button-active {
+    -fx-effect: dropshadow(gaussian, rgba(26,35,126,0.3), 6, 0.3, 0, 2);
+}
+
+.logout-button {
+    -fx-effect: dropshadow(gaussian, rgba(220,53,69,0.3), 6, 0.3, 0, 2);
+}

@@ -1,40 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            ><!-- fx:controller="Controllers."-->
 
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.StudentController"
+            stylesheets="@/css/student.css"
+            styleClass="root-container">
+
+    <!-- Menú lateral izquierdo -->
     <left>
-        <Pane fx:id="SideMenuContainer">
-            <!-- espacio para el sub menu-->
+        <Pane fx:id="SideMenuContainer"
+              prefWidth="250.0"
+              styleClass="side-menu-container">
         </Pane>
     </left>
 
+    <!-- Contenido principal -->
     <center>
-        <VBox fx:id="panelCenter" alignment="TOP_CENTER" spacing="20" style="-fx-background-color: white; -fx-padding: 20;" BorderPane.alignment="CENTER">
+        <VBox spacing="20.0" styleClass="main-content">
+            <padding>
+                <Insets top="30" right="30" bottom="30" left="30"/>
+            </padding>
 
-            <effect>
-                <DropShadow color="rgba(0,0,0,0.1)" offsetX="2" offsetY="2" radius="10" />
-            </effect>
+            <children>
+                <!-- Header -->
+                <VBox spacing="10.0" styleClass="header-section">
+                    <children>
+                        <Label fx:id="lblWelcome"
+                               text="Bienvenido, Estudiante"
+                               styleClass="welcome-title"/>
+                        <Label text="Mi Formato A"
+                               styleClass="section-title"/>
+                        <Separator styleClass="section-separator"/>
+                    </children>
+                </VBox>
 
-            <Label text="Mi Proyecto de Grado" textFill="#4a6bff">
-                <font>
-                    <Font name="System Bold" size="20.0" />
-                </font>
-                <padding>
-                    <Insets bottom="10" />
-                </padding>
-            </Label>
+                <!-- Contenedor del FormatA -->
+                <VBox fx:id="FormatAContainer"
+                      spacing="15.0"
+                      styleClass="format-container">
+                </VBox>
 
-            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                <!-- Mensaje cuando no hay FormatA -->
+                <Label fx:id="lblNoFormatA"
+                       text="No tienes un Formato A asignado aún."
+                       styleClass="no-format-message"
+                       visible="false"
+                       managed="false"
+                       textAlignment="CENTER"
+                       alignment="CENTER"
+                       wrapText="true">
+                    <VBox.margin>
+                        <Insets top="50" bottom="50"/>
+                    </VBox.margin>
+                </Label>
 
-            </ScrollPane>
-
+                <!-- Botón de actualizar -->
+                <HBox alignment="CENTER" spacing="10.0" styleClass="actions-section">
+                    <children>
+                        <Button fx:id="btnRefresh"
+                                text="🔄 Actualizar"
+                                onAction="#handleRefresh"
+                                styleClass="refresh-button"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="20"/>
+                    </VBox.margin>
+                </HBox>
+            </children>
         </VBox>
     </center>
 </BorderPane>
