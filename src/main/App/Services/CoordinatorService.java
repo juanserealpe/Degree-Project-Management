@@ -23,10 +23,9 @@ public class CoordinatorService {
         if(vAttempts > 3 || vAttempts < 0) return false;
         return repository.evaluateFormatAByDegreeWorkId(pIdFormatA,pObservation,pNewState);
     }
-
     public List<DegreeWork> getDegreeWorks(){return repository.getAllDegreeWorks();}
-
     public List<FormatA> getAllFormatsA(){return repository.getAllFormatsA();}
-
     public List<FormatA> getPendingFormatsA(){return repository.getPendingFormatsA();}
+    public FormatA getFormatAByDegreeWorkId(int pIdDegreeWork){ return repository.getFormatAByDegreeWorkId(pIdDegreeWork);}
+    public List<DegreeWork> getPendingDegreeWorks() { return repository.getPendingDegreeWorks();}
 }

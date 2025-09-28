@@ -32,4 +32,5 @@ public interface IDegreeWorkRepository {
 
     int getFormatAAttempts(int pIdFormatA);
     DegreeWork getDegreeWorkByIdStudent(int pIdStudentAccount);
+    List<DegreeWork> getPendingDegreeWorks();
 }

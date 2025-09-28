@@ -84,6 +84,12 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
         return getDataAtFormatsA();
     }
     @Override
+    public List<DegreeWork> getPendingDegreeWorks(){
+        String vScript = "SELECT dw.* FROM degreeWork dw JOIN FormatA fa ON dw.idDegreeWork = fa.idDegreeWork WHERE fa.currentStatus = 'ESPERA';";
+        if(!(makeRetrieve(vScript, null))) return null;
+        return getDataAtDegreeWorks();
+    }
+    @Override
     public User getUserByAccountId(int pIdAccount){
         String vScript = "SELECT name, lastName, phone FROM USER WHERE idUser = ?";
         Object[] vParams = new Object[]{pIdAccount};
