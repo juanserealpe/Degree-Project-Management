@@ -1,6 +1,7 @@
 package Repositories;
 
 import Enums.EnumModality;
+import Enums.EnumProgram;
 import Enums.EnumState;
 import Enums.EnumTypeProcess;
 import Interfaces.IDegreeWorkRepository;
@@ -113,6 +114,14 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
     }
 
     @Override
+    public int getIdEnumModalityByName(String pName){
+        String vScript = "SELECT idEnumModality FROM EnumModality WHERE name = ?";
+        Object[] vParams = new Object[]{pName};
+        if(!(makeRetrieve(vScript, vParams))) return 0;
+        return (int) resultScript.getPayload().get(0).get("idEnumModality");
+    }
+
+    @Override
     public boolean evaluateFormatAByDegreeWorkId(int pIdDegreeWork , String pObservation, EnumState pNewState){
         String vScript = "UPDATE FormatA SET currentStatus = ?, observation = ? WHERE idDegreeWork = ?";
         Object [] vParams = {pNewState.toString(), pObservation, pIdDegreeWork};
@@ -154,9 +163,12 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
         return degreeWorks.get(0);
     }
 
-    public boolean insertNewDegreeWork(){
-
-        return false;
+    public boolean insertNewDegreeWork(DegreeWork pDegreeWork){
+        String vScript = "INSERT into (idEnumModality, idEnumProgram, idDirector, idCodirector) values (?, ?, ?, ?)";
+        //Falta implementar métodos para traer el id de los enums
+        int modality = getIdEnumModalityByName(pDegreeWork.getModality().toString());
+        Object [] vParams = {modality, 1, pDegreeWork.getDirectorId(), pDegreeWork.getCodirectorId()};
+        return makeInsert(vScript, vParams);
     }
 
 

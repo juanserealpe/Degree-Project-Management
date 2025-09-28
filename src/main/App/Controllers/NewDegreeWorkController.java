@@ -5,10 +5,9 @@ import Builders.ProcessCreator;
 import DataBase.DbConnection;
 import Enums.EnumModality;
 import Enums.EnumState;
-import Models.DegreeWork;
-import Models.Session;
+import Models.*;
 import Models.Process;
-import Models.FormatA;
+import Repositories.CookieRepository;
 import Repositories.DegreeWorkRepository;
 import Utilities.WindowManager;
 import javafx.fxml.FXML;
@@ -37,6 +36,7 @@ public class NewDegreeWorkController extends BaseController{
     private Session instance;
     Connection connection = DbConnection.getConnection();
     private final DegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
+    private CookieRepository cookie = new CookieRepository();
 
     @FXML
     Pane SideMenuContainer;
@@ -95,19 +95,32 @@ public class NewDegreeWorkController extends BaseController{
         //Ejemplo
         //Aquí debería traer los datos de la base de datos
 
+        //Trayendo id de estudiantes
         List<Integer> idStudents = new ArrayList<>();
         idStudents.add(degreeWorkRepository.getIdAccountByEmail(idStudent1.getText()));
         idStudents.add(degreeWorkRepository.getIdAccountByEmail(idStudent2.getText()));
+
+        //Trayendo id de directores
+        int director = 0;
+        List<Cookie> cookies = cookie.getAll();
+        if (!cookies.isEmpty()){director = cookies.get(0).UserId;}
+        int codirector = degreeWorkRepository.getIdAccountByEmail(idCodirector.getText());
+
+        //nuevo Formato A
         ProcessCreator creator = new CreateFormatA();
         Process[] process = new Process[1];
         process[0] = creator.createProcess();
         ((FormatA) process[0]).setTittle(idTittle.getText());
         ((FormatA) process[0]).setAttempts(1);
+
+        //Fecha de hoy
         LocalDate hoy = LocalDate.now();
-        DegreeWork degreeWork = new DegreeWork(idStudents, 101, 102, List.of(process), EnumModality.INVESTIGACION, EnumState.INACTIVO,  Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        //nuevo Trabajo de Grado
+        DegreeWork degreeWork = new DegreeWork(idStudents, director, codirector, List.of(process), EnumModality.INVESTIGACION, EnumState.INACTIVO,  Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         //Aquí debería insertar el trabajo de grado en la BD
-
+        degreeWorkRepository.insertNewDegreeWork(degreeWork);
         //HELP
 
         //Redirige al usuario a La vista del director
