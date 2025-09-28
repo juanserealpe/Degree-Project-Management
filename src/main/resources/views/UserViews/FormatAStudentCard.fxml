@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controllers.FormatAStudentCardController"
+      fx:id="cardContainer"
+      spacing="15.0"
+      styleClass="format-card"
+      stylesheets="@/css/formatcard.css">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <children>
+        <!-- Header de la tarjeta -->
+        <HBox alignment="CENTER_LEFT" spacing="15.0" styleClass="card-header">
+            <children>
+                <Label text="📄" styleClass="card-icon"/>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label fx:id="lblTitle"
+                               text="Formato A - Título del trabajo"
+                               styleClass="card-title"/>
+                        <Label fx:id="lblTypeProcess"
+                               text="Tipo: FORMAT_A"
+                               styleClass="card-subtitle"/>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <Separator styleClass="card-separator"/>
+
+        <!-- Información del estado -->
+        <HBox fx:id="stateContainer"
+              alignment="CENTER_LEFT"
+              spacing="10.0"
+              styleClass="state-container">
+            <children>
+                <Label text="Estado:" styleClass="state-label"/>
+                <Label fx:id="lblState"
+                       text="⏳ En espera de revisión"
+                       styleClass="state-value"/>
+            </children>
+        </HBox>
+
+        <!-- Información de fecha -->
+        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="info-row">
+            <children>
+                <Label text="📅" styleClass="info-icon"/>
+                <Label fx:id="lblDate"
+                       text="Fecha de creación: 01/01/2024 10:30"
+                       styleClass="info-text"/>
+            </children>
+        </HBox>
+
+        <!-- Separador antes de las acciones -->
+        <Separator styleClass="card-separator"/>
+
+        <!-- Acciones disponibles -->
+        <VBox spacing="10.0" styleClass="actions-section">
+            <children>
+                <Label text="Acciones disponibles:" styleClass="actions-title"/>
+
+                <HBox fx:id="actionsContainer"
+                      spacing="15.0"
+                      alignment="CENTER_LEFT"
+                      styleClass="actions-buttons">
+                    <children>
+                        <Button fx:id="btnViewPDF"
+                                text="👁️ Ver PDF"
+                                onAction="#handleViewPDF"
+                                styleClass="action-button, view-button"/>
+
+                        <Button fx:id="btnDownloadPDF"
+                                text="💾 Descargar"
+                                onAction="#handleDownloadPDF"
+                                styleClass="action-button, download-button"/>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Información adicional -->
+        <VBox spacing="8.0" styleClass="additional-info">
+            <children>
+                <Label text="ℹ️ Información" styleClass="additional-info-title"/>
+                <Label text="• Una vez aprobado, podrás continuar con el siguiente proceso"
+                       styleClass="info-tip"/>
+                <Label text="• Si es rechazado, recibirás comentarios para realizar correcciones"
+                       styleClass="info-tip"/>
+                <Label text="• Contacta a tu coordinador si tienes dudas"
+                       styleClass="info-tip"/>
+            </children>
+        </VBox>
+    </children>
+</VBox>
