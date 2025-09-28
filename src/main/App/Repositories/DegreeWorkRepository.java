@@ -34,12 +34,21 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
         return getDataAtDegreeWorks();
     }
     @Override
-    public List<FormatA> getFormatsAByDirectorId(int pIdDirector){
-        String vScript = "SELECT f.* FROM FormatA f INNER JOIN degreeWork d ON f.idDegreeWork = d.idDegreeWork WHERE d.idDirector = ?";
+    public List<FormatA> getFormatsAByDirectorId(int pIdDirector) {
+        String vScript = """
+        SELECT f.* 
+        FROM FormatA f 
+        INNER JOIN degreeWork d ON f.idDegreeWork = d.idDegreeWork 
+        WHERE d.idDirector = ?
+    """;
+
         Object[] vParams = new Object[]{pIdDirector};
-        if(!(makeRetrieve(vScript, vParams))) return null;
+
+        if (!makeRetrieve(vScript, vParams)) return null;
+
         return getDataAtFormatsA();
     }
+
     @Override
     public List<Integer> getIdsStudentsByDegreeWorkId(int pIdDegreeWork){
         String vScript = "SELECT idAccount FROM Student_DegreeWork WHERE idDegreeWork = ?;";

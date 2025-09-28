@@ -48,7 +48,7 @@ public class DirectorViewController extends BaseController{
         }*/
 
         List<FormatA> formatAList = serviceFactory.getDirectorService().getFormatAByDirectorId(session.getId());
-        if(formatAList.isEmpty())return;
+        if(formatAList == null)return;
         loadFormatACards(formatAList, CardsContainer, this::viewMore);
     }
     private void viewMore(Object _formatA){
