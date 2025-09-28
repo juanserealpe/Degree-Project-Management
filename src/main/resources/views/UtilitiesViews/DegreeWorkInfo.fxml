@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background-style" stylesheets="@../../css/FormStyle.css" xmlns="http://javafx.com/javafx/17.0.16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DirectorViewController">
+   <children>
+      <Label fx:id="lblTittle" alignment="CENTER" prefHeight="54.0" prefWidth="600.0" styleClass="tittle-style" stylesheets="@../../css/FormStyle.css" text="Titulo" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblStudents" prefHeight="46.0" prefWidth="600.0" text="Integrantes: &lt;Estudiante1&gt;, &lt;Estudiante2&gt;" />
+      <Label fx:id="lblDirectors" prefHeight="43.0" prefWidth="600.0" text="Directores: &lt;Director&gt;, &lt;Codirector&gt;" />
+      <Label fx:id="lblDate" prefHeight="32.0" prefWidth="600.0" text="Fecha: &lt;MES&gt; &lt;AÑO&gt;" />
+      <Label fx:id="lblUrl" onMouseClicked="#btnShowPDF" prefHeight="44.0" prefWidth="600.0" text="URL: &lt;btn:URL&gt;" />
+      <Label fx:id="lblDescription" alignment="TOP_LEFT" prefHeight="131.0" prefWidth="564.0" text="Resumen: &lt;Descripción&gt;" />
+   </children>
+   <padding>
+      <Insets bottom="18.0" left="18.0" right="18.0" top="18.0" />
+   </padding>
+</VBox>
