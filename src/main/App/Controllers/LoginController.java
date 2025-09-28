@@ -2,7 +2,6 @@ package Controllers;
 
 import Interfaces.IAuthService;
 import Services.ServiceFactory;
-import Utilities.WindowManager;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,7 +17,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
-public class LoginController {
+public class LoginController extends BaseController {
 
     @FXML
     private TextField txtEmail;
@@ -29,13 +28,12 @@ public class LoginController {
     @FXML
     private Label successBox;
 
-
     private IAuthService authService;
-    private ServiceFactory serviceFactory;
+    // Removemos la declaración duplicada de serviceFactory ya que está en BaseController
 
-
+    @Override
     public void setServiceFactory(ServiceFactory serviceFactory) {
-        this.serviceFactory = serviceFactory;
+        super.setServiceFactory(serviceFactory);
         this.authService = serviceFactory.getAuthService();
     }
 
@@ -53,6 +51,7 @@ public class LoginController {
             }
         });
     }
+
     private void showSuccessBox(String message) {
         successBox.setText(message);
         successBox.setVisible(true);
@@ -81,10 +80,6 @@ public class LoginController {
         }
     }
 
-
-
-
-
     @FXML
     private void handleRegister(ActionEvent event) {
         try {
@@ -95,14 +90,14 @@ public class LoginController {
 
             // Obtener el controller y pasarle la misma instancia de ServiceFactory
             RegisterController controller = loader.getController();
-            controller.setServiceFactory(this.serviceFactory); // <- aquí pasas la factory
+            controller.setServiceFactory(this.serviceFactory); // <- usar serviceFactory heredado de BaseController
+
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
             showInfoMessage("Error al abrir el formulario de registro");
         }
     }
-
 
     private void showErrorMessage(String message) {
         lblMessage.setText(message);

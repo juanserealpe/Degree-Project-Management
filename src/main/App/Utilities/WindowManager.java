@@ -7,6 +7,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.prefs.Preferences;
@@ -78,11 +79,12 @@ public class WindowManager {
         }
     }
 
-    public static void changeScene(Stage stage, String fxmlPath, String title) throws IOException {
+    public static <T> T changeScene(Stage stage, String fxmlPath, String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(WindowManager.class.getResource(fxmlPath));
         Scene newScene = new Scene(loader.load());
         stage.setScene(newScene);
         stage.setTitle(title);
+        return loader.getController();
     }
 
     public static void setupWindow(Stage stage, String title) {

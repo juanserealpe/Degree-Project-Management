@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefWidth="200.0" prefHeight="600.0" style="-fx-background-color: linear-gradient(to bottom, #4a6bff, #6a8aff);" stylesheets="@/css/SideMenu.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SideMenuController">
+
+    <padding>
+        <Insets top="20.0" right="10.0" bottom="20.0" left="10.0"/>
+    </padding>
+
+    <spacing>20</spacing>
+
+    <!-- Label del usuario -->
+    <Label fx:id="jLabelEmail" alignment="CENTER" prefHeight="35.0" prefWidth="180.0"
+           style="-fx-background-color: rgba(255,255,255,0.2); -fx-background-radius: 5; -fx-padding: 5 10;"
+           text="usuario@ejemplo.com" textFill="WHITE" />
+
+    <!-- Contenedor de botones del menú -->
+    <VBox fx:id="rolButtons" prefWidth="180.0" spacing="5" VBox.vgrow="ALWAYS" />
+
+    <!-- Botón de cerrar sesión -->
+    <Button mnemonicParsing="false" onAction="#handleCloseSession" prefHeight="40.0" prefWidth="180.0"
+            styleClass="btn-logout" text="Cerrar Sesión" />
+
+</VBox>

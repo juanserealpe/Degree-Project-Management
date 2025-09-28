@@ -10,4 +10,13 @@ public enum EnumRole {
 
     EnumRole(int id) { this.id = id; }
     public int getId() { return id; }
+    public static EnumRole fromId(int id) {
+        for (EnumRole role : EnumRole.values()) {
+            if (role.getId() == id) {
+                return role;
+            }
+        }
+        throw new IllegalArgumentException("IdRole inválido: " + id);
+    }
+
 }

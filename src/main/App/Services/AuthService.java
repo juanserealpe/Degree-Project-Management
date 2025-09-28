@@ -23,16 +23,17 @@ public class AuthService implements IAuthService {
 
     private final IEncrypt _encryptService;               // Servicio de cifrado
     private final IRepository<UserRegisterDTO> _userRepository; // Repositorio de usuarios
-
+    private final CookieService _cookieService;
     /**
      * Constructor que recibe los servicios necesarios para autenticación.
      *
      * @param _encryptService Servicio de cifrado de contraseñas.
      * @param _userRepository Repositorio de usuarios para consultar información.
      */
-    public AuthService(IEncrypt _encryptService, IRepository<UserRegisterDTO> _userRepository) {
+    public AuthService(IEncrypt _encryptService, IRepository<UserRegisterDTO> _userRepository, CookieService _cookieService) {
         this._encryptService = _encryptService;
         this._userRepository = _userRepository;
+        this._cookieService = _cookieService;
     }
 
     /**
@@ -65,10 +66,11 @@ public class AuthService implements IAuthService {
 
         // Limpiar la contraseña antes de continuar
         result.setPassword(null);
-
+        _cookieService.setCookie(result.getAccount().getIdAccount());
         // Iniciar sesión
         Session.setRoles(result.getAccount().getRoles());
         Session.setEmail(result.getAccount().getEmail());
+        Session.setIdAccount(result.getAccount().getIdAccount());
     }
 
 }
