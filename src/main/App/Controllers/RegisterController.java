@@ -301,6 +301,7 @@ public class RegisterController extends BaseController implements Initializable 
 
                 // Cambiar la escena
                 stage.setScene(scene);
+                stage.setUserData("Cuenta registrada correctamente!");
 
             } catch (Exception e) {
                 showErrorMessage("Error al crear la cuenta: " + e.getMessage());
