@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Session {
     private static Session instance;
+    private int id;
     private String email;
     private List<EnumRole> roles;
 
@@ -17,8 +18,15 @@ public class Session {
             instance = new Session();
             instance.roles = new ArrayList<>();
             instance.email = "";
+            instance.id = -1;
         }
         return instance;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
     public String getEmail() {return email;}
 

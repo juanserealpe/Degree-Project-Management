@@ -140,7 +140,7 @@ public abstract class BaseController {
         Label lblDirector = new Label("Director: ");
         Label lblFecha = new Label("Fecha: ");
 
-        Button btnCalificar = new Button("Calificar");
+        Button btnCalificar = new Button("View more");
         btnCalificar.setStyle("-fx-background-color: #4a6bff; -fx-text-fill: white;");
         // Pasar el objeto DegreeWork completo
         btnCalificar.setOnAction(e -> doingSomething.apply(degreeWork));

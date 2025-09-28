@@ -1,66 +1,21 @@
 package Controllers;
 
+import Models.FormatA;
 import Models.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+
+import java.util.List;
 
 public class DirectorViewController extends BaseController{
     public GridPane CardsContainer;
     @FXML
     Pane SideMenuContainer;
 
-    @FXML
-    private TextField idCodirector;
-
-    @FXML
-    private Label idCodirectorError;
-
-    @FXML
-    private Button idConfirmBtn;
-
-    @FXML
-    private TextField idStudent1;
-
-    @FXML
-    private Label idStudent1Error;
-
-    @FXML
-    private TextField idStudent2;
-
-    @FXML
-    private Label idStudent2Error;
-
-    @FXML
-    private TextField idTittle;
-
-    @FXML
-    private Label idTittleError;
-
-    @FXML
-    private Label lblDate;
-
-    @FXML
-    private Label lblDescription;
-
-    @FXML
-    private Label lblDirectors;
-
-    @FXML
-    private Label lblStudents;
-
-    @FXML
-    private Label lblTittle;
-
-    @FXML
-    private Label lblUrl;
 
     @FXML
     void btnShowPDF(MouseEvent event) {
@@ -87,6 +42,18 @@ public class DirectorViewController extends BaseController{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        /*List<DegreeWork> degreeWorkList =  serviceFactory.getDirectorService().getDegreeWorksById(session.getId());
+        if(!degreeWorkList.isEmpty()) {
+            loadDegreeWork(degreeWorkList, CardsContainer, this::viewMore);
+        }*/
+
+        List<FormatA> formatAList = serviceFactory.getDirectorService().getFormatAByDirectorId(session.getId());
+        if(formatAList == null)return;
+        loadFormatACards(formatAList, CardsContainer, this::viewMore);
+    }
+    private void viewMore(Object _formatA){
+        String degreeWork = (String) _formatA;
+        //TODO: modified this
     }
 
 }
