@@ -3,6 +3,7 @@ package Services;
 import Dtos.UserRegisterDTO;
 import Interfaces.*;
 import Repositories.CredentialRepository;
+import Repositories.DegreeWorkRepository;
 
 import java.sql.Connection;
 
@@ -36,6 +37,7 @@ public class ServiceFactory {
 
     /** Servicio de cookies*/
     private final CookieService cookieService;
+
     /**
      * Constructor de la fábrica de servicios.
      *
@@ -50,6 +52,24 @@ public class ServiceFactory {
     }
 
     // --------------------- GETTERS ---------------------
+
+    public CoordinatorService getCoordinatorService() {
+        IDegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
+        return new CoordinatorService(degreeWorkRepository);
+    }
+    /**
+     * Obtiene una instancia de StudentServices.
+     *
+     * Este servicio permite gestionar la relación entre estudiantes
+     * y sus trabajos de grado.
+     *
+     * @return Instancia de StudentServices lista para usar.
+     */
+    public StudentServices getStudentService() {
+        IDegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
+        return new StudentServices(degreeWorkRepository);
+    }
+
     /**
      * Obtiene el servicio para las cookies
      *
