@@ -69,13 +69,30 @@ public class SideMenuStudentController extends BaseController {
      * Maneja el cierre de sesión.
      */
     @FXML
-    private void handleLogout(ActionEvent event) throws IOException {
-        System.out.println("Closing session");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
-        Scene scene = new Scene(loader.load());
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        BaseController controller = WindowManager.changeScene(stage,"/views/AuthViews/LoginView.fxml","");
-        controller.setServiceFactory(serviceFactory);
+    private void handleLogout(ActionEvent event) {
+        try {
+            // Limpiar cookie... IMPLEMENTAR
+
+
+            // Navegar de vuelta al login
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            // Obtener el controller de Login y pasarle la fábrica de servicios
+            LoginController loginController = loader.getController();
+            loginController.setServiceFactory(this.serviceFactory);
+
+            // Pasar mensaje de logout exitoso
+            stage.setUserData("Sesión cerrada correctamente.");
+
+            stage.setScene(scene);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Error al cerrar sesión: " + e.getMessage());
+        }
     }
 
     /**
