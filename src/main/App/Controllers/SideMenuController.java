@@ -9,9 +9,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -135,7 +133,7 @@ public class SideMenuController extends BaseController {
 
         if (isSubItem) {
             button.getStyleClass().add("btn_subMenuElement");
-            button.setOnAction(e -> handleAction(e, menuOption, isSubItem));
+            button.setOnAction(e -> handleAction(e, menuOption));
         } else {
             button.getStyleClass().add("btn_MenuElement");
         }
@@ -143,18 +141,17 @@ public class SideMenuController extends BaseController {
         return button;
     }
 
-    private void handleAction(ActionEvent event, MenuOption menuOption, boolean isSubItem) {
-        System.out.println("Click en: " + menuOption.getDescripcion() + (isSubItem ? " (submenu)" : " (rol)"));
+    private void handleAction(ActionEvent event, MenuOption menuOption) {
+        System.out.println("Click en: " + menuOption.getDescripcion() + " (rol)");
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         String  fxml;
         switch (menuOption.getId()) {
-            case MI_PROYECTO ->  fxml = "/views/Me/project.fxml";
-            case VER_PROYECTOS ->   fxml ="/views/DegreeWorks.fxml";
-            case CREAR_FORMATO_A -> fxml = "/views/CreateDegreeWorks.fxml";
-            case CALIFICAR_FORMATOS_A -> fxml = "/views/CalificarDegreeWorks.fxml";
+            case MI_PROYECTO ->  fxml = "/views/UserViews/StudentView.fxml";
+            case VER_PROYECTOS ->   fxml = "/views/UserViews/DirectorViews/DirectorView.fxml";
+            case CREAR_FORMATO_A -> fxml = "/views/UserViews/DirectorViews/CreateDegreeWork.fxml";
+            case CALIFICAR_FORMATOS_A -> fxml = "/views/UserViews/CoordinatorView.fxml";
             default -> fxml = null;
         }
-        if (fxml != null) {return;}
         try {
             BaseController controller = WindowManager.changeScene(stage,fxml, menuOption.getDescripcion());
             controller.setServiceFactory(serviceFactory);
