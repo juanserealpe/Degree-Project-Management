@@ -78,7 +78,9 @@ public class CoordinatorViewController extends BaseController{
             modalStage.initModality(Modality.APPLICATION_MODAL);
 
             // Obtener el título del FormatA para la ventana
-            FormatA formatA = findFormatAByDegreeWork(degreeWork);
+
+            FormatA formatA = serviceCoordinator.getFormatAByDegreeWorkId(degreeWork.getIdDegreeWork());
+
             String titulo = formatA != null ? formatA.getTittle() : "Sin título";
             modalStage.setTitle("Calificar Formato A - " + titulo);
 
@@ -100,13 +102,6 @@ public class CoordinatorViewController extends BaseController{
         } else {
             showAlert("Error", "No se pudo calificar el Formato A. Intente nuevamente.");
         }
-    }
-    private FormatA findFormatAByDegreeWork(DegreeWork degreeWork) {
-        // Implementa la lógica para buscar el FormatA asociado al DegreeWork
-        // Esto depende de tu modelo de datos
-        // Por ahora, retornamos un FormatA de ejemplo
-
-        return new FormatA(new Date(), EnumState.ESPERA, EnumTypeProcess.FORMAT_A);
     }
 
     private void showAlert(String title, String message) {

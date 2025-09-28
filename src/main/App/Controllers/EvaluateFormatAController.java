@@ -55,7 +55,9 @@ public class EvaluateFormatAController extends BaseController implements Initial
 
     private void loadData() {
         // Obtener el FormatA del DegreeWork
-        FormatA formatA = getFormatAFromDegreeWork();
+
+        FormatA formatA = coordinatorService.getFormatAByDegreeWorkId(degreeWork.getIdDegreeWork());
+
         if (formatA != null) {
             tituloLabel.setText(formatA.getTittle() != null ? formatA.getTittle() : "Sin título");
         }
@@ -64,25 +66,14 @@ public class EvaluateFormatAController extends BaseController implements Initial
         loadPdfPreview();
     }
 
-    private FormatA getFormatAFromDegreeWork() {
-        if (degreeWork != null && degreeWork.getProcesses() != null && !degreeWork.getProcesses().isEmpty()) {
-            for (int i = 1; i < degreeWork.getProcesses().size(); i++) {
-                if (degreeWork.getProcesses().get(i) instanceof FormatA) {
-                    return (FormatA) degreeWork.getProcesses().get(0);
-                }
-            }
-        }
-        return null;
-    }
-
     private void loadPdfPreview() {
-        FormatA format = getFormatAFromDegreeWork();
-        if (format == null) {
+        FormatA formatA = coordinatorService.getFormatAByDegreeWorkId(degreeWork.getIdDegreeWork());
+        if (formatA == null) {
             showPdfError("No se encontró el Formato A asociado.");
             return;
         }
 
-        String pdfUrl = format.getURL();
+        String pdfUrl = formatA.getURL();
         System.out.println("por imprimir pdf con url: " + pdfUrl);
         try {
             if (pdfUrl != null && !pdfUrl.isEmpty()) {
