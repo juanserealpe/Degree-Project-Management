@@ -3,7 +3,6 @@ package Controllers;
 import Enums.EnumMenuOption;
 import Enums.EnumRole;
 import Models.Session;
-import Services.ServiceFactory;
 import Utilities.MenuOption;
 import Utilities.WindowManager;
 import javafx.animation.FadeTransition;
@@ -151,7 +150,7 @@ public class SideMenuController extends BaseController {
             case MI_PROYECTO ->  fxml = "/views/UserViews/StudentView.fxml";
             case VER_PROYECTOS ->   fxml = "/views/UserViews/DirectorViews/DirectorView.fxml";
             case CREAR_FORMATO_A -> fxml = "/views/UserViews/DirectorViews/CreateDegreeWork.fxml";
-            case CALIFICAR_FORMATOS_A -> fxml = "/views/UserViews/CoordinatorView.fxml";
+            case CALIFICAR_FORMATOS_A -> fxml = "/views/UserViews/CoordinatorViews/CoordinatorView.fxml";
             default -> fxml = null;
         }
         try {

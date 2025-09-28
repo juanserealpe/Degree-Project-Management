@@ -19,6 +19,7 @@ public abstract class BaseController {
         this.serviceFactory = serviceFactory;
     }
     public void initData(Session session) {};
+
     void loadDegreeWork(List<DegreeWork> degreeWorks, GridPane CardsContainer, DoingSomething doingSomething) {
         CardsContainer.getColumnConstraints().clear();
         CardsContainer.getRowConstraints().clear();
@@ -107,9 +108,6 @@ public abstract class BaseController {
         card.setMinSize(200, 120);
         card.setMaxSize(300, 200);
 
-        // Permitir que la tarjeta crezca pero mantenga proporciones
-        card.setFillWidth(true);
-
         Label lblTitulo = new Label("Título: " + formato.getTittle());
         lblTitulo.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
@@ -119,27 +117,23 @@ public abstract class BaseController {
 
         Button btnCalificar = new Button("Calificar");
         btnCalificar.setStyle("-fx-background-color: #4a6bff; -fx-text-fill: white;");
-        btnCalificar.setOnAction(e -> doingSomething.apply(formato.getTittle()));
+        // Pasar el objeto completo en lugar de solo el título
+        btnCalificar.setOnAction(e -> doingSomething.apply(formato));
 
-        // Espaciador para empujar el botón hacia abajo
         Pane spacer = new Pane();
-        VBox.setVgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+        VBox.setVgrow(spacer, Priority.ALWAYS);
 
         card.getChildren().addAll(lblTitulo, lblEstudiante, lblDirector, lblFecha, spacer, btnCalificar);
-
         return card;
     }
-    private VBox createCard(DegreeWork formato, DoingSomething doingSomething) {
+    private VBox createCard(DegreeWork degreeWork, DoingSomething doingSomething) {
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #ccc; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 15;");
         card.setPrefSize(250, 150);
         card.setMinSize(200, 120);
         card.setMaxSize(300, 200);
 
-        // Permitir que la tarjeta crezca pero mantenga proporciones
-        card.setFillWidth(true);
-
-        Label lblTitulo = new Label("Modality: " + formato.getModality());
+        Label lblTitulo = new Label("Modality: " + degreeWork.getModality());
         lblTitulo.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
 
         Label lblEstudiante = new Label("Estudiante: ");
@@ -148,14 +142,13 @@ public abstract class BaseController {
 
         Button btnCalificar = new Button("Calificar");
         btnCalificar.setStyle("-fx-background-color: #4a6bff; -fx-text-fill: white;");
-        //Idk how to work, use an id? btnCalificar.setOnAction(e -> doingSomething.apply(formato));
+        // Pasar el objeto DegreeWork completo
+        btnCalificar.setOnAction(e -> doingSomething.apply(degreeWork));
 
-        // Espaciador para empujar el botón hacia abajo
         Pane spacer = new Pane();
-        VBox.setVgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+        VBox.setVgrow(spacer, Priority.ALWAYS);
 
         card.getChildren().addAll(lblTitulo, lblEstudiante, lblDirector, lblFecha, spacer, btnCalificar);
-
         return card;
     }
 
