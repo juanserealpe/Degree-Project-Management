@@ -79,8 +79,8 @@ public class LoginController extends BaseController {
             authService.isLoginValid(email, password);
             Session instance = Session.getInstance();
             String resource = getRolResource(instance.getRoles().get(0));
-            WindowManager.changeScene(stage, resource, instance.getRoles().get(0).name());
-
+            BaseController base = WindowManager.changeScene(stage, resource, instance.getRoles().get(0).name());
+            base.setServiceFactory(serviceFactory);
         } catch (Exception ex) {
             // Mostrar mensaje de error en caso de fallo en la autenticación
             showErrorMessage(ex.getMessage());

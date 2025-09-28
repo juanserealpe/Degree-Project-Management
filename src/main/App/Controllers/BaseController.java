@@ -146,9 +146,9 @@ public abstract class BaseController {
         Label lblDirector = new Label("Director: ");
         Label lblFecha = new Label("Fecha: ");
 
-        Button btnCalificar = new Button("Calificar");
+        Button btnCalificar = new Button("View more");
         btnCalificar.setStyle("-fx-background-color: #4a6bff; -fx-text-fill: white;");
-        //Idk how to work, use an id? btnCalificar.setOnAction(e -> doingSomething.apply(formato));
+        btnCalificar.setOnAction(e -> doingSomething.apply(formato));
 
         // Espaciador para empujar el botón hacia abajo
         Pane spacer = new Pane();
