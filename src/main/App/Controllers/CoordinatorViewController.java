@@ -5,6 +5,7 @@ import Enums.EnumTypeProcess;
 import Models.DegreeWork;
 import Models.FormatA;
 import Models.Session;
+import Services.CoordinatorService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -42,6 +43,10 @@ public class CoordinatorViewController extends BaseController{
     @FXML
     GridPane CardsContainer;
 
+
+
+
+
     @FXML
     public void initialize() {
     }
@@ -58,8 +63,8 @@ public class CoordinatorViewController extends BaseController{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //EJEMPLO
-        loadSampleData();
+        loadSampleData();//EJEMPLO
+        //loadData();
     };
 
     private void handleCalificar(Object degreeWorkObj) {
@@ -70,6 +75,7 @@ public class CoordinatorViewController extends BaseController{
             Pane modalContent = loader.load();
             EvaluateFormatAController controller = loader.getController();
             controller.initData(degreeWork, this::handleCalificacionResultado);
+            setServiceFactory(this.serviceFactory);
 
             Stage modalStage = new Stage();
             modalStage.initModality(Modality.APPLICATION_MODAL);
@@ -90,30 +96,19 @@ public class CoordinatorViewController extends BaseController{
             showAlert("Error", "No se pudo abrir el modal de calificación: " + e.getMessage());
         }
     }
-    private void handleCalificacionResultado(CalificacionResultado resultado) {
-        if (resultado != null) {
-            // Aquí procesas el resultado de la calificación
-            System.out.println("Formato calificado:");
-            System.out.println("Trabajo: " + resultado.getDegreeWork().getIdDegreeWork());
-            System.out.println("Estado: " + resultado.getNuevoEstado());
-            System.out.println("Comentarios: " + resultado.getComentarios());
-
-            // Actualizar el estado del FormatA en la base de datos
-            resultado.getFormatA().setState(resultado.getNuevoEstado());
-
-            // Guardar los comentarios (depende de tu modelo)
-            // resultado.getFormatA().setComentarios(resultado.getComentarios());
-
-            showAlert("Éxito", "Formato A calificado exitosamente. Estado: " + resultado.getNuevoEstado());
-
-            // Recargar la vista o actualizar la interfaz
-            // loadSampleData(); // Descomenta si quieres recargar los datos
+    private void handleCalificacionResultado(boolean exito) {
+        if (exito) {
+            showAlert("Éxito", "Formato A calificado exitosamente.");
+            loadSampleData();
+        } else {
+            showAlert("Error", "No se pudo calificar el Formato A. Intente nuevamente.");
         }
     }
     private FormatA findFormatAByDegreeWork(DegreeWork degreeWork) {
         // Implementa la lógica para buscar el FormatA asociado al DegreeWork
         // Esto depende de tu modelo de datos
         // Por ahora, retornamos un FormatA de ejemplo
+
         return new FormatA(new Date(), EnumState.ESPERA, EnumTypeProcess.FORMAT_A);
     }
 
@@ -124,7 +119,11 @@ public class CoordinatorViewController extends BaseController{
         alert.setContentText(message);
         alert.showAndWait();
     }
-
+    private  void loadData() {
+        CoordinatorService serviceCoorinator = this.serviceFactory.getCoordinatorService();
+        //List<DegreeWork> listDegreeWork = serviceCoorinator.getPendingDegreeWorks();
+        //loadDegreeWork(listDegreeWork, CardsContainer, this::handleCalificar);
+    }
     private void loadSampleData() {
         List<DegreeWork> listDegreeWork = new ArrayList<>();
 
@@ -141,7 +140,6 @@ public class CoordinatorViewController extends BaseController{
         }
 
         System.out.println("Cargando " + listDegreeWork.size() + " tarjetas");
-        // Cambiar a loadDegreeWork en lugar de loadFormatACards
         loadDegreeWork(listDegreeWork, CardsContainer, this::handleCalificar);
 
         System.out.println("Número de hijos en CardsContainer: " + CardsContainer.getChildren().size());

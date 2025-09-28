@@ -1,15 +1,16 @@
 package Controllers;
 
+import Interfaces.DoingSomething;
 import Models.DegreeWork;
 import Models.FormatA;
 import Enums.EnumState;
+import Services.CoordinatorService;
+import Services.ServiceFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.VBox;
 import javafx.embed.swing.SwingFXUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -19,12 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
-public class EvaluateFormatAController implements Initializable {
+public class EvaluateFormatAController extends BaseController implements Initializable {
 
     @FXML private Label tituloLabel;
-    @FXML private VBox pdfContainer;
     @FXML private ScrollPane pdfScrollPane;
     @FXML private TextArea comentariosTextArea;
     @FXML private Label errorLabel;
@@ -33,19 +32,25 @@ public class EvaluateFormatAController implements Initializable {
     @FXML private Button cancelarButton;
 
     private DegreeWork degreeWork;
-    private Consumer<CalificacionResultado> callback;
+    private DoingSomething<Boolean> callbackResultado;
     private PDDocument pdfDocument;
+    private CoordinatorService coordinatorService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupEventHandlers();
     }
 
-    public void initData(DegreeWork degreeWork, Consumer<CalificacionResultado> callback) {
+    public void initData(DegreeWork degreeWork, DoingSomething<Boolean> callbackResultado) {
         this.degreeWork = degreeWork;
-        this.callback = callback;
-
+        this.callbackResultado = callbackResultado;
         loadData();
+    }
+
+    @FXML
+    public void setServiceFactory(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
+        this.coordinatorService = serviceFactory.getCoordinatorService();
     }
 
     private void loadData() {
@@ -61,28 +66,32 @@ public class EvaluateFormatAController implements Initializable {
 
     private FormatA getFormatAFromDegreeWork() {
         if (degreeWork != null && degreeWork.getProcesses() != null && !degreeWork.getProcesses().isEmpty()) {
-            return (FormatA) degreeWork.getProcesses().get(0);
+            for (int i = 1; i < degreeWork.getProcesses().size(); i++) {
+                if (degreeWork.getProcesses().get(i) instanceof FormatA) {
+                    return (FormatA) degreeWork.getProcesses().get(0);
+                }
+            }
         }
         return null;
     }
 
     private void loadPdfPreview() {
         FormatA format = getFormatAFromDegreeWork();
+        if (format == null) {
+            showPdfError("No se encontró el Formato A asociado.");
+            return;
+        }
+
         String pdfUrl = format.getURL();
         System.out.println("por imprimir pdf con url: " + pdfUrl);
         try {
-            if (format == null) {
-                showPdfError("No se encontró el Formato A asociado.");
-                return;
-            }
-
             if (pdfUrl != null && !pdfUrl.isEmpty()) {
                 File pdfFile = new File(pdfUrl);
                 if (pdfFile.exists()) {
                     pdfDocument = PDDocument.load(pdfFile);
                     PDFRenderer pdfRenderer = new PDFRenderer(pdfDocument);
 
-                    // Renderizar la primera página como preview - CORRECCIÓN AQUÍ
+                    // Renderizar la primera página como preview
                     BufferedImage bufferedImage = pdfRenderer.renderImageWithDPI(0, 100); // 100 DPI para buena calidad
 
                     // Convertir BufferedImage a Image de JavaFX
@@ -120,32 +129,32 @@ public class EvaluateFormatAController implements Initializable {
 
     private void handleAprobar() {
         if (validateAprobacion()) {
-            FormatA formatA = getFormatAFromDegreeWork();
-            CalificacionResultado resultado = new CalificacionResultado(
-                    degreeWork,
-                    formatA,
-                    EnumState.APROBADO,
-                    comentariosTextArea.getText()
-            );
+            boolean resultado = evaluarFormato(EnumState.APROBADO);
             closeModal(resultado);
         }
     }
 
     private void handleRechazar() {
         if (validateRechazo()) {
-            FormatA formatA = getFormatAFromDegreeWork();
-            CalificacionResultado resultado = new CalificacionResultado(
-                    degreeWork,
-                    formatA,
-                    EnumState.RECHAZADO,
-                    comentariosTextArea.getText()
-            );
+            boolean resultado = evaluarFormato(EnumState.RECHAZADO);
             closeModal(resultado);
         }
     }
 
     private void handleCancelar() {
-        closeModal(null);
+        cancelarButton.getScene().getWindow().hide();
+    }
+
+    private boolean evaluarFormato(EnumState estado) {
+        if (serviceFactory != null) {
+            CoordinatorService serviceCoordinator = this.serviceFactory.getCoordinatorService();
+            return serviceCoordinator.evaluateFormatAByDegreeWorkId(
+                    degreeWork.getIdDegreeWork(),
+                    comentariosTextArea.getText(),
+                    estado
+            );
+        }
+        return false;
     }
 
     private boolean validateAprobacion() {
@@ -162,11 +171,10 @@ public class EvaluateFormatAController implements Initializable {
             errorLabel.setVisible(true);
             return false;
         }
-
         return true;
     }
 
-    private void closeModal(CalificacionResultado resultado) {
+    private void closeModal(boolean resultado) {
         // Cerrar el documento PDF
         if (pdfDocument != null) {
             try {
@@ -179,30 +187,9 @@ public class EvaluateFormatAController implements Initializable {
         // Cerrar la ventana
         cancelarButton.getScene().getWindow().hide();
 
-        // Llamar al callback si existe
-        if (callback != null && resultado != null) {
-            callback.accept(resultado);
+        // Llamar al callback con el resultado
+        if (callbackResultado != null) {
+            callbackResultado.apply(resultado);
         }
     }
-}
-
-// Clase para encapsular el resultado de la calificación (mantener igual)
-class CalificacionResultado {
-    private DegreeWork degreeWork;
-    private FormatA formatA;
-    private EnumState nuevoEstado;
-    private String comentarios;
-
-    public CalificacionResultado(DegreeWork degreeWork, FormatA formatA, EnumState nuevoEstado, String comentarios) {
-        this.degreeWork = degreeWork;
-        this.formatA = formatA;
-        this.nuevoEstado = nuevoEstado;
-        this.comentarios = comentarios;
-    }
-
-    // Getters
-    public DegreeWork getDegreeWork() { return degreeWork; }
-    public FormatA getFormatA() { return formatA; }
-    public EnumState getNuevoEstado() { return nuevoEstado; }
-    public String getComentarios() { return comentarios; }
 }
