@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" spacing="20" style="-fx-padding: 20;"
+      fx:controller="Controllers.EvaluateFormatAController">
+    <children>
+        <Label text="Calificar Formato A" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <children>
+                <Label text="Título:" style="-fx-font-weight: bold;" />
+                <Label fx:id="tituloLabel" text="Título del trabajo" />
+            </children>
+        </HBox>
+
+        <VBox spacing="10">
+            <Label text="Visualización del PDF:" style="-fx-font-weight: bold;" />
+            <ScrollPane fx:id="pdfScrollPane" prefHeight="400" prefWidth="600"
+                        style="-fx-border-color: #cccccc; -fx-border-width: 1;" />
+        </VBox>
+
+        <VBox spacing="10">
+            <Label text="Comentarios:" style="-fx-font-weight: bold;" />
+            <TextArea fx:id="comentariosTextArea" prefHeight="100" prefWidth="600"
+                      promptText="Escriba sus comentarios aquí..." />
+            <Label fx:id="errorLabel" textFill="RED" visible="false" />
+        </VBox>
+
+        <HBox spacing="20" alignment="CENTER_RIGHT">
+            <children>
+                <Button fx:id="rechazarButton" text="Rechazar" style="-fx-background-color: #dc3545; -fx-text-fill: white;" />
+                <Button fx:id="aprobarButton" text="Aprobar" style="-fx-background-color: #28a745; -fx-text-fill: white;" />
+                <Button fx:id="cancelarButton" text="Cancelar" style="-fx-background-color: #6c757d; -fx-text-fill: white;" />
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>

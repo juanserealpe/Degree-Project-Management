@@ -5,7 +5,6 @@ import Exceptions.LoginFailedException;
 import Interfaces.IAuthService;
 import Interfaces.IEncrypt;
 import Interfaces.IRepository;
-import Models.Account;
 import Models.Session;
 import Utilities.Logger;
 
@@ -68,8 +67,10 @@ public class AuthService implements IAuthService {
         result.setPassword(null);
         _cookieService.setCookie(result.getAccount().getIdAccount());
         // Iniciar sesión
-        Session.setRoles(result.getAccount().getRoles());
-        Session.setEmail(result.getAccount().getEmail());
+        Session instance = Session.getInstance();
+        instance.setId(result.getAccount().getIdAccount());
+        instance.setRoles(result.getAccount().getRoles());
+        instance.setEmail(result.getAccount().getEmail());
     }
 
 }

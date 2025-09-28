@@ -38,6 +38,7 @@ public class ServiceFactory {
     /** Servicio de cookies*/
     private final CookieService cookieService;
 
+
     /**
      * Constructor de la fábrica de servicios.
      *
@@ -52,6 +53,15 @@ public class ServiceFactory {
     }
 
     // --------------------- GETTERS ---------------------
+
+    public CoordinatorService getCoordinatorService() {
+        IDegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
+        return new CoordinatorService(degreeWorkRepository);
+    }
+    public DirectorService getDirectorService() {
+        IDegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
+        return new DirectorService(degreeWorkRepository);
+    }
     /**
      * Obtiene una instancia de StudentServices.
      *

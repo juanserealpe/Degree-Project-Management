@@ -35,6 +35,8 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+
         // Establecer la conexión a la base de datos
         Connection connection = DbConnection.getConnection();
 
@@ -48,9 +50,10 @@ public class App extends Application {
 
         // Verificar si existe el usuario con esa cookie, si es null, cargar el LoginView.fxml
         Scene scene;
+        FXMLLoader loader = new FXMLLoader();
         if(userRegisterDTO == null) {
             // Cargar la interfaz de login desde el FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
+            loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
             scene = new Scene(loader.load());
 
             // Obtener el controller de login y pasarle la fábrica de servicios
@@ -58,7 +61,8 @@ public class App extends Application {
             controller.setServiceFactory(serviceFactory);
         }else{
 
-            Session session = new Session();
+            Session session = Session.getInstance();
+            session.setId(userRegisterDTO.getAccount().getIdAccount());
             session.setEmail(userRegisterDTO.getAccount().getEmail());
             List<EnumRole> roles = userRegisterDTO.getAccount().getRoles();
             session.setRoles(userRegisterDTO.getAccount().getRoles());
@@ -66,7 +70,7 @@ public class App extends Application {
             //Cargar la ventana del primer rol
             String resource = getRolResource(roles.get(0));
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));
+            loader = new FXMLLoader(getClass().getResource(resource));
             scene = new Scene(loader.load());
             BaseController controller = loader.getController();
             controller.setServiceFactory(serviceFactory);
@@ -85,8 +89,8 @@ public class App extends Application {
         String resource;
         switch (rol){
             case JURY -> resource =  "/views/UserViews/JuryView.fxml";
-            case DIRECTOR ->  resource =  "/views/UserViews/DirectorView.fxml";
-            case COORDINATOR ->   resource =  "/views/UserViews/CoordinatorView.fxml";
+            case DIRECTOR ->  resource = "/views/UserViews/DirectorViews/DirectorView.fxml";
+            case COORDINATOR ->   resource = "/views/UserViews/CoordinatorViews/CoordinatorView.fxml";
             case UNDERGRADUATE_STUDENT ->   resource =  "/views/UserViews/StudentView.fxml";
             default -> resource =  "/views/AuthViews/LoginView.fxml"; //No tiene sentido, volvemos a el login
         }

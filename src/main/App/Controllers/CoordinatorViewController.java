@@ -2,20 +2,38 @@ package Controllers;
 
 import Enums.EnumState;
 import Enums.EnumTypeProcess;
+import Models.DegreeWork;
 import Models.FormatA;
 import Models.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.layout.*;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
-import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
+
+
 
 public class CoordinatorViewController extends BaseController{
     @FXML
@@ -27,19 +45,16 @@ public class CoordinatorViewController extends BaseController{
     @FXML
     public void initialize() {
     }
-    public void initData(Session session) {
+    public void initData(Session instance) {
         try {
             //inicializar el menu.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView/SideMenu.fxml"));
             Node sideMenu = loader.load();
-
-            // Asegurar que el menú ocupe todo el espacio disponible
             SideMenuContainer.getChildren().clear();
             SideMenuContainer.getChildren().add(sideMenu);
-
             SideMenuController controller = loader.getController();
-            //pasarle la sesion al menu
-            controller.initData(session);
+            controller.initData(instance);
+            controller.setServiceFactory(this.serviceFactory);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,96 +62,88 @@ public class CoordinatorViewController extends BaseController{
         loadSampleData();
     };
 
-    private void loadFormatACards(List<FormatA> formatos) {
-        CardsContainer.getColumnConstraints().clear();
-        CardsContainer.getRowConstraints().clear();
+    private void handleCalificar(Object degreeWorkObj) {
+        DegreeWork degreeWork = (DegreeWork) degreeWorkObj;
+        try {
+            // Crear el modal de calificación
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/UserViews/CoordinatorViews/evalueteFormatAModal.fxml"));
+            Pane modalContent = loader.load();
+            EvaluateFormatAController controller = loader.getController();
+            controller.initData(degreeWork, this::handleCalificacionResultado);
 
-        // Configurar columnas flexibles
-        int maxCols = 2; //toca ver como hacerlo responsivo.
-        for (int i = 0; i < maxCols; i++) {
-            ColumnConstraints colConstraints = new ColumnConstraints();
-            colConstraints.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
-            colConstraints.setFillWidth(true);
-            CardsContainer.getColumnConstraints().add(colConstraints);
-        }
+            Stage modalStage = new Stage();
+            modalStage.initModality(Modality.APPLICATION_MODAL);
 
-        CardsContainer.setHgap(50);
-        CardsContainer.setVgap(50);
-        CardsContainer.setPadding(new javafx.geometry.Insets(20));
+            // Obtener el título del FormatA para la ventana
+            FormatA formatA = findFormatAByDegreeWork(degreeWork);
+            String titulo = formatA != null ? formatA.getTittle() : "Sin título";
+            modalStage.setTitle("Calificar Formato A - " + titulo);
 
-        int col = 0;
-        int row = 0;
+            modalStage.setScene(new Scene(modalContent));
+            modalStage.setResizable(false);
 
-        for (FormatA format : formatos) {
-            VBox card = createCard(format);
+            // Mostrar el modal y esperar
+            modalStage.showAndWait();
 
-            // Asegurar que hay suficientes filas
-            if (row >= CardsContainer.getRowConstraints().size()) {
-                RowConstraints rowConstraints = new RowConstraints();
-                rowConstraints.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
-                rowConstraints.setPrefHeight(150); // Altura preferida para las filas
-                CardsContainer.getRowConstraints().add(rowConstraints);
-            }
-
-            CardsContainer.add(card, col, row);
-
-            col++;
-            if (col == maxCols) {
-                col = 0;
-                row++;
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "No se pudo abrir el modal de calificación: " + e.getMessage());
         }
     }
-    private VBox createCard(FormatA formato) {
-        VBox card = new VBox(10);
-        card.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #ccc; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 15;");
-        card.setPrefSize(250, 150);
-        card.setMinSize(200, 120);
-        card.setMaxSize(300, 200);
+    private void handleCalificacionResultado(CalificacionResultado resultado) {
+        if (resultado != null) {
+            // Aquí procesas el resultado de la calificación
+            System.out.println("Formato calificado:");
+            System.out.println("Trabajo: " + resultado.getDegreeWork().getIdDegreeWork());
+            System.out.println("Estado: " + resultado.getNuevoEstado());
+            System.out.println("Comentarios: " + resultado.getComentarios());
 
-        // Permitir que la tarjeta crezca pero mantenga proporciones
-        card.setFillWidth(true);
+            // Actualizar el estado del FormatA en la base de datos
+            resultado.getFormatA().setState(resultado.getNuevoEstado());
 
-        Label lblTitulo = new Label("Título: " + formato.getTittle());
-        lblTitulo.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+            // Guardar los comentarios (depende de tu modelo)
+            // resultado.getFormatA().setComentarios(resultado.getComentarios());
 
-        Label lblEstudiante = new Label("Estudiante: ");
-        Label lblDirector = new Label("Director: ");
-        Label lblFecha = new Label("Fecha: ");
+            showAlert("Éxito", "Formato A calificado exitosamente. Estado: " + resultado.getNuevoEstado());
 
-        Button btnCalificar = new Button("Calificar");
-        btnCalificar.setStyle("-fx-background-color: #4a6bff; -fx-text-fill: white;");
-        btnCalificar.setOnAction(e -> handleCalificar(formato.getTittle()));
-
-        // Espaciador para empujar el botón hacia abajo
-        Pane spacer = new Pane();
-        VBox.setVgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
-
-        card.getChildren().addAll(lblTitulo, lblEstudiante, lblDirector, lblFecha, spacer, btnCalificar);
-
-        return card;
+            // Recargar la vista o actualizar la interfaz
+            // loadSampleData(); // Descomenta si quieres recargar los datos
+        }
+    }
+    private FormatA findFormatAByDegreeWork(DegreeWork degreeWork) {
+        // Implementa la lógica para buscar el FormatA asociado al DegreeWork
+        // Esto depende de tu modelo de datos
+        // Por ahora, retornamos un FormatA de ejemplo
+        return new FormatA(new Date(), EnumState.ESPERA, EnumTypeProcess.FORMAT_A);
     }
 
-
-    private void handleCalificar(String titulo) {
-        System.out.println("Calificar formato con título: " + titulo);
-        // Aquí puedes abrir un modal, cambiar de vista, etc.
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void loadSampleData() {
-        List<FormatA> list = new ArrayList<>();
-        FormatA newFormatA = new FormatA(new Date(1), EnumState.ESPERA, EnumTypeProcess.FORMAT_A);
-        newFormatA.setTittle("titulo1");
+        List<DegreeWork> listDegreeWork = new ArrayList<>();
 
         for (int i = 0; i < 6; i++) {
-            list.add(newFormatA);
+            // Crear FormatA y asociarlo al DegreeWork
+            FormatA newFormatA = new FormatA(new Date(1), EnumState.ESPERA, EnumTypeProcess.FORMAT_A);
+            newFormatA.setTittle("titulo"+i);
+            newFormatA.setURL("C://Users//Usuario//Desktop//1.- Cartas DnD - Por DaniDux.pdf");
+
+            DegreeWork degreeWork = new DegreeWork();
+            degreeWork.setIdDegreeWork(i);
+            degreeWork.getProcesses().add(newFormatA);
+            listDegreeWork.add(degreeWork);
         }
 
-        System.out.println("Cargando " + list.size() + " tarjetas");
-        loadFormatACards(list);
+        System.out.println("Cargando " + listDegreeWork.size() + " tarjetas");
+        // Cambiar a loadDegreeWork en lugar de loadFormatACards
+        loadDegreeWork(listDegreeWork, CardsContainer, this::handleCalificar);
 
-        // Verificar que las tarjetas se hayan añadido
         System.out.println("Número de hijos en CardsContainer: " + CardsContainer.getChildren().size());
     }
-
 }

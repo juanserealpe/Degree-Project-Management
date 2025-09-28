@@ -9,6 +9,9 @@ module app.main {
     requires java.sql;
     requires jbcrypt;
     requires java.desktop;
+    requires java.smartcardio;
+    requires javafx.swing;
+    requires org.apache.pdfbox;
     //requires app.main;
 
     opens Main to javafx.fxml;

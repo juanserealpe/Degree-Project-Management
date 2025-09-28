@@ -16,6 +16,16 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>17.0.17-ea+1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.30</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.11.0</version> <!-- versión estable a 2025 -->
@@ -26,7 +36,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>17.0.16</version>
-            <classifier>linux</classifier>
+            <classifier>win</classifier>
         </dependency>
 
         <!-- JavaFX FXML -->
@@ -34,7 +44,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.16</version>
-            <classifier>linux</classifier>
+            <classifier>win</classifier>
         </dependency>
 
         <!-- JavaFX Graphics -->
@@ -42,7 +52,7 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>17.0.16</version>
-            <classifier>linux</classifier>
+            <classifier>win</classifier>
         </dependency>
 
         <!-- ControlsFX -->

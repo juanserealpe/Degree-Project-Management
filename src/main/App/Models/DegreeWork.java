@@ -2,6 +2,8 @@ package Models;
 
 import Enums.EnumModality;
 import Enums.EnumState;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +16,9 @@ public class DegreeWork {
     private EnumModality modality;
     private EnumState state;
     private Date date;
-
+    public DegreeWork() {
+        processes = new ArrayList<Process>();
+    }
     public DegreeWork(List<Integer> studentIds, int directorId, int codirectorId,List<Process> processes, EnumModality modality,EnumState state, Date date) {
         this.studentIds = studentIds;
         this.directorId = directorId;
