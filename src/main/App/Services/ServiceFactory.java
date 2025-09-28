@@ -52,6 +52,11 @@ public class ServiceFactory {
     }
 
     // --------------------- GETTERS ---------------------
+
+    public CoordinatorService getCoordinatorService() {
+        IDegreeWorkRepository degreeWorkRepository = new DegreeWorkRepository(connection);
+        return new CoordinatorService(degreeWorkRepository);
+    }
     /**
      * Obtiene una instancia de StudentServices.
      *
