@@ -2,6 +2,7 @@ package Controllers;
 
 import Enums.EnumRole;
 import Models.Session;
+import Utilities.WindowManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -134,7 +135,13 @@ public class SideMenuController extends BaseController {
 
     private void handleAction(String nameOption, boolean isSubItem) {
         System.out.println("Click en: " + nameOption + (isSubItem ? " (submenu)" : " (rol)"));
-        // Lógica de navegación aquí
+
+        String resource = getRolResource(instance.getRoles().get(0));
+        BaseController controller = WindowManager.changeScene(stage, resource, instance.getRoles().get(0).name());
+        controller.setServiceFactory(serviceFactory);
+        controller.initData(instance);
+
+
     }
 
     @FXML
