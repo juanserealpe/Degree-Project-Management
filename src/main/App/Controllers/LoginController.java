@@ -1,13 +1,17 @@
 package Controllers;
 
+import Enums.EnumRole;
 import Interfaces.IAuthService;
+import Models.Session;
 import Services.ServiceFactory;
 import Utilities.WindowManager;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -16,7 +20,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
-public class LoginController {
+public class LoginController extends BaseController {
 
     @FXML
     private TextField txtEmail;
@@ -27,13 +31,12 @@ public class LoginController {
     @FXML
     private Label successBox;
 
-
     private IAuthService authService;
-    private ServiceFactory serviceFactory;
+    // Removemos la declaración duplicada de serviceFactory ya que está en BaseController
 
-
+    @Override
     public void setServiceFactory(ServiceFactory serviceFactory) {
-        this.serviceFactory = serviceFactory;
+        super.setServiceFactory(serviceFactory);
         this.authService = serviceFactory.getAuthService();
     }
 
@@ -68,13 +71,15 @@ public class LoginController {
     private void handleLogin(ActionEvent event) throws IOException {
         String email = txtEmail.getText();
         String password = txtPassword.getText();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
         try {
-            //authService.isLoginValid(email, password);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            DirectorViewController controller =
-                    (DirectorViewController) WindowManager.changeScene(stage, "/views/UserViews/DirectorView.fxml", "");
+            //Login válido... seguido a esto enviar a una vista...
 
+            authService.isLoginValid(email, password);
+            Session instance = Session.getInstance();
+            String resource = getRolResource(instance.getRoles().get(0));
+            WindowManager.changeScene(stage, resource, instance.getRoles().get(0).name());
 
         } catch (Exception ex) {
             // Mostrar mensaje de error en caso de fallo en la autenticación
@@ -83,24 +88,36 @@ public class LoginController {
         }
 
     }
-
-
-
-
+    private static String getRolResource(EnumRole rol) {
+        String resource;
+        switch (rol){
+            case JURY -> resource =  "/views/UserViews/JuryView.fxml";
+            case DIRECTOR ->  resource =  "/views/UserViews/DirectorView.fxml";
+            case COORDINATOR ->   resource =  "/views/UserViews/CoordinatorView.fxml";
+            case UNDERGRADUATE_STUDENT ->   resource =  "/views/UserViews/StudentView.fxml";
+            default -> resource =  "/views/AuthViews/LoginView.fxml"; //No tiene sentido, volvemos a el login
+        }
+        return resource;
+    }
 
     @FXML
     private void handleRegister(ActionEvent event) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            RegisterController registerController =  WindowManager.changeScene(stage, "/views/AuthViews/RegisterView.fxml", "");
-            registerController.setServiceFactory(serviceFactory);
 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/RegisterView.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            // Obtener el controller y pasarle la misma instancia de ServiceFactory
+            RegisterController controller = loader.getController();
+            controller.setServiceFactory(this.serviceFactory); // <- usar serviceFactory heredado de BaseController
+
+            stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
             showInfoMessage("Error al abrir el formulario de registro");
         }
     }
-
 
     private void showErrorMessage(String message) {
         lblMessage.setText(message);

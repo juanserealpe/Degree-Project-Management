@@ -7,7 +7,7 @@ public class UserRegisterDTO {
     private String password;
     private User user;
     private Account account;
-
+    public UserRegisterDTO() {}
     public UserRegisterDTO(String password, User user, Account account) {
         this.password = password;
         this.user = user;

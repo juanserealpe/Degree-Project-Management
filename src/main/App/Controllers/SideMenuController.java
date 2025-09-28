@@ -1,81 +1,145 @@
 package Controllers;
 
+import Enums.EnumRole;
+import Models.Session;
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-/*
-* FXMLLoader loader = new FXMLLoader(getClass().getResource("SideMenu.fxml"));
-Parent root = loader.load();
-SideMenuController controller = loader.getController();
-controller.initData("Director"); // ejemplo
-*
-*
-* FXMLLoader loader = new FXMLLoader(getClass().getResource("SideMenu.fxml"));
-Node sideMenu = loader.load();
-SideMenuController controller = loader.getController();
-controller.initData("Student");
+import javafx.util.Duration;
 
-borderPane.setLeft(sideMenu);
-* */
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
 
-
-public class SideMenuController {
+public class SideMenuController extends BaseController {
     @FXML
     private VBox rolButtons;
 
-    String[][] menuItems = new String[][] {
-            {"Student"},
-            {"Director", "Crear Formato A", "Ver proyectos que dirigo"},
-            {"Coordinador", "Calificar formatos A", "opcionCoor2"}
-    };
+    private final Map<String, List<String>> menuItems = new LinkedHashMap<>() {{
+        put(String.valueOf(EnumRole.UNDERGRADUATE_STUDENT), List.of("Mi Proyecto"));
+        put(String.valueOf(EnumRole.DIRECTOR), List.of("Crear Formato A", "ver Proyectos"));
+        put(String.valueOf(EnumRole.COORDINATOR), List.of("Calificar formatos A"));
+    }};
 
     @FXML
     public void initialize() {
     }
 
-    public void initData(String rolActual) {
-        // inicializar submenu dinamicos segun roles
-        for (int i = 0; i < menuItems.length ; i++) {
-            //si estamos en el rol actual, desplegar sub menu, si no otros roles como boton.
-            if(menuItems[i][0].equals(rolActual)) {
-                addsubMenu(menuItems[i][0], i);
-            }else{
-                rolButtons.getChildren().add(addSubElement(menuItems[i][0], i, 0,false));
-            }
+    public void initData(Session session) {
+        rolButtons.getChildren().clear();
+        rolButtons.getStyleClass().add("side-menu");
 
+        // Obtener los roles de la sesión actual
+        Set<String> sessionRoles = session.getRoles().stream()
+                .map(Enum::name)
+                .collect(Collectors.toSet());
+
+        // Filtrar los menuItems para mostrar solo los roles de la sesión
+        menuItems.entrySet().stream()
+                .filter(entry -> sessionRoles.contains(entry.getKey()))
+                .forEach(entry -> {
+                    String rol = entry.getKey();
+                    List<String> opciones = entry.getValue();
+
+                    VBox rolBox = new VBox();
+                    rolBox.getStyleClass().add("rol-container");
+
+                    // Botón del rol
+                    Button rolButton = createButton(rol, false);
+                    rolBox.getChildren().add(rolButton);
+
+                    // Submenús
+                    VBox subMenu = new VBox();
+                    subMenu.getStyleClass().add("sub-menu");
+                    subMenu.setVisible(false);
+                    subMenu.setManaged(false);
+
+                    for (String opcion : opciones) {
+                        subMenu.getChildren().add(createButton(opcion, true));
+                    }
+
+                    rolBox.getChildren().add(subMenu);
+
+                    // Animación al hacer click en el rol
+                    rolButton.setOnAction(e -> toggleSubMenu(subMenu, rolButton));
+
+                    rolButtons.getChildren().add(rolBox);
+                });
+    }
+
+    private void toggleSubMenu(VBox subMenu, Button rolButton) {
+        boolean willShow = !subMenu.isVisible();
+
+        if (willShow) {
+            // Mostrar con animación
+            subMenu.setVisible(true);
+            subMenu.setManaged(true);
+            playExpandAnimation(subMenu);
+            rolButton.setStyle("-fx-background-color: #3a5bef; -fx-text-fill: white;");
+        } else {
+            // Ocultar con animación
+            playCollapseAnimation(subMenu);
+            rolButton.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9); -fx-text-fill: #4a6bff;");
         }
     }
 
-    private void addsubMenu(String rol, int index) {
-        int len = menuItems[index].length;
-        //crea elemento del submenu
-        VBox subMenu = new VBox();
+    private void playExpandAnimation(VBox subMenu) {
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(200), subMenu);
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
 
-        //agregar sub elemento del submenu
-        for (int i = 0; i < menuItems[index].length; i++) {
-            if(i==0)
-                subMenu.getChildren().add(addSubElement(menuItems[index][i], index, i,false));
-            else
-                subMenu.getChildren().add(addSubElement(menuItems[index][i], index, i,true));
-        }
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(200), subMenu);
+        translateTransition.setFromY(-10);
+        translateTransition.setToY(0);
 
-        //agregar subMenu al menu
-        rolButtons.getChildren().add(subMenu);
+        fadeTransition.play();
+        translateTransition.play();
     }
-    private Button addSubElement(String nameOption, int index, int subIndex, boolean isSubItem) {
-        Button button = new Button();
-        button.setText(nameOption);
-        button.setMaxWidth(Double.MAX_VALUE);
-        if(isSubItem)
-            button.getStyleClass().add("btn_subMenuElement");
-        else
-            button.getStyleClass().add("btn_MenuElement");
-        button.setOnAction(e -> {
-            System.out.println("click en: "+nameOption+" ["+index+"]["+subIndex+"]");
-            //logica segun click boton
-            // Cerrar vista actual y abrir nueva lista segun rol
+
+    private void playCollapseAnimation(VBox subMenu) {
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(150), subMenu);
+        fadeTransition.setFromValue(1);
+        fadeTransition.setToValue(0);
+
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(150), subMenu);
+        translateTransition.setFromY(0);
+        translateTransition.setToY(-10);
+        translateTransition.setDuration(Duration.millis(200));
+        fadeTransition.setOnFinished(e -> {
+            subMenu.setVisible(false);
+            subMenu.setManaged(false);
         });
+
+        fadeTransition.play();
+        translateTransition.play();
+    }
+
+    private Button createButton(String nameOption, boolean isSubItem) {
+        Button button = new Button(nameOption);
+        button.setMaxWidth(Double.MAX_VALUE);
+        button.setMinHeight(35);
+
+        if (isSubItem) {
+            button.getStyleClass().add("btn_subMenuElement");
+        } else {
+            button.getStyleClass().add("btn_MenuElement");
+        }
+
+        button.setOnAction(e -> handleAction(nameOption, isSubItem));
         return button;
     }
 
+    private void handleAction(String nameOption, boolean isSubItem) {
+        System.out.println("Click en: " + nameOption + (isSubItem ? " (submenu)" : " (rol)"));
+        // Lógica de navegación aquí
+    }
+
+    @FXML
+    private void handleCloseSession(ActionEvent event) throws IOException {
+        System.out.println("Closing session");
+        // Lógica para cerrar sesión
+    }
 }

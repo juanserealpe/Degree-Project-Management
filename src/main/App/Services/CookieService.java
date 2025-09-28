@@ -1,28 +1,29 @@
 package Services;
 
+import DataBase.DbConnection;
+import Dtos.UserRegisterDTO;
 import Interfaces.IFileService;
 import Interfaces.IRepository;
-import Models.Account;
 import Models.Cookie;
 import Repositories.CookieRepository;
+import Repositories.CredentialRepository;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class CookieService {
-    private final String path = System.getProperty("user.home") + File.separator + "ProjectManager" + File.separator;
+    private final String path = System.getProperty("user.dir") + "/Secrets/ProjectManager/";
     private final String filename = "cookie.txt";
     private IFileService  fileService;
     private IRepository<Cookie> cookieRepository;
-    //TODO: private UserRepository userRepository;
+    private CredentialRepository userRepository;
     public CookieService() {
         this.fileService = new FileService();
         cookieRepository = new CookieRepository();
         try{
-            //TODO: userRepository = new CredentialRepository();
+            userRepository = new CredentialRepository(DbConnection.getConnection());
         }catch(Exception e) {
             System.err.println(e.getMessage());
         }
@@ -41,14 +42,24 @@ public class CookieService {
         }
     }
 
-    public Account getAccountByCookie() {
+    public UserRegisterDTO getUserRegisterDTOByCookie() {
         try {
             String content = fileService.readFile(path, filename);
             Cookie cookie = cookieRepository.getByString(content);
-            //TODO: return userRepository.getById(cookie.getuserId());
+            if(cookie == null) return null;
+            //Si existe la cookie, pero ya expiro, retornar null
+            if(cookie.getDuration().isBefore(Instant.now())) return null;
+            return userRepository.getById(cookie.getUserId());
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
         }
         return null;
+    }
+    public void ResetCookie() {
+        try {
+            fileService.saveFile(path, filename, "");
+        } catch (IOException e) {
+            System.out.println("Error to reset cookie " + e);
+        }
     }
 }

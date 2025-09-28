@@ -33,28 +33,39 @@ public class FileService implements IFileService {
 
     @Override
     public String saveFile(String path, String filename, String content) throws IOException {
-        File dir = new File(path);
-        if (!dir.exists()) {
-            dir.mkdirs();
+        File file = new File(path, filename); // Separar path y filename evita errores de concatenación
+        File parentDir = file.getParentFile();
+
+        // Validación de existencia y permisos de carpeta
+        if (!parentDir.exists()) {
+            if (!parentDir.mkdirs()) {
+                throw new IOException("No se pudo crear el directorio: " + parentDir.getAbsolutePath());
+            }
+        }
+        if (!parentDir.canWrite()) {
+            throw new IOException("No se puede escribir en el directorio: " + parentDir.getAbsolutePath());
         }
 
-        File file = new File(path + filename);
-        try{
-            FileWriter fw = new FileWriter(file);
+        // Validación de archivo
+        if (!file.exists()) {
+            if (!file.createNewFile()) {
+                throw new IOException("No se pudo crear el archivo: " + file.getAbsolutePath());
+            }
+        }
+        if (!file.canWrite()) {
+            throw new IOException("No se puede escribir en el archivo: " + file.getAbsolutePath());
+        }
+
+        // Escritura segura
+        try (FileWriter fw = new FileWriter(file, false)) { // false = sobrescribir
             fw.write(content);
-            fw.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-        try {
-            Runtime.getRuntime().exec("attrib +H " + file.getAbsolutePath());
-        } catch (Exception e) {
-            System.err.println("No se pudo ocultar el archivo: " + e.getMessage());
+        } catch (IOException e) {
+            throw new IOException("Error al escribir en el archivo: " + file.getAbsolutePath(), e);
         }
 
         return file.getAbsolutePath();
     }
+
     @Override
     public String uploadFile(String path) throws FileException {
         try {

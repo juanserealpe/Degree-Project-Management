@@ -5,7 +5,7 @@ import Exceptions.LoginFailedException;
 import Interfaces.IAuthService;
 import Interfaces.IEncrypt;
 import Interfaces.IRepository;
-import Models.Account;
+import Models.Session;
 import Utilities.Logger;
 
 /**
@@ -44,23 +44,32 @@ public class AuthService implements IAuthService {
      * @throws Exception Si ocurre algún error durante la consulta o validación.
      */
     @Override
-    public UserRegisterDTO isLoginValid(String prmEmail, String prmPassword) throws Exception {
-        // Obtener la cuenta asociada al email
-        Account resultAccountByEmail = _userRepository.getByString(prmEmail).getAccount();
-        if (resultAccountByEmail == null) LoginFailedException.invalidCredentials();
-
-        // Recuperar DTO completo del usuario
+    public void isLoginValid(String prmEmail, String prmPassword) throws Exception {
+        // Obtener el usuario por email
         UserRegisterDTO result = _userRepository.getByString(prmEmail);
+
+        if (result == null) {
+            Logger.warn(AuthService.class, "isLoginValid: cuenta no encontrada para " + prmEmail);
+            throw LoginFailedException.invalidCredentials();
+        }
 
         // Comparar contraseña ingresada con la almacenada
         boolean isPasswordEqual = _encryptService.Check(prmPassword, result.getPassword());
-        if (isPasswordEqual) {
-            Logger.info(AuthService.class, "isLoginValid: login válido para el usuario " + prmEmail);
-            result.setPassword(null); // Limpiar contraseña antes de retornar
-            _cookieService.setCookie(result.getAccount().getIdAccount());
-            return result;
-        } else {
-            return null;
+
+        if (!isPasswordEqual) {
+            Logger.warn(AuthService.class, "isLoginValid: contraseña incorrecta para " + prmEmail);
+            throw LoginFailedException.invalidCredentials();
         }
+
+        Logger.info(AuthService.class, "isLoginValid: login válido para " + prmEmail);
+
+        // Limpiar la contraseña antes de continuar
+        result.setPassword(null);
+        _cookieService.setCookie(result.getAccount().getIdAccount());
+        // Iniciar sesión
+        Session instance = Session.getInstance();
+        instance.setRoles(result.getAccount().getRoles());
+        instance.setEmail(result.getAccount().getEmail());
     }
+
 }

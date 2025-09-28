@@ -14,6 +14,14 @@ public class FormatA extends Process {
         super(date, state, typeProcess);
     }
 
+    public FormatA(Date date, EnumState state, EnumTypeProcess typeProcess, String tittle, String URL, String observation, int attempts) {
+        super(date, state, typeProcess);
+        Tittle = tittle;
+        this.URL = URL;
+        Observation = observation;
+        Attempts = attempts;
+    }
+
     public String getTittle() { return Tittle; }
     public void setTittle(String tittle) { this.Tittle = tittle; }
 

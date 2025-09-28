@@ -1,27 +1,35 @@
 package Controllers;
 
+import Models.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
-import java.io.IOException;
-
-public class DirectorViewController {
+public class DirectorViewController extends BaseController{
+    public GridPane CardsContainer;
     @FXML
     Pane SideMenuContainer;
     @FXML
     public void initialize() {
+
+    }
+    public void initData(Session session) {
         try {
-            System.out.println("Inicializando DirectorViewController...");
+            //inicializar el menu.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView/SideMenu.fxml"));
             Node sideMenu = loader.load();
-            SideMenuController controller = loader.getController();
-            controller.initData("Coordinador");
+
+            // Asegurar que el menú ocupe todo el espacio disponible
+            SideMenuContainer.getChildren().clear();
             SideMenuContainer.getChildren().add(sideMenu);
-            System.out.println("SideMenu cargado correctamente");
+
+            SideMenuController controller = loader.getController();
+            //pasarle la sesion al menu
+            controller.initData(session);
         } catch (Exception e) {
-            e.printStackTrace();  // Esto imprimirá todo el stack trace real
+            e.printStackTrace();
         }
     }
 
