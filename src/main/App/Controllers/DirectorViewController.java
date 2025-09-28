@@ -4,15 +4,16 @@ import Models.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
-import java.io.IOException;
-
 public class DirectorViewController extends BaseController{
+    public GridPane CardsContainer;
     @FXML
     Pane SideMenuContainer;
     @FXML
     public void initialize() {
+
     }
     public void initData(Session session) {
         try {
@@ -31,4 +32,5 @@ public class DirectorViewController extends BaseController{
             e.printStackTrace();
         }
     }
+
 }
