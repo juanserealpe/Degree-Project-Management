@@ -67,8 +67,9 @@ public class AuthService implements IAuthService {
         result.setPassword(null);
         _cookieService.setCookie(result.getAccount().getIdAccount());
         // Iniciar sesión
-        Session.getInstance().setRoles(result.getAccount().getRoles());
-        Session.getInstance().setEmail(result.getAccount().getEmail());
+        Session instance = Session.getInstance();
+        instance.setRoles(result.getAccount().getRoles());
+        instance.setEmail(result.getAccount().getEmail());
     }
 
 }

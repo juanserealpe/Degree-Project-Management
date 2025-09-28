@@ -13,9 +13,10 @@ public class Session {
 
     public Session() {}
     public static Session getInstance(){
-        if(instance == null){ instance = new Session();
+        if(instance == null){
+            instance = new Session();
             instance.roles = new ArrayList<>();
-
+            instance.email = "";
         }
         return instance;
     }
