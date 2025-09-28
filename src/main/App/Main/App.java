@@ -62,6 +62,7 @@ public class App extends Application {
         }else{
 
             Session session = Session.getInstance();
+            session.setId(userRegisterDTO.getAccount().getIdAccount());
             session.setEmail(userRegisterDTO.getAccount().getEmail());
             List<EnumRole> roles = userRegisterDTO.getAccount().getRoles();
             session.setRoles(userRegisterDTO.getAccount().getRoles());
