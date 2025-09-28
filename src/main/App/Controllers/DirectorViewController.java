@@ -83,6 +83,7 @@ public class DirectorViewController extends BaseController{
             SideMenuController controller = loader.getController();
             //pasarle la sesion al menu
             controller.initData(session);
+            controller.setServiceFactory(this.serviceFactory);
         } catch (Exception e) {
             e.printStackTrace();
         }

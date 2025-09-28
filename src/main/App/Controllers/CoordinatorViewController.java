@@ -33,6 +33,7 @@ public class CoordinatorViewController extends BaseController{
             SideMenuContainer.getChildren().add(sideMenu);
             SideMenuController controller = loader.getController();
             controller.initData(instance);
+            controller.setServiceFactory(this.serviceFactory);
         } catch (Exception e) {
             e.printStackTrace();
         }

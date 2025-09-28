@@ -3,13 +3,16 @@ package Controllers;
 import Enums.EnumMenuOption;
 import Enums.EnumRole;
 import Models.Session;
+import Services.ServiceFactory;
 import Utilities.MenuOption;
 import Utilities.WindowManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -38,7 +41,6 @@ public class SideMenuController extends BaseController {
     @FXML
     public void initialize() {
     }
-
     public void initData(Session instance) {
         this.instance = instance;
         rolButtons.getChildren().clear();
@@ -165,6 +167,10 @@ public class SideMenuController extends BaseController {
     @FXML
     private void handleCloseSession(ActionEvent event) throws IOException {
         System.out.println("Closing session");
-        // Lógica para cerrar sesión
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
+        Scene scene = new Scene(loader.load());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        BaseController controller = WindowManager.changeScene(stage,"/views/AuthViews/LoginView.fxml","");
+        controller.setServiceFactory(serviceFactory);
     }
 }
