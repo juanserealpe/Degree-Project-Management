@@ -24,28 +24,21 @@ public class CoordinatorViewController extends BaseController{
     @FXML
     public void initialize() {
     }
-    public void initData(Session session) {
+    public void initData(Session instance) {
         try {
             //inicializar el menu.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MenuView/SideMenu.fxml"));
             Node sideMenu = loader.load();
-
-            // Asegurar que el menú ocupe todo el espacio disponible
             SideMenuContainer.getChildren().clear();
             SideMenuContainer.getChildren().add(sideMenu);
-
             SideMenuController controller = loader.getController();
-            //pasarle la sesion al menu
-            controller.initData(session);
+            controller.initData(instance);
         } catch (Exception e) {
             e.printStackTrace();
         }
         //EJEMPLO
         loadSampleData();
     };
-
-
-
 
     private void handleCalificar(Object titulo) {
         if(! (titulo instanceof String)) return; //No es un titulo
