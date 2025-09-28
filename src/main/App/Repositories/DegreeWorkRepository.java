@@ -184,6 +184,12 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
         makeInsert(vScript, vParams);
     }
 
+    public void insertDegreeWork_Students(int pIdDegreeWork, int pIdAccount){
+        String vScript = "INSERT INTO DegreeWork_Students (idDegreeWork, idAccount) VALUES (?, ?)";
+        Object [] vParams = {pIdDegreeWork, pIdAccount};
+        makeInsert(vScript, vParams);
+    }
+
 
     private List<FormatA> getDataAtFormatsA(){
         if(resultScript.getPayload() == null|| resultScript.getPayload().isEmpty()) return null;

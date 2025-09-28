@@ -122,7 +122,11 @@ public class NewDegreeWorkController extends BaseController{
         //Aquí debería insertar el trabajo de grado en la BD
         degreeWork.setIdDegreeWork(degreeWorkRepository.insertNewDegreeWork(degreeWork));
         degreeWorkRepository.insertFormatA(degreeWorkRepository.insertProcess(degreeWork), (FormatA)process[0]);
-        //HELP
+        degreeWorkRepository.insertDegreeWork_Students(degreeWork.getIdDegreeWork(), idStudents.get(0));
+        if(!(idStudents.get(1) == null || idStudents.get(1) == 0)){
+            degreeWorkRepository.insertDegreeWork_Students(degreeWork.getIdDegreeWork(), idStudents.get(1));
+        }
+        //HELP <- No sabe programar
 
         //Redirige al usuario a La vista del director
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
