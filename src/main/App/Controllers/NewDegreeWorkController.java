@@ -91,7 +91,7 @@ public class NewDegreeWorkController extends BaseController{
     }
 
     @FXML
-    void btnCreateDW(ActionEvent event) {
+    void btnCreateDW(ActionEvent event) throws SQLException {
         //Ejemplo
         //Aquí debería traer los datos de la base de datos
 
@@ -120,7 +120,8 @@ public class NewDegreeWorkController extends BaseController{
         DegreeWork degreeWork = new DegreeWork(idStudents, director, codirector, List.of(process), EnumModality.INVESTIGACION, EnumState.INACTIVO,  Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         //Aquí debería insertar el trabajo de grado en la BD
-        degreeWorkRepository.insertNewDegreeWork(degreeWork);
+        degreeWork.setIdDegreeWork(degreeWorkRepository.insertNewDegreeWork(degreeWork));
+        degreeWorkRepository.insertFormatA(degreeWorkRepository.insertProcess(degreeWork), (FormatA)process[0]);
         //HELP
 
         //Redirige al usuario a La vista del director

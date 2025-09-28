@@ -1,7 +1,6 @@
 package Repositories;
 
 import Enums.EnumModality;
-import Enums.EnumProgram;
 import Enums.EnumState;
 import Enums.EnumTypeProcess;
 import Interfaces.IDegreeWorkRepository;
@@ -11,6 +10,7 @@ import Models.User;
 import Utilities.BaseRepository;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -163,12 +163,25 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
         return degreeWorks.get(0);
     }
 
-    public boolean insertNewDegreeWork(DegreeWork pDegreeWork){
-        String vScript = "INSERT into (idEnumModality, idEnumProgram, idDirector, idCodirector) values (?, ?, ?, ?)";
+    public int insertNewDegreeWork(DegreeWork pDegreeWork) throws SQLException {
+        String vScript = "INSERT into DegreeWork (idEnumModality, idEnumProgram, idDirector, idCodirector) values (?, ?, ?, ?)";
         //Falta implementar métodos para traer el id de los enums
         int modality = getIdEnumModalityByName(pDegreeWork.getModality().toString());
         Object [] vParams = {modality, 1, pDegreeWork.getDirectorId(), pDegreeWork.getCodirectorId()};
-        return makeInsert(vScript, vParams);
+        return makeInsertWithGeneratedKey(vScript, vParams);
+    }
+
+    public int insertProcess(DegreeWork pDegreeWork) throws SQLException {
+        String vScript = "INSERT INTO Process (idDegreeWork, idEnumTypeProcess, idEnumState, date) VALUES (?, ?, ?, ?)";
+        //Falta implementar métodos para traer el id de los enums
+        Object [] vParams = {pDegreeWork.getIdDegreeWork(), 1, 1, pDegreeWork.getDate()};
+        return makeInsertWithGeneratedKey(vScript, vParams);
+    }
+
+    public void insertFormatA(int pId, FormatA pFormatA){
+        String vScript = "INSERT INTO FormatA(idProcess, title, attempt) VALUES (?, ?, ?)";
+        Object [] vParams = {pId, pFormatA.getTittle(), pFormatA.getAttempts()};
+        makeInsert(vScript, vParams);
     }
 
 
