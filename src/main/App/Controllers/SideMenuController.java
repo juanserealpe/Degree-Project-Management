@@ -9,9 +9,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -168,10 +166,10 @@ public class SideMenuController extends BaseController {
     @FXML
     private void handleCloseSession(ActionEvent event) throws IOException {
         System.out.println("Closing session");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AuthViews/LoginView.fxml"));
-        Scene scene = new Scene(loader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         BaseController controller = WindowManager.changeScene(stage,"/views/AuthViews/LoginView.fxml","");
+        Session.getInstance().logOut();
+        serviceFactory.getCookieService().ResetCookie();
         controller.setServiceFactory(serviceFactory);
     }
 }

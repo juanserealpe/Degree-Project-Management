@@ -47,6 +47,7 @@ public class LoginController extends BaseController {
 
         Platform.runLater(() -> {
             Stage stage = (Stage) successBox.getScene().getWindow();
+            if(stage == null){return;}
             Object data = stage.getUserData();
             if (data instanceof String) {
                 showSuccessBox((String) data);
