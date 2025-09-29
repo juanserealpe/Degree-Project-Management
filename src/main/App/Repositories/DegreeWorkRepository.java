@@ -164,7 +164,7 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
     }
 
     public int insertNewDegreeWork(DegreeWork pDegreeWork) throws SQLException {
-        String vScript = "INSERT into DegreeWork (idEnumModality, idProgram, idDirector, idCodirector) values (?, ?, ?, ?)";
+        String vScript = "INSERT into DegreeWork (modality, idProgram, idDirector, idCodirector) values (?, ?, ?, ?)";
         //Falta implementar métodos para traer el id de los enums
         Object [] vParams = {pDegreeWork.getModality().toString(), 1, pDegreeWork.getDirectorId(), pDegreeWork.getCodirectorId()};
         return makeInsertWithGeneratedKey(vScript, vParams);
@@ -173,7 +173,7 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
     public int insertProcess(DegreeWork pDegreeWork) throws SQLException {
         String vScript = "INSERT INTO Process (idDegreeWork, idEnumTypeProcess, idEnumState, date) VALUES (?, ?, ?, ?)";
         //Falta implementar métodos para traer el id de los enums
-        Object [] vParams = {pDegreeWork.getIdDegreeWork(), 1, 1, pDegreeWork.getDate()};
+        Object [] vParams = {pDegreeWork.getIdDegreeWork(), 1, 1, pDegreeWork.getDate().toString()};
         return makeInsertWithGeneratedKey(vScript, vParams);
     }
 

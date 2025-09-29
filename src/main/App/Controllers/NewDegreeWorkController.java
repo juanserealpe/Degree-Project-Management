@@ -122,7 +122,7 @@ public class NewDegreeWorkController extends BaseController{
         LocalDate hoy = LocalDate.now();
 
         //nuevo Trabajo de Grado
-        DegreeWork degreeWork = new DegreeWork(idStudents, director, codirector, List.of(process), EnumModality.INVESTIGACION, EnumState.INACTIVO,  Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        DegreeWork degreeWork = new DegreeWork(idStudents, director, codirector, List.of(process), EnumModality.INVESTIGACION, EnumState.ESPERA, Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         //Aquí debería insertar el trabajo de grado en la BD
         degreeWork.setIdDegreeWork(degreeWorkRepository.insertNewDegreeWork(degreeWork));
