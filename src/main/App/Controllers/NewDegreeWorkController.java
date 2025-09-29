@@ -5,6 +5,7 @@ import Builders.ProcessCreator;
 import DataBase.DbConnection;
 import Enums.EnumModality;
 import Enums.EnumState;
+import Enums.EnumTypeProcess;
 import Interfaces.IFileService;
 import Models.*;
 import Models.Process;
@@ -25,6 +26,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
@@ -95,14 +97,17 @@ public class NewDegreeWorkController extends BaseController{
 
     @FXML
     void btnCreateDW(ActionEvent event) throws SQLException, IOException {
-        //Ejemplo
-        //Aquí debería traer los datos de la base de datos
+        if(idStudent1.getText() == null) return;
 
-        //Trayendo id de estudiantes
         List<Integer> idStudents = new ArrayList<>();
-        idStudents.add(degreeWorkRepository.getIdAccountByEmail(idStudent1.getText()));
-        idStudents.add(degreeWorkRepository.getIdAccountByEmail(idStudent2.getText()));
-
+        int vIdStudent1 = 0, vIdStudent2 = 0;
+        vIdStudent1 = degreeWorkRepository.getIdAccountByEmail(idStudent1.getText());
+        if(vIdStudent1 == 0) return;
+        idStudents.add(vIdStudent1);
+        if(idStudent2.getText() != null) {
+            vIdStudent2 = degreeWorkRepository.getIdAccountByEmail(idStudent2.getText());
+            if(vIdStudent2 != 0) idStudents.add(vIdStudent2);
+        }
         //Trayendo id de directores
         int director = 0;
         String filename = "cookie.txt";
@@ -111,26 +116,36 @@ public class NewDegreeWorkController extends BaseController{
         director = cookie.UserId;
         int codirector = degreeWorkRepository.getIdAccountByEmail(idCodirector.getText());
 
+        // Obtener fecha actual
         //nuevo Formato A
         ProcessCreator creator = new CreateFormatA();
-        Process[] process = new Process[1];
-        process[0] = creator.createProcess();
-        ((FormatA) process[0]).setTittle(idTittle.getText());
-        ((FormatA) process[0]).setAttempts(1);
-
+        FormatA vFa = new FormatA(null,EnumState.ESPERA, EnumTypeProcess.FORMAT_A,idTittle.getText(),null,"",0);
         //Fecha de hoy
-        LocalDate hoy = LocalDate.now();
 
         //nuevo Trabajo de Grado
-        DegreeWork degreeWork = new DegreeWork(idStudents, director, codirector, List.of(process), EnumModality.INVESTIGACION, EnumState.ESPERA, Date.from(hoy.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        DegreeWork degreeWork;
 
-        //Aquí debería insertar el trabajo de grado en la BD
+        if(idStudents.size() == 1)
+            degreeWork = new DegreeWork(idStudents, director, codirector, null, EnumModality.PRACTICA_PROFESIONAL, null,  null);
+        else
+            degreeWork = new DegreeWork(idStudents, director, codirector, null, EnumModality.INVESTIGACION, null,  null);
+        int idDegreeWork = degreeWorkRepository.insertNewDegreeWork(degreeWork);
+        if(idDegreeWork != 0){
+            degreeWorkRepository.insertFormatA(idDegreeWork, vFa);
+            degreeWorkRepository.insertDegreeWork_Students(idDegreeWork, vIdStudent1);
+            if(vIdStudent2 != 0)
+                degreeWorkRepository.insertDegreeWork_Students(idDegreeWork, vIdStudent2);
+
+        }
+
+        /*
         degreeWork.setIdDegreeWork(degreeWorkRepository.insertNewDegreeWork(degreeWork));
         degreeWorkRepository.insertFormatA(degreeWorkRepository.insertProcess(degreeWork), (FormatA)process[0]);
         degreeWorkRepository.insertDegreeWork_Students(degreeWork.getIdDegreeWork(), idStudents.get(0));
         if(!(idStudents.get(1) == null || idStudents.get(1) == 0)){
             degreeWorkRepository.insertDegreeWork_Students(degreeWork.getIdDegreeWork(), idStudents.get(1));
         }
+        */
         //HELP <- No sabe programar
 
         //Redirige al usuario a La vista del director

@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -165,30 +166,26 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
 
     public int insertNewDegreeWork(DegreeWork pDegreeWork) throws SQLException {
         String vScript = "INSERT into DegreeWork (modality, idProgram, idDirector, idCodirector) values (?, ?, ?, ?)";
-        //Falta implementar métodos para traer el id de los enums
         Object [] vParams = {pDegreeWork.getModality().toString(), 1, pDegreeWork.getDirectorId(), pDegreeWork.getCodirectorId()};
         return makeInsertWithGeneratedKey(vScript, vParams);
     }
 
-    public int insertProcess(DegreeWork pDegreeWork) throws SQLException {
-        String vScript = "INSERT INTO Process (idDegreeWork, idEnumTypeProcess, idEnumState, date) VALUES (?, ?, ?, ?)";
-        //Falta implementar métodos para traer el id de los enums
-        Object [] vParams = {pDegreeWork.getIdDegreeWork(), 1, 1, pDegreeWork.getDate().toString()};
-        return makeInsertWithGeneratedKey(vScript, vParams);
-    }
-
-    public void insertFormatA(int pId, FormatA pFormatA){
-        String vScript = "INSERT INTO FormatA(idProcess, title, attempt) VALUES (?, ?, ?)";
-        Object [] vParams = {pId, pFormatA.getTittle(), pFormatA.getAttempts()};
+    public void insertFormatA(int pIdDegreeWork, FormatA pFormatA){
+        String vScript = "INSERT INTO FormatA (idDegreeWork, title, currentStatus, attempt, date, url, observation) " +
+                "VALUES (?, ?, ?, 0, ?, ?, '')";
+        LocalDate today = LocalDate.now();
+        Object [] vParams = {pIdDegreeWork, pFormatA.getTittle(), EnumState.ESPERA.toString(),
+                today.toString(), "Without url"};
         makeInsert(vScript, vParams);
+        System.out.println(resultScript.getMessage());
+        System.out.println(resultScript.isSuccess());
     }
 
     public void insertDegreeWork_Students(int pIdDegreeWork, int pIdAccount){
-        String vScript = "INSERT INTO DegreeWork_Students (idDegreeWork, idAccount) VALUES (?, ?)";
+        String vScript = "INSERT INTO Student_DegreeWork (idDegreeWork, idAccount) VALUES (?, ?)";
         Object [] vParams = {pIdDegreeWork, pIdAccount};
         makeInsert(vScript, vParams);
     }
-
 
     private List<FormatA> getDataAtFormatsA(){
         if(resultScript.getPayload() == null|| resultScript.getPayload().isEmpty()) return null;
