@@ -166,8 +166,7 @@ public class DegreeWorkRepository extends BaseRepository implements IDegreeWorkR
     public int insertNewDegreeWork(DegreeWork pDegreeWork) throws SQLException {
         String vScript = "INSERT into DegreeWork (idEnumModality, idEnumProgram, idDirector, idCodirector) values (?, ?, ?, ?)";
         //Falta implementar métodos para traer el id de los enums
-        int modality = getIdEnumModalityByName(pDegreeWork.getModality().toString());
-        Object [] vParams = {modality, 1, pDegreeWork.getDirectorId(), pDegreeWork.getCodirectorId()};
+        Object [] vParams = {pDegreeWork.getModality().toString(), 1, pDegreeWork.getDirectorId(), pDegreeWork.getCodirectorId()};
         return makeInsertWithGeneratedKey(vScript, vParams);
     }
 
